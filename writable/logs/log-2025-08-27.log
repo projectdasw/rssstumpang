@@ -1,0 +1,194 @@
+CRITICAL - 2025-08-27 08:58:38 --> Error: Call to undefined method Config\Database::getConfig()
+[Method: GET, Route: testdb]
+in APPPATH\Controllers\TestDB.php on line 11.
+ 1 VENDORPATH\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+ 2 VENDORPATH\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+ 3 VENDORPATH\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 7 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\rssstumpang\\public\\index.php')
+CRITICAL - 2025-08-27 08:58:43 --> Error: Call to undefined method Config\Database::getConfig()
+[Method: GET, Route: testdb]
+in APPPATH\Controllers\TestDB.php on line 11.
+ 1 VENDORPATH\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+ 2 VENDORPATH\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+ 3 VENDORPATH\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 7 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\rssstumpang\\public\\index.php')
+CRITICAL - 2025-08-27 08:59:08 --> Error: Call to undefined method Config\Database::getConfig()
+[Method: GET, Route: testdb]
+in APPPATH\Controllers\TestDB.php on line 11.
+ 1 VENDORPATH\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+ 2 VENDORPATH\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+ 3 VENDORPATH\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 7 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\rssstumpang\\public\\index.php')
+CRITICAL - 2025-08-27 08:59:15 --> Error: Call to undefined method Config\Database::getConfig()
+[Method: GET, Route: testdb]
+in APPPATH\Controllers\TestDB.php on line 11.
+ 1 VENDORPATH\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+ 2 VENDORPATH\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+ 3 VENDORPATH\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 7 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\rssstumpang\\public\\index.php')
+ERROR - 2025-08-27 09:04:00 --> mysqli_sql_exception: No database selected in C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('SHOW TABLES', 0)
+#1 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('SHOW TABLES')
+#2 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('SHOW TABLES')
+#3 C:\xampp\htdocs\rssstumpang\app\Controllers\TestDB.php(21): CodeIgniter\Database\BaseConnection->query('SHOW TABLES')
+#4 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+#5 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+#6 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\xampp\htdocs\rssstumpang\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#8 C:\xampp\htdocs\rssstumpang\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#9 C:\xampp\htdocs\rssstumpang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#10 C:\xampp\htdocs\rssstumpang\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+ERROR - 2025-08-27 09:04:13 --> mysqli_sql_exception: No database selected in C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('SHOW TABLES', 0)
+#1 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('SHOW TABLES')
+#2 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('SHOW TABLES')
+#3 C:\xampp\htdocs\rssstumpang\app\Controllers\TestDB.php(16): CodeIgniter\Database\BaseConnection->query('SHOW TABLES')
+#4 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+#5 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+#6 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\xampp\htdocs\rssstumpang\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#8 C:\xampp\htdocs\rssstumpang\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#9 C:\xampp\htdocs\rssstumpang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#10 C:\xampp\htdocs\rssstumpang\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+ERROR - 2025-08-27 09:06:08 --> Error connecting to the database: mysqli_sql_exception: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond in C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('36.88.17.17', 'remote_db', Object(SensitiveParameterValue), 'rsss_db', 3306, '', 0)
+#1 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\rssstumpang\app\Controllers\TestDB.php(17): CodeIgniter\Database\BaseConnection->query('SHOW TABLES')
+#4 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+#5 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+#6 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\xampp\htdocs\rssstumpang\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#8 C:\xampp\htdocs\rssstumpang\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#9 C:\xampp\htdocs\rssstumpang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#10 C:\xampp\htdocs\rssstumpang\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond in C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:246
+Stack trace:
+#0 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\rssstumpang\app\Controllers\TestDB.php(17): CodeIgniter\Database\BaseConnection->query('SHOW TABLES')
+#3 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+#4 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+#5 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 C:\xampp\htdocs\rssstumpang\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#7 C:\xampp\htdocs\rssstumpang\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#8 C:\xampp\htdocs\rssstumpang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#9 C:\xampp\htdocs\rssstumpang\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#10 {main}
+ERROR - 2025-08-27 09:06:15 --> Error connecting to the database: mysqli_sql_exception: Access denied for user 'remote_db'@'%' to database 'rsss_d' in C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('36.88.17.170', 'remote_db', Object(SensitiveParameterValue), 'rsss_d', 3306, '', 0)
+#1 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\rssstumpang\app\Controllers\TestDB.php(17): CodeIgniter\Database\BaseConnection->query('SHOW TABLES')
+#4 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+#5 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+#6 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\xampp\htdocs\rssstumpang\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#8 C:\xampp\htdocs\rssstumpang\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#9 C:\xampp\htdocs\rssstumpang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#10 C:\xampp\htdocs\rssstumpang\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user '****'@'%' to database 'rsss_d' in C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:246
+Stack trace:
+#0 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\rssstumpang\app\Controllers\TestDB.php(17): CodeIgniter\Database\BaseConnection->query('SHOW TABLES')
+#3 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+#4 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+#5 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 C:\xampp\htdocs\rssstumpang\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#7 C:\xampp\htdocs\rssstumpang\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#8 C:\xampp\htdocs\rssstumpang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#9 C:\xampp\htdocs\rssstumpang\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#10 {main}
+ERROR - 2025-08-27 09:06:23 --> Error connecting to the database: mysqli_sql_exception: Access denied for user 'remote_db'@'%' to database 'rsss' in C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('36.88.17.170', 'remote_db', Object(SensitiveParameterValue), 'rsss', 3306, '', 0)
+#1 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\rssstumpang\app\Controllers\TestDB.php(17): CodeIgniter\Database\BaseConnection->query('SHOW TABLES')
+#4 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+#5 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+#6 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\xampp\htdocs\rssstumpang\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#8 C:\xampp\htdocs\rssstumpang\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#9 C:\xampp\htdocs\rssstumpang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#10 C:\xampp\htdocs\rssstumpang\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user '****'@'%' to database 'rsss' in C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:246
+Stack trace:
+#0 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\rssstumpang\app\Controllers\TestDB.php(17): CodeIgniter\Database\BaseConnection->query('SHOW TABLES')
+#3 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+#4 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+#5 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 C:\xampp\htdocs\rssstumpang\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#7 C:\xampp\htdocs\rssstumpang\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#8 C:\xampp\htdocs\rssstumpang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#9 C:\xampp\htdocs\rssstumpang\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#10 {main}
+ERROR - 2025-08-27 09:06:30 --> mysqli_sql_exception: No database selected in C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(327): mysqli->query('SHOW TABLES', 0)
+#1 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('SHOW TABLES')
+#2 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('SHOW TABLES')
+#3 C:\xampp\htdocs\rssstumpang\app\Controllers\TestDB.php(17): CodeIgniter\Database\BaseConnection->query('SHOW TABLES')
+#4 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+#5 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+#6 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\xampp\htdocs\rssstumpang\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#8 C:\xampp\htdocs\rssstumpang\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#9 C:\xampp\htdocs\rssstumpang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#10 C:\xampp\htdocs\rssstumpang\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+ERROR - 2025-08-27 09:06:35 --> Error connecting to the database: mysqli_sql_exception: Access denied for user ''@'172-12-12-11.lightspeed.mssnks.sbcglobal.net' in C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('36.88.17.170', '', Object(SensitiveParameterValue), 'rsss_db', 3306, '', 0)
+#1 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\rssstumpang\app\Controllers\TestDB.php(17): CodeIgniter\Database\BaseConnection->query('SHOW TABLES')
+#4 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+#5 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+#6 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\xampp\htdocs\rssstumpang\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#8 C:\xampp\htdocs\rssstumpang\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#9 C:\xampp\htdocs\rssstumpang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#10 C:\xampp\htdocs\rssstumpang\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#11 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user ''@'172-12-12-11.lightspeed.mssnks.sbcglobal.net' in C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:246
+Stack trace:
+#0 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\rssstumpang\app\Controllers\TestDB.php(17): CodeIgniter\Database\BaseConnection->query('SHOW TABLES')
+#3 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\TestDB->index()
+#4 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\TestDB))
+#5 C:\xampp\htdocs\rssstumpang\vendor\codeigniter4\framework\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 C:\xampp\htdocs\rssstumpang\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#7 C:\xampp\htdocs\rssstumpang\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#8 C:\xampp\htdocs\rssstumpang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#9 C:\xampp\htdocs\rssstumpang\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#10 {main}
