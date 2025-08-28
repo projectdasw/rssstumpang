@@ -6,14 +6,23 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Tests\\Support\\' => array($baseDir . '/tests/_support'),
+    'Utils\\' => array($baseDir . '/utils/src'),
+    'ShipMonk\\PHPStan\\Baseline\\' => array($vendorDir . '/shipmonk/phpstan-baseline-per-identifier/src'),
+    'Ramsey\\Uuid\\' => array($vendorDir . '/ramsey/uuid/src'),
+    'Ramsey\\Collection\\' => array($vendorDir . '/ramsey/collection/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/src'),
+    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
+    'Predis\\' => array($vendorDir . '/predis/predis/src'),
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
+    'PHPStan\\ExtensionInstaller\\' => array($vendorDir . '/phpstan/extension-installer/src'),
+    'PHPStan\\' => array($vendorDir . '/phpstan/phpstan-strict-rules/src'),
+    'Nexus\\PHPUnit\\Tachycardia\\' => array($vendorDir . '/nexusphp/tachycardia/src'),
     'Laminas\\Escaper\\' => array($vendorDir . '/laminas/laminas-escaper/src'),
+    'Kint\\' => array($vendorDir . '/kint-php/kint/src'),
     'Faker\\' => array($vendorDir . '/fakerphp/faker/src/Faker'),
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
-    'Config\\' => array($baseDir . '/app/Config'),
-    'CodeIgniter\\' => array($vendorDir . '/codeigniter4/framework/system'),
-    'App\\' => array($baseDir . '/app'),
+    'CodeIgniter\\PHPStan\\' => array($vendorDir . '/codeigniter/phpstan-codeigniter/src'),
+    'CodeIgniter\\' => array($baseDir . '/system', $baseDir . '/tests/system'),
+    'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
 );
