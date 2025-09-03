@@ -52,6 +52,11 @@ abstract class BaseController extends Controller
         parent::initController($request, $response, $logger);
 
         // Preload any models, libraries, etc, here.
+        
+        // Paksa browser tidak simpan cache halaman
+        $this->response->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+        $this->response->setHeader('Pragma', 'no-cache');
+        $this->response->setHeader('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
 
         // E.g.: $this->session = service('session');
     }

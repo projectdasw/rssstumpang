@@ -11,4 +11,6 @@
             <?= $this->renderSection('content') ?>
         </div>
     </body>
+    <?= $this->include('layout/js_core'); ?>
+    <?= $this->include('layout/login_js'); ?>
 </html>
