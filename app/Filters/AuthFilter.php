@@ -19,6 +19,11 @@
             }
         }
 
-        public function after(RequestInterface $request, ResponseInterface $response, $arguments = null){}
+        public function after(RequestInterface $request, ResponseInterface $response, $arguments = null){
+            // HALAMAN PROTECTED (dashboard) JANGAN DI-CACHE
+            $response->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+            $response->setHeader('Pragma', 'no-cache');
+            $response->setHeader('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
+        }
     }
 ?>

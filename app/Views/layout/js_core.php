@@ -14,13 +14,6 @@
 <script src="https://kit.fontawesome.com/ee5974d453.js"
     crossorigin="anonymous"></script>
 <script>
-    window.addEventListener("pageshow", function(event) {
-        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-            // Jika halaman ini berasal dari cache (back/forward)
-            window.location.reload();
-        }
-    });
-    
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (() => {
         'use strict'
@@ -53,4 +46,8 @@
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     });
+
+    // Custom ID Tooltips
+    const tooltipTriggerList = document.querySelectorAll('[tooltip-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
