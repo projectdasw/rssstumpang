@@ -19,17 +19,22 @@
  */
 
 // ** Database settings - You can get this info from your web host ** //
+// ** Pilih salah satu / uncomment untuk setting server lokal/remote ** //
+// ** for local server = untuk server lokal, for remote server = untuk remote/akses luar ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'official_website' );
+define( 'DB_NAME', 'official_website' ); // sesuaikan dengan nama database pada server Anda
 
-/** Database username */
-define( 'DB_USER', 'root' );
+/** Database username (for Server) */
+define( 'DB_USER', 'root' ); // for local server
+// define( 'DB_USER', 'remote_db' ); // for remote server
 
 /** Database password */
-define( 'DB_PASSWORD', '@Rssswebserver2025' );
+define( 'DB_PASSWORD', '@Rssswebserver2025' ); // for local server
+// define( 'DB_PASSWORD', '@Rsssremotedbweb' ); // for remote server
 
 /** Database hostname */
-define( 'DB_HOST', 'localhost' );
+define( 'DB_HOST', 'localhost' ); // for local server
+// define( 'DB_HOST', '36.88.17.170' ); // for remote server
 
 /** Database charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8mb4' );
@@ -90,6 +95,8 @@ define( 'WP_DEBUG', false );
 /* Add any custom values between this line and the "stop editing" line. */
 
 
+define( 'WP_HOME', 'http://localhost/rssstumpang' );
+define( 'WP_SITEURL', 'http://localhost/rssstumpang' );
 
 /* That's all, stop editing! Happy publishing. */
 
