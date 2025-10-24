@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the WordPress - 6.8.x - Development package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-10-15 12:30:22+0000\n"
+"PO-Revision-Date: 2025-10-23 03:46:40+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: GlotPress/4.0.2\n"
+"X-Generator: GlotPress/4.0.3\n"
 "Language: id\n"
 "Project-Id-Version: WordPress - 6.8.x - Development\n"
 
@@ -321,6 +321,383 @@ msgstr "Total Kueri"
 msgctxt "noun"
 msgid "Upload"
 msgstr "Unggah"
+
+#. translators: Hidden accessibility text.
+#: wp-includes/js/dist/block-editor.js:24700
+#: wp-includes/js/dist/block-editor.js:68821
+#: wp-includes/js/dist/block-editor.js:68839
+#: wp-includes/js/dist/block-library.js:65553
+#: wp-includes/js/dist/editor.js:24986
+#: wp-admin/includes/class-custom-background.php:357
+#: wp-admin/includes/class-custom-image-header.php:667
+#: wp-admin/includes/media.php:2285 wp-admin/includes/media.php:2289
+msgctxt "verb"
+msgid "Upload"
+msgstr "Unggah"
+
+#. translators: %s human readable rate limit.
+#: wp-mail.php:45
+msgid "Email checks are rate limited to once every %s."
+msgstr "Pemeriksaan email dibatasi hingga sekali setiap %s."
+
+#: wp-includes/theme.php:4356
+msgid "This function should not be called before the theme directory is registered."
+msgstr "Fungsi ini tidak boleh dipanggil sebelum direktori tema didaftarkan."
+
+#: wp-includes/taxonomy.php:149
+msgid "Add Link Category"
+msgstr "Tambahkan Kategori Tautan"
+
+#: wp-includes/script-loader.php:1008
+msgid "This file cannot be processed by the web server."
+msgstr "File ini tidak dapat diproses oleh server web."
+
+#: wp-includes/script-loader.php:835 wp-admin/js/tags.js:62
+msgid "An error occurred while processing your request. Please try again later."
+msgstr "Terjadi kesalahan saat memproses permintaan Anda. Silakan coba lagi nanti."
+
+#: wp-includes/rest-api/endpoints/class-wp-rest-themes-controller.php:656
+msgid "A list of allowed area values for template parts."
+msgstr "Daftar nilai area yang diizinkan untuk bagian templat."
+
+#: wp-includes/rest-api/endpoints/class-wp-rest-themes-controller.php:637
+msgid "A list of default template types."
+msgstr "Daftar jenis templat default."
+
+#: wp-includes/rest-api/endpoints/class-wp-rest-template-revisions-controller.php:182
+msgid "Templates based on theme files can't have revisions."
+msgstr "Templat berdasarkan file tema tidak dapat memiliki revisi."
+
+#: wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php:3082
+msgid "Whether to ignore sticky posts or not."
+msgstr "Apakah akan mengabaikan pos sticky atau tidak."
+
+#: wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php:170
+#: wp-includes/script-loader.php:1032
+msgid "The web server cannot generate responsive image sizes for this image. Convert it to JPEG or PNG before uploading."
+msgstr "Server web tidak dapat menghasilkan ukuran gambar responsif untuk gambar ini. Konversi ke JPEG atau PNG sebelum mengunggah."
+
+#: wp-includes/rest-api.php:437
+msgid "The REST route parameter must be a string."
+msgstr "Parameter rute REST harus berupa string."
+
+#: wp-includes/post.php:418 wp-includes/post.php:419
+msgid "Add Template Part"
+msgstr "Tambahkan Bagian Templat"
+
+#: wp-includes/post.php:353 wp-includes/post.php:354
+msgid "Add Template"
+msgstr "Tambahkan Templat"
+
+#: wp-includes/post.php:205 wp-includes/post.php:206
+msgid "Add Changeset"
+msgstr "Tambahkan Changeset"
+
+#: wp-includes/post.php:78 wp-admin/menu.php:73 wp-admin/upload.php:215
+#: wp-admin/upload.php:422
+msgid "Add Media File"
+msgstr "Tambahkan File Media"
+
+#: wp-includes/post-template.php:1796
+msgid "Invalid password."
+msgstr "Kata sandi tidak valid."
+
+#. translators: 1: Name of a cryptographic hash algorithm. 2: List of supported
+#. algorithms.
+#: wp-includes/pluggable.php:2622
+msgid "Unsupported hashing algorithm: %1$s. Supported algorithms are: %2$s"
+msgstr "Algoritma hashing tidak didukung: %1$s. Algoritma yang didukung adalah: %2$s"
+
+#: wp-includes/html-api/class-wp-html-processor.php:5688
+msgid "Cannot set bookmarks on tokens that do no appear in the original HTML text."
+msgstr "Tidak dapat menetapkan bookmark pada token yang tidak muncul dalam teks HTML asli."
+
+#. translators: %s: A tag name like IFRAME or TEXTAREA.
+#: wp-includes/html-api/class-wp-html-processor.php:498
+msgid "The context element \"%s\" is not supported."
+msgstr "Elemen konteks \"%s\" tidak didukung."
+
+#. translators: %s: A tag name like INPUT or BR.
+#: wp-includes/html-api/class-wp-html-processor.php:478
+msgid "The context element cannot be a void element, found \"%s\"."
+msgstr "Elemen konteks tidak boleh berupa elemen void, ditemukan \"%s\"."
+
+#: wp-includes/html-api/class-wp-html-processor.php:464
+msgid "The context element must be a start tag."
+msgstr "Elemen konteks harus berupa tag awal."
+
+#: wp-includes/html-api/class-wp-html-processor.php:315
+msgid "No valid context element was detected."
+msgstr "Tidak ada elemen konteks yang valid yang terdeteksi."
+
+#. translators: %s: parameter name.
+#: wp-includes/functions.php:9198
+msgid "The %s argument must not be empty."
+msgstr "Argumen %s tidak boleh kosong."
+
+#: wp-includes/customize/class-wp-customize-header-image-control.php:249
+msgid "Add Image"
+msgstr "Tambahkan Gambar"
+
+#: wp-includes/customize/class-wp-customize-header-image-control.php:249
+msgid "Add Header Image"
+msgstr "Tambahkan Gambar Header"
+
+#: wp-includes/class-wp-xmlrpc-server.php:5054
+#: wp-includes/class-wp-xmlrpc-server.php:6587
+msgid "No posts found or an error occurred while retrieving posts."
+msgstr "Tidak ada pos yang ditemukan atau terjadi kesalahan saat mengambil pos."
+
+#: wp-includes/class-wp-xmlrpc-server.php:4034
+msgid "An error occurred while processing your comment. Please ensure all fields are filled correctly and try again."
+msgstr "Terjadi kesalahan saat memproses komentar Anda. Pastikan semua bidang diisi dengan benar dan coba lagi."
+
+#. translators: %s: context string
+#: wp-includes/class-wp-url-pattern-prefixer.php:72
+msgid "Invalid URL pattern context %s."
+msgstr "Konteks pola URL %s tidak valid."
+
+#: wp-includes/class-wp-taxonomy.php:627 wp-includes/taxonomy.php:236
+msgid "Add Category"
+msgstr "Tambah Kategori"
+
+#: wp-includes/class-wp-taxonomy.php:627
+msgid "Add Tag"
+msgstr "Tambah Tag"
+
+#. translators: %s: forbidden eagerness value
+#: wp-includes/class-wp-speculation-rules.php:198
+msgid "The eagerness value \"%s\" is forbidden for document-level speculation rules."
+msgstr "Nilai eagerness \"%s\" dilarang untuk aturan spekulasi tingkat dokumen."
+
+#. translators: %s: invalid eagerness value
+#: wp-includes/class-wp-speculation-rules.php:185
+msgid "The value \"%s\" is not a valid eagerness for a speculation rule."
+msgstr "Nilai \"%s\" bukan eagerness yang valid untuk aturan spekulasi."
+
+#. translators: 1: source value, 2: forbidden key
+#: wp-includes/class-wp-speculation-rules.php:154
+#: wp-includes/class-wp-speculation-rules.php:168
+msgid "A speculation rule of source \"%1$s\" must not include a \"%2$s\" key."
+msgstr "Aturan spekulasi dengan sumber \"%1$s\" tidak boleh menyertakan kunci \"%2$s\"."
+
+#. translators: %s: invalid source value
+#: wp-includes/class-wp-speculation-rules.php:141
+msgid "The value \"%s\" is not a valid source for a speculation rule."
+msgstr "Nilai \"%s\" bukan sumber yang valid untuk aturan spekulasi."
+
+#. translators: 1: allowed key, 2: alternative allowed key
+#: wp-includes/class-wp-speculation-rules.php:127
+msgid "A speculation rule must include either a \"%1$s\" key or a \"%2$s\" key, but not both."
+msgstr "Aturan spekulasi harus menyertakan kunci \"%1$s\" atau \"%2$s\", tetapi tidak keduanya."
+
+#. translators: %s: invalid ID value
+#: wp-includes/class-wp-speculation-rules.php:105
+msgid "A speculation rule with ID \"%s\" already exists."
+msgstr "Aturan spekulasi dengan ID \"%s\" sudah ada."
+
+#. translators: %s: invalid ID value
+#: wp-includes/class-wp-speculation-rules.php:92
+msgid "The value \"%s\" is not a valid ID for a speculation rule."
+msgstr "Nilai \"%s\" bukan ID yang valid untuk aturan spekulasi."
+
+#. translators: %s: invalid mode value
+#: wp-includes/class-wp-speculation-rules.php:79
+msgid "The value \"%s\" is not a valid speculation rules mode."
+msgstr "Nilai \"%s\" bukan mode aturan spekulasi yang valid."
+
+#: wp-includes/class-wp-post-type.php:993
+msgid "Add Page"
+msgstr "Tambah Halaman"
+
+#: wp-includes/class-wp-post-type.php:993
+msgid "Add Post"
+msgstr "Tambah Pos"
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:88
+msgid "Cannot set or reset variable: "
+msgstr "Tidak dapat mengatur atau mengatur ulang variabel: "
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:86
+msgid "SMTP server error: "
+msgstr "Kesalahan server SMTP: "
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:84
+msgid "Detail: "
+msgstr "Detail: "
+
+#: wp-includes/class-wp-phpmailer.php:82
+msgid "SMTP connect() failed."
+msgstr "SMTP connect() gagal."
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:81
+msgid "Additional SMTP info: "
+msgstr "Info SMTP tambahan: "
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:79
+msgid "SMTP code: "
+msgstr "Kode SMTP: "
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:77
+msgid "Signing Error: "
+msgstr "Kesalahan Penandatanganan: "
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:75
+msgid "SMTP Error: The following recipients failed: "
+msgstr "Kesalahan SMTP: Penerima berikut gagal: "
+
+#: wp-includes/class-wp-phpmailer.php:73
+msgid "You must provide at least one recipient email address."
+msgstr "Anda harus memberikan setidaknya satu alamat email penerima."
+
+#. translators: There is a space at the beginning.
+#: wp-includes/class-wp-phpmailer.php:72
+msgid " mailer is not supported."
+msgstr " mailer tidak didukung."
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:70
+msgid "Invalid host: "
+msgstr "Host tidak valid: "
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:68
+msgid "Invalid hostentry: "
+msgstr "Hostentry tidak valid: "
+
+#: wp-includes/class-wp-phpmailer.php:66
+msgid "Invalid header name or value"
+msgstr "Nama atau nilai header tidak valid"
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:65
+msgid "Invalid address: "
+msgstr "Alamat tidak valid: "
+
+#: wp-includes/class-wp-phpmailer.php:63
+msgid "Could not instantiate mail function."
+msgstr "Tidak dapat membuat instance fungsi mail."
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:62
+msgid "The following From address failed: "
+msgstr "Alamat Pengirim berikut gagal: "
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:60
+msgid "File Error: Could not open file: "
+msgstr "Kesalahan File: Tidak dapat membuka file: "
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:58
+msgid "Could not access file: "
+msgstr "Tidak dapat mengakses file: "
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:56
+msgid "Extension missing: "
+msgstr "Ekstensi tidak ditemukan: "
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:54
+msgid "Could not execute: "
+msgstr "Tidak dapat mengeksekusi: "
+
+#. translators: There is a space after the colon.
+#: wp-includes/class-wp-phpmailer.php:52
+msgid "Unknown encoding: "
+msgstr "Pengkodean tidak dikenal: "
+
+#: wp-includes/class-wp-phpmailer.php:50
+msgid "Message body empty"
+msgstr "Isi pesan kosong"
+
+#: wp-includes/class-wp-phpmailer.php:49
+msgid "SMTP Error: data not accepted."
+msgstr "Kesalahan SMTP: data tidak diterima."
+
+#: wp-includes/class-wp-phpmailer.php:48
+msgid "SMTP Error: Could not connect to SMTP host."
+msgstr "Kesalahan SMTP: Tidak dapat terhubung ke host SMTP."
+
+#. translators: 1: mail.add_x_header. 2: php.ini
+#: wp-includes/class-wp-phpmailer.php:42
+msgid "Your version of PHP is affected by a bug that may result in corrupted messages. To fix it, switch to sending using SMTP, disable the %1$s option in your %2$s, or switch to MacOS or Linux, or upgrade your PHP version."
+msgstr "Versi PHP Anda terkena bug yang dapat mengakibatkan pesan rusak. Untuk memperbaikinya, beralihlah ke pengiriman menggunakan SMTP, nonaktifkan opsi %1$s di %2$s Anda, atau beralih ke MacOS atau Linux, atau tingkatkan versi PHP Anda."
+
+#: wp-includes/class-wp-phpmailer.php:39
+msgid "SMTP Error: Could not authenticate."
+msgstr "Kesalahan SMTP: Tidak dapat mengautentikasi."
+
+#: wp-includes/class-wp-editor.php:197 wp-includes/class-wp-editor.php:1399
+msgctxt "Name for the Code editor tab (formerly Text)"
+msgid "Code"
+msgstr "Kode"
+
+#: wp-includes/class-wp-customize-nav-menus.php:1282
+msgid "The link text cannot be empty."
+msgstr "Teks tautan tidak boleh kosong."
+
+#: wp-includes/class-wp-customize-nav-menus.php:1277
+#: wp-admin/includes/nav-menu.php:354
+msgid "Please provide a valid link."
+msgstr "Harap berikan tautan yang valid."
+
+#: wp-includes/class-wp-customize-manager.php:457
+msgid "An error occurred while customizing. Please refresh the page and try again."
+msgstr "Terjadi kesalahan saat menyesuaikan. Silakan segarkan halaman dan coba lagi."
+
+#: wp-includes/class-wp-block-metadata-registry.php:204
+msgid "No registered block metadata collection was found for the provided path."
+msgstr "Tidak ada koleksi metadata blok terdaftar yang ditemukan untuk jalur yang diberikan."
+
+#. translators: %d: number of results.
+#: wp-includes/blocks/query-total.php:66
+msgid "%d result found"
+msgid_plural "%d results found"
+msgstr[0] "%d hasil ditemukan"
+msgstr[1] "%d hasil ditemukan"
+
+#. translators: 1: Start index of posts, 2: End index of posts, 3: Total number
+#. of posts
+#: wp-includes/blocks/query-total.php:54
+msgid "Displaying %1$s – %2$s of %3$s"
+msgstr "Menampilkan %1$s – %2$s dari %3$s"
+
+#. translators: 1: Start index of posts, 2: Total number of posts
+#: wp-includes/blocks/query-total.php:47
+msgid "Displaying %1$s of %2$s"
+msgstr "Menampilkan %1$s dari %2$s"
+
+#: wp-includes/blocks/image.php:158
+msgid "Enlarge"
+msgstr "Perbesar"
+
+#: wp-includes/block-template.php:40
+msgid "This page is blank because the template is empty. You can reset or customize it in the Site Editor."
+msgstr "Halaman ini kosong karena templatnya kosong. Anda dapat mengatur ulang atau menyesuaikannya di Editor Situs."
+
+#. translators: %s: Post format name.
+#: wp-includes/block-template-utils.php:220
+msgid "Displays the %s post format archive."
+msgstr "Menampilkan arsip format pos %s."
+
+#. translators: %s: Post format name.
+#: wp-includes/block-template-utils.php:215
+msgctxt "Template name"
+msgid "Post Format: %s"
+msgstr "Format Pos: %s"
+
+#: wp-includes/block-patterns.php:42
+msgid "Bold sections designed to showcase key content."
+msgstr "Bagian tebal yang dirancang untuk menampilkan konten utama."
 
 #. translators: %s: list of allowed collection roots
 #: wp-includes/class-wp-block-metadata-registry.php:127
@@ -15847,6 +16224,36 @@ msgstr "Ubah"
 #: wp-admin/includes/class-wp-privacy-requests-table.php:44
 msgid "Status"
 msgstr "Status"
+
+#: wp-includes/js/dist/edit-site.js:22436
+#: wp-includes/js/dist/edit-site.js:22482 wp-admin/comment.php:63
+#: wp-admin/edit-comments.php:208 wp-admin/edit-form-advanced.php:337
+#: wp-admin/edit-link-form.php:66 wp-admin/edit-tags.php:271
+#: wp-admin/edit.php:252 wp-admin/edit.php:309
+#: wp-admin/erase-personal-data.php:23 wp-admin/export-personal-data.php:23
+#: wp-admin/export.php:51 wp-admin/import.php:24
+#: wp-admin/includes/class-custom-background.php:99
+#: wp-admin/includes/class-custom-image-header.php:108
+#: wp-admin/includes/class-wp-screen.php:856 wp-admin/includes/ms.php:1149
+#: wp-admin/index.php:44 wp-admin/link-manager.php:57 wp-admin/media-new.php:49
+#: wp-admin/my-sites.php:44 wp-admin/nav-menus.php:724
+#: wp-admin/nav-menus.php:765 wp-admin/options-discussion.php:24
+#: wp-admin/options-general.php:53 wp-admin/options-media.php:34
+#: wp-admin/options-permalink.php:23 wp-admin/options-privacy.php:38
+#: wp-admin/options-reading.php:25 wp-admin/options-writing.php:23
+#: wp-admin/plugin-editor.php:136 wp-admin/plugin-install.php:96
+#: wp-admin/plugins.php:563 wp-admin/revision.php:153
+#: wp-admin/site-health.php:80 wp-admin/theme-editor.php:28
+#: wp-admin/theme-install.php:123 wp-admin/themes.php:143
+#: wp-admin/update-core.php:996 wp-admin/upload.php:178 wp-admin/upload.php:368
+#: wp-admin/user-edit.php:71 wp-admin/user-new.php:293 wp-admin/users.php:34
+#: wp-admin/widgets-form.php:43 wp-admin/network/index.php:34
+#: wp-admin/network/settings.php:49 wp-admin/network/site-new.php:23
+#: wp-admin/network/sites.php:29 wp-admin/network/themes.php:312
+#: wp-admin/network/upgrade.php:22 wp-admin/network/user-new.php:20
+#: wp-admin/network/users.php:229
+msgid "Overview"
+msgstr "Ikhtisar"
 
 #: wp-includes/general-template.php:4963
 msgctxt "admin color scheme"
