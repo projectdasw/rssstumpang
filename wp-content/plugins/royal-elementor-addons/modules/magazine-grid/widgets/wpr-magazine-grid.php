@@ -59,6 +59,8 @@ class Wpr_Magazine_Grid extends Widget_Base {
     		return 'https://wordpress.org/support/plugin/royal-elementor-addons/';
     }
 
+	public $already_displayed_posts = [];
+
 	public function add_option_query_source() {
 		$post_types = [];
 		$post_types['post'] = esc_html__( 'Posts', 'wpr-addons' );
@@ -757,10 +759,15 @@ class Wpr_Magazine_Grid extends Widget_Base {
 			[
 				'type' => Controls_Manager::SLIDER,
 				'label' => esc_html__( 'Container Height', 'wpr-addons' ),
+				'size_units' => [ 'px', 'vh' ],
 				'range' => [
 					'px' => [
 						'min' => 100,
 						'max' => 1500,
+					],
+					'vh' => [
+						'min' => 10,
+						'max' => 100,
 					],
 				],
 				'default' => [
@@ -768,7 +775,7 @@ class Wpr_Magazine_Grid extends Widget_Base {
 					'size' => 520,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .wpr-magazine-grid' => 'min-height: {{SIZE}}px;',
+					'{{WRAPPER}} .wpr-magazine-grid' => 'min-height: {{SIZE}}{{UNIT}};',
 				],
 				'separator' => 'before'
 			]
@@ -5034,6 +5041,10 @@ class Wpr_Magazine_Grid extends Widget_Base {
 
 		if ( 'yes' === $settings['slider_enable'] ) {
 			$offset = $offset + $query_posts_per_page * $slide_offset;
+
+			if ( 'rand' === $settings['query_randomize'] ) {
+				$offset = $settings[ 'query_offset' ];
+			}
 		}
 
 		// Dynamic
@@ -5047,6 +5058,18 @@ class Wpr_Magazine_Grid extends Widget_Base {
 			'paged' => $paged,
 			'offset' => $offset
 		];
+
+		if ( 'yes' === $settings['slider_enable'] && 'rand' === $settings['query_randomize'] ) {
+			if ( is_array( $settings[ 'query_exclude_'. $settings[ 'query_source' ] ] ) ) {
+				$query_exclude = array_push($settings[ 'query_exclude_'. $settings[ 'query_source' ] ], $this->already_displayed_posts);
+			} else {
+				$query_exclude = $this->already_displayed_posts;
+			}
+
+			if ( is_array( $query_exclude ) ) {
+				$args['post__not_in'] = $query_exclude;
+			}
+		}
 
 		// Exclude Items without F/Image
 		if ( 'yes' === $settings['query_exclude_no_images'] ) {
@@ -5215,8 +5238,9 @@ class Wpr_Magazine_Grid extends Widget_Base {
 				echo '<a  target="'. $open_links_in_new_tab .'" '. $pointer_item_class .' href="'. esc_url( get_the_permalink() ) .'">';
 				if ( 'word_count' === $settings['element_trim_text_by'] ) {
 					echo esc_html(wp_trim_words( get_the_title(), $settings['element_word_count'] ));
-				} else {
-					echo substr(html_entity_decode(get_the_title()), 0, $settings['element_letter_count']) . '...';
+				} else if ( 'letter_count' === $settings['element_trim_text_by'] ) {
+					$letter_count = isset( $settings['element_letter_count'] ) ? absint( $settings['element_letter_count'] ) : 0;
+					echo esc_html( substr( html_entity_decode( get_the_title(), ENT_QUOTES, 'UTF-8' ), 0, $letter_count ) ) . '...';
 				}
 				echo '</a>';
 			echo '</div>';
@@ -5251,10 +5275,10 @@ class Wpr_Magazine_Grid extends Widget_Base {
 		echo '<div class="'. esc_attr($class) .'">';
 			echo '<div class="inner-block">';
 				if ( 'word_count' === $settings['element_trim_text_by']) {
-				echo '<p>'. esc_html(wp_trim_words( get_the_excerpt(), $settings['element_word_count'] )) .'</p>';
-				} else {
-				// echo '<p>'. substr(html_entity_decode(get_the_title()), 0, $settings['element_letter_count']) .'...' . '</p>';
-				echo '<p>'. esc_html(implode('', array_slice( str_split(get_the_excerpt()), 0, $settings['element_letter_count'] ))) .'...' .'</p>';
+					echo '<p>'. esc_html(wp_trim_words( get_the_excerpt(), $settings['element_word_count'] )) .'</p>';
+				} else if ( 'letter_count' === $settings['element_trim_text_by'] ) {
+					// echo '<p>'. substr(html_entity_decode(get_the_title()), 0, $settings['element_letter_count']) .'...' . '</p>';
+					echo '<p>'. esc_html(implode('', array_slice( str_split(get_the_excerpt()), 0, $settings['element_letter_count'] ))) .'...' .'</p>';
 				}
 			echo '</div>';
 		echo '</div>';
@@ -5731,10 +5755,10 @@ class Wpr_Magazine_Grid extends Widget_Base {
 			'rtl' => $slider_is_rtl,
 			'slidesToShow' => 1,
 			'infinite' => ( $settings['slider_loop'] === 'yes' ),
-			'speed' => absint( $settings['slider_effect_duration'] * 1000 ),
+			'speed' => absint( ( floatval( $settings['slider_effect_duration'] ?: 1 ) ) * 1000 ),
 			'arrows' => true,
 			'autoplay' => ( $settings['slider_autoplay'] === 'yes' ),
-			'autoplaySpeed' => absint( $settings['slider_autoplay_duration'] * 1000 ),
+			'autoplaySpeed' => absint( ( floatval( $settings['slider_autoplay_duration'] ?: 1 ) ) * 1000 ),
 			'pauseOnHover' => $settings['slider_pause_on_hover'],
 			'prevArrow' => '#wpr-grid-slider-prev-'. $this->get_id(),
 			'nextArrow' => '#wpr-grid-slider-next-'. $this->get_id(),
@@ -5767,6 +5791,8 @@ class Wpr_Magazine_Grid extends Widget_Base {
 		}
 
 		while ( $posts->have_posts() ) : $posts->the_post();
+
+			$this->already_displayed_posts[] = get_the_ID();
 
 			// Post Class
 			$post_class = implode( ' ', get_post_class( 'wpr-mgzn-grid-item elementor-clearfix', get_the_ID() ) );

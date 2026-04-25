@@ -587,15 +587,17 @@ class HelperProviderUC{
 	
 	/**
 	 * get repeater items - from json
+	 *
+	 * @param mixed $httpContext Optional context for getUrlContents HTTP hooks (ue_http_pre_request / ue_http_response).
 	 */
-	public static function getRepeaterItems_json($arrValues, $name, $showDebugData = false, $showDebugContent = false){
+	public static function getRepeaterItems_json($arrValues, $name, $showDebugData = false, $showDebugContent = false, $httpContext = null){
 		
 		$contentLocation = UniteFunctionsUC::getVal($arrValues, $name."_json_csv_location");
-
+		
 		if($contentLocation == "url"){
 
 			$url = UniteFunctionsUC::getVal($arrValues, $name."_json_csv_url");
-
+			
 			if(empty($url)){
 
 				if($showDebugData)
@@ -604,7 +606,7 @@ class HelperProviderUC{
 				return(null);
 			}
 			
-			$dynamicFieldValue = HelperUC::$operations->getUrlContents($url, $showDebugData);
+			$dynamicFieldValue = HelperUC::$operations->getUrlContents($url, $showDebugData, false, $httpContext);
 			
 		}else{
 			$dynamicFieldValue = UniteFunctionsUC::getVal($arrValues, $name."_json_csv_dynamic_field");
@@ -1260,6 +1262,11 @@ class HelperProviderUC{
 			$paramDefault = isset($field["default"]) ? $field["default"] : "";
 			
 			switch($field["type"]){
+				case UniteCreatorDialogParam::PARAM_HR:
+					
+					$settingsManager->addHr($paramName, $params);
+					
+				break;
 				case UniteCreatorDialogParam::PARAM_STATIC_TEXT:
 					$settingsManager->addStaticText($field["text"], $paramName, $params);
 				break;
@@ -1615,20 +1622,35 @@ class HelperProviderUC{
 
 	/**
 	 * check if user has some operations permissions
+	 * return true/false
 	 */
 	public static function isUserHasOperationsPermissions(){
-
+		
 		$permission = HelperProviderCoreUC_EL::getGeneralSetting("edit_permission");
-
+		
 		$capability = "manage_options";
 		if($permission == "editor")
 			$capability = "edit_pages";
 		
 		$isUserHasPermission = current_user_can($capability);
-
+		
+		if($isUserHasPermission == false)
+			return(false);
+		
+		//check by specific roles
+				
+		$user = wp_get_current_user();
+		if (!$user || empty($user->roles))
+			return false;		
+		
+		$roles = (array) $user->roles;
+			if (in_array('contributor', $roles, true) || in_array('author', $roles, true))
+				return false;		
+			
 		return($isUserHasPermission);
 	}
 
+	
 	/**
 	 * verify admin permisison of the plugin, use it before ajax actions
 	 */
@@ -2048,6 +2070,26 @@ class HelperProviderUC{
 		
 		dmp("Post Terms for post <b>$postTitle</b>: ");
 		dmp($arrTermsTitles);
+		
+	}
+	
+	/**
+	 * show current post meta debug
+	 */
+	public static function showLastQuery(){
+		
+		global $wp_query;
+		$queryVars = $wp_query->query;
+		
+		dmp("Last Posts Query:");
+		dmp($queryVars);
+		
+		//dmp("is main query: ".$wp_query->isMain());
+		
+		dmp("The Request: ");
+		
+		dmp($wp_query->request);
+		
 		
 	}
 	

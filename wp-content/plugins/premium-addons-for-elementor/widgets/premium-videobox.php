@@ -255,6 +255,9 @@ class Premium_Videobox extends Widget_Base {
 					'youtube_list'                 => 'yes',
 					'source'                       => 'playlist',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -271,6 +274,9 @@ class Premium_Videobox extends Widget_Base {
 					'premium_video_box_video_type' => 'youtube',
 					'youtube_list'                 => 'yes',
 					'source'                       => 'channel',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -327,7 +333,6 @@ class Premium_Videobox extends Widget_Base {
 			array(
 				'label'       => __( 'Title HTML Tag', 'premium-addons-for-elementor' ),
 				'type'        => Controls_Manager::SELECT,
-				'default'     => 'h4',
 				'options'     => array(
 					'h1'   => 'H1',
 					'h2'   => 'H2',
@@ -335,9 +340,10 @@ class Premium_Videobox extends Widget_Base {
 					'h4'   => 'H4',
 					'h5'   => 'H5',
 					'h6'   => 'H6',
-					'span' => 'Span',
-					'p'    => 'P',
+					'span' => 'span',
+					'p'    => 'p',
 				),
+				'default'     => 'h4',
 				'label_block' => true,
 				'condition'   => array(
 					'youtube_list'                 => 'yes',
@@ -408,6 +414,9 @@ class Premium_Videobox extends Widget_Base {
 						),
 					),
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -422,7 +431,7 @@ class Premium_Videobox extends Widget_Base {
 				),
 				'prefix_class' => 'premium-videobox-',
 				'default'      => 'layout1',
-				'render_type' => 'template',
+				'render_type'  => 'template',
 				'condition'    => array(
 					'premium_video_box_video_type' => 'youtube',
 					'youtube_list'                 => 'yes',
@@ -578,6 +587,9 @@ class Premium_Videobox extends Widget_Base {
 				'label_block' => true,
 				'condition'   => array(
 					'premium_video_box_video_type' => 'self',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -1573,6 +1585,24 @@ class Premium_Videobox extends Widget_Base {
 			)
 		);
 
+		$this->add_control(
+			'play_glow_effect',
+			array(
+				'label'        => __( 'Glow Effect Type', 'premium-addons-for-elementor' ),
+				'type'         => Controls_Manager::SELECT,
+				'options'      => array(
+					'none'   => __( 'None', 'premium-addons-for-elementor' ),
+					'ripple' => __( 'Ripple', 'premium-addons-for-elementor' ),
+					'radio'  => __( 'Radio Wave', 'premium-addons-for-elementor' ),
+				),
+				'default'      => 'none',
+				'prefix_class' => 'premium-video__glow-',
+				'condition'    => array(
+					'premium_video_box_play_icon_switcher' => 'yes',
+				),
+			)
+		);
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -1797,6 +1827,8 @@ class Premium_Videobox extends Widget_Base {
 
 		}
 
+		Helper_Functions::register_element_feedback_controls( $this );
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -1851,6 +1883,9 @@ class Premium_Videobox extends Widget_Base {
 				),
 				'condition' => array(
 					'adv_radius' => 'yes',
+				),
+				'ai'        => array(
+					'active' => false,
 				),
 			)
 		);
@@ -1939,6 +1974,23 @@ class Premium_Videobox extends Widget_Base {
 		);
 
 		$this->add_control(
+			'premium_video_box_play_icon_size',
+			array(
+				'label'      => __( 'Size', 'premium-addons-for-elementor' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => array( 'px', '%', 'em' ),
+				'default'    => array(
+					'unit' => 'px',
+					'size' => 30,
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} .premium-video-box-play-icon-container i' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .premium-video-box-play-icon-container svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_control(
 			'premium_video_box_play_icon_color',
 			array(
 				'label'     => __( 'Color', 'premium-addons-for-elementor' ),
@@ -1947,7 +1999,8 @@ class Premium_Videobox extends Widget_Base {
 					'default' => Global_Colors::COLOR_PRIMARY,
 				),
 				'selectors' => array(
-					'{{WRAPPER}} .premium-video-box-play-icon'  => 'color: {{VALUE}};',
+					'{{WRAPPER}} .premium-video-box-play-icon-container i'  => 'color: {{VALUE}};',
+					'{{WRAPPER}} .premium-video-box-play-icon-container svg'  => 'fill: {{VALUE}};',
 				),
 			)
 		);
@@ -1957,27 +2010,81 @@ class Premium_Videobox extends Widget_Base {
 			array(
 				'label'     => __( 'Hover Color', 'premium-addons-for-elementor' ),
 				'type'      => Controls_Manager::COLOR,
-				'global'    => array(
-					'default' => Global_Colors::COLOR_SECONDARY,
-				),
+				// 'global'    => array(
+				// 'default' => Global_Colors::COLOR_SECONDARY,
+				// ),
 				'selectors' => array(
-					'{{WRAPPER}} .premium-video-box-play-icon-container:hover .premium-video-box-play-icon'  => 'color: {{VALUE}};',
+					'{{WRAPPER}} .premium-video-box-play-icon-container:hover i'  => 'color: {{VALUE}};',
+					'{{WRAPPER}} .premium-video-box-play-icon-container:hover svg'  => 'fill: {{VALUE}};',
 				),
 			)
 		);
 
 		$this->add_control(
-			'premium_video_box_play_icon_size',
+			'glow_color',
 			array(
-				'label'      => __( 'Size', 'premium-addons-for-elementor' ),
-				'type'       => Controls_Manager::SLIDER,
-				'default'    => array(
-					'unit' => 'px',
-					'size' => 30,
+				'label'     => __( 'Glow Color', 'premium-addons-for-elementor' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}.premium-video__glow-ripple .premium-video-box-play-icon-container:before' => 'color: {{VALUE}}',
+					'{{WRAPPER}}.premium-video__glow-ripple .premium-video-box-play-icon-container:after'  => 'color: {{VALUE}}',
+					'{{WRAPPER}}.premium-video__glow-radio .premium-video-box-play-icon-container:before' => 'color: {{VALUE}}',
+					'{{WRAPPER}}.premium-video__glow-radio .premium-video-box-play-icon-container:after'  => 'color: {{VALUE}}',
 				),
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
-					'{{WRAPPER}} .premium-video-box-play-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+				'default'   => '#6EC1E4',
+				'separator' => 'before',
+				'condition' => array(
+					'play_glow_effect!' => 'none',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
+			'glow_size',
+			array(
+				'label'     => esc_html__( 'Glow Size (px)', 'premium-addons-for-elementor' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => array(
+					'px' => array(
+						'min'  => 0,
+						'max'  => 200,
+						'step' => 1,
+					),
+				),
+				'default'   => array(
+					'unit' => 'px',
+					'size' => 15,
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .premium-video-box-play-icon-container' => '--glow-size: {{SIZE}}{{UNIT}};',
+				),
+				'condition' => array(
+					'play_glow_effect' => 'ripple',
+				),
+			)
+		);
+
+		$this->add_control(
+			'wave_scale',
+			array(
+				'label'     => __( 'Radio Wave Size', 'premium-addons-for-elementor' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => array(
+					'px' => array(
+						'min'  => 0.5,
+						'max'  => 5,
+						'step' => 0.1,
+					),
+				),
+				'default'   => array(
+					'unit' => 'px',
+					'size' => 2,
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .premium-video-box-play-icon-container' => '--glow-scale: {{SIZE}}',
+				),
+				'condition' => array(
+					'play_glow_effect' => 'radio',
 				),
 			)
 		);
@@ -2029,7 +2136,7 @@ class Premium_Videobox extends Widget_Base {
 				),
 				'size_units' => array( 'px', 'em', '%' ),
 				'selectors'  => array(
-					'{{WRAPPER}} .premium-video-box-play-icon ' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+					'{{WRAPPER}} .premium-video-box-play-icon-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
 			)
 		);
@@ -2041,7 +2148,7 @@ class Premium_Videobox extends Widget_Base {
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => array( 'px', 'em', '%' ),
 				'selectors'  => array(
-					'{{WRAPPER}} .premium-video-box-play-icon:hover' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+					'{{WRAPPER}} .premium-video-box-play-icon-container:hover' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
 			)
 		);
@@ -2767,10 +2874,10 @@ class Premium_Videobox extends Widget_Base {
 				$options .= '&cc_load_policy=' . ( 'yes' === $settings['cc_load_policy'] ? '1' : '0' );
 			} elseif ( 'vimeo' === $video_type ) {
 
-				// Filter any paramters after link to be added later.
+				// Filter any parameters after link to be added later.
 				$query_string = wp_parse_url( $link, PHP_URL_QUERY );
 
-				// If video link contains paramters.
+				// If video link contains parameters.
 				if ( false !== strpos( $link, '?' ) ) {
 					$link = strstr( $link, '?', true );
 				} else {
@@ -3079,7 +3186,18 @@ class Premium_Videobox extends Widget_Base {
 							<?php } ?>
 						<?php if ( 'yes' === $settings['premium_video_box_play_icon_switcher'] && 'yes' !== $autoplay && ! empty( $thumbnail ) ) : ?>
 							<div class="premium-video-box-play-icon-container">
-								<i class="premium-video-box-play-icon fa fa-play fa-lg" aria-hidden="true"></i>
+								<?php
+									Icons_Manager::render_icon(
+										array(
+											'library' => 'fa-solid',
+											'value'   => 'fas fa-play',
+										),
+										array(
+											'class'       => array( 'premium-video-box-play-icon' ),
+											'aria-hidden' => 'true',
+										)
+									);
+								?>
 							</div>
 						<?php endif; ?>
 						<?php if ( 'yes' === $settings['premium_video_box_video_text_switcher'] && ! empty( $settings['premium_video_box_description_text'] ) ) : ?>
@@ -3521,7 +3639,18 @@ class Premium_Videobox extends Widget_Base {
 							<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'image_container' . $id ) ); ?> ></div>
 							<?php if ( 'yes' === $settings['premium_video_box_play_icon_switcher'] ) : ?>
 								<div class="premium-video-box-play-icon-container">
-									<i class="premium-video-box-play-icon fa fa-play fa-lg" aria-hidden="true"></i>
+									<?php
+										Icons_Manager::render_icon(
+											array(
+												'library' => 'eicons',
+												'value'   => 'eicon-play',
+											),
+											array(
+												'class' => array( 'premium-video-box-play-icon' ),
+												'aria-hidden' => 'true',
+											)
+										);
+									?>
 								</div>
 							<?php endif; ?>
 						</div>

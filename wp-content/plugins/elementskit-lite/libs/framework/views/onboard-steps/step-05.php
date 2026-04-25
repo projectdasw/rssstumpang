@@ -1,6 +1,6 @@
 <div class="ekit-onboard-main-header">
 	<?php
-		$step5_title = __( 'Upgrade within the next </br> <strong>2 hours</strong> and get a <strong>20% Discount.</strong>', 'elementskit-lite' );
+		$step5_title = __( 'Upgrade within the next </br> <strong>2 hours</strong> and get a <strong>35% Discount.</strong>', 'elementskit-lite' );
 	?>
 	<h1 class="ekit-onboard-main-header--title">
 		<?php echo wp_kses( $step5_title, \ElementsKit_Lite\Utils::get_kses_array() ); ?>
@@ -26,35 +26,35 @@
 
 	<ul class="ekit-onboard-modules">
 		<li>
-			<span class="module-icon"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-01.svg" alt=""></span>
+			<span class="module-icon icon-01"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-01.svg" alt=""></span>
 			<span><?php echo esc_html__( 'Advanced Header & Footer', 'elementskit-lite' ); ?></span>
 		</li>
 		<li>
-			<span class="module-icon"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-02.svg" alt=""></span>
+			<span class="module-icon icon-02"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-02.svg" alt=""></span>
 			<span><?php echo esc_html__( 'Multi-level Mega Menu Builder', 'elementskit-lite' ); ?></span>
 		</li>
 		<li>
-			<span class="module-icon"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-03.svg" alt=""></span>
+			<span class="module-icon icon-03"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-03.svg" alt=""></span>
 			<span><?php echo esc_html__( 'Advanced Tab & Accordion', 'elementskit-lite' ); ?></span>
 		</li>
 		<li>
-			<span class="module-icon"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-04.svg" alt=""></span>
+			<span class="module-icon icon-04"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-04.svg" alt=""></span>
 			<span><?php echo esc_html__( 'Parallax & Particles Background', 'elementskit-lite' ); ?></span>
 		</li>
 		<li>
-			<span class="module-icon"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-05.svg" alt=""></span>
+			<span class="module-icon icon-05"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-05.svg" alt=""></span>
 			<span><?php echo esc_html__( 'Advanced Carousel & Sliders', 'elementskit-lite' ); ?></span>
 		</li>
 		<li>
-			<span class="module-icon"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-06.svg" alt=""></span>
+			<span class="module-icon icon-06"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-06.svg" alt=""></span>
 			<span><?php echo esc_html__( 'Sticky & Scrolling Effects', 'elementskit-lite' ); ?></span>
 		</li>
 		<li>
-			<span class="module-icon"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-07.svg" alt=""></span>
+			<span class="module-icon icon-07"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-07.svg" alt=""></span>
 			<span><?php echo esc_html__( 'Cross Domain Copy Paste', 'elementskit-lite' ); ?></span>
 		</li>
 		<li>
-			<span class="module-icon"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-08.svg" alt=""></span>
+			<span class="module-icon icon-08"><img src="<?php echo esc_url(self::get_url()); ?>assets/images/onboard/module-icon-08.svg" alt=""></span>
 			<span><?php echo esc_html__( 'Conditional & Protected Content', 'elementskit-lite' ); ?></span>
 		</li>
 	</ul>

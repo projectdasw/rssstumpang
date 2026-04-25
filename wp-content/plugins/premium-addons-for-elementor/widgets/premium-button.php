@@ -6,7 +6,6 @@
 namespace PremiumAddons\Widgets;
 
 // Elementor Classes.
-use Elementor\Plugin;
 use Elementor\Icons_Manager;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
@@ -151,10 +150,10 @@ class Premium_Button extends Widget_Base {
 	 * @since 1.0.0
 	 * @access public
 	 *
-	 * @return string Widget keywords.
+	 * @return array Widget keywords.
 	 */
 	public function get_keywords() {
-		return array( 'pa', 'premium', 'premium button', 'cta', 'call', 'link', 'btn', 'pa', 'premium' );
+		return array( 'pa', 'premium', 'premium button', 'cta', 'call', 'link', 'btn' );
 	}
 
 	protected function is_dynamic_content(): bool {
@@ -573,6 +572,9 @@ class Premium_Button extends Widget_Base {
 						'icon_type' => 'svg',
 					)
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -589,6 +591,9 @@ class Premium_Button extends Widget_Base {
 					array(
 						'icon_type' => 'animation',
 					)
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -795,21 +800,19 @@ class Premium_Button extends Widget_Base {
 				)
 			);
 
-			$this->add_control(
-				'svg_hover',
-				array(
-					'label'        => __( 'Only Play on Hover', 'premium-addons-for-elementor' ),
-					'type'         => Controls_Manager::SWITCHER,
-					'return_value' => 'true',
-					'condition'    => array_merge(
-						$common_conditions,
-						array(
-							'icon_type' => array( 'icon', 'svg' ),
-							'draw_svg'  => 'yes',
-						)
-					),
-				)
-			);
+		}
+
+		$this->add_control(
+			'svg_hover',
+			array(
+				'label'        => __( 'Only Play on Hover', 'premium-addons-for-elementor' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'true',
+				'conditions'   => $animation_conds,
+			)
+		);
+
+		if ( $draw_icon ) {
 
 			$this->add_control(
 				'svg_yoyo',
@@ -875,6 +878,9 @@ class Premium_Button extends Widget_Base {
 					'slide_icon_type'             => 'animation',
 					'premium_button_hover_effect' => 'style4',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -883,6 +889,7 @@ class Premium_Button extends Widget_Base {
 			array(
 				'label'                => __( 'Icon Position', 'premium-addons-for-elementor' ),
 				'type'                 => Controls_Manager::SELECT,
+				'prefix_class'         => 'pa-icon-pos-',
 				'default'              => 'before',
 				'options'              => array(
 					'before' => __( 'Before', 'premium-addons-for-elementor' ),
@@ -956,6 +963,8 @@ class Premium_Button extends Widget_Base {
 				),
 				'selectors' => array(
 					'{{WRAPPER}} .premium-button-text-icon-wrapper' => 'gap: {{SIZE}}px',
+					'{{WRAPPER}}.pa-icon-pos-before' => '--pa-btn-line6-translate-x: {{SIZE}}px',
+					'{{WRAPPER}}.pa-icon-pos-after'  => '--pa-btn-line6-translate-x: -{{SIZE}}px',
 				),
 				'separator' => 'after',
 			)
@@ -1115,6 +1124,8 @@ class Premium_Button extends Widget_Base {
 
 		}
 
+		Helper_Functions::register_element_feedback_controls( $this );
+
 		$this->end_controls_section();
 
 		Helper_Functions::register_papro_promotion_controls( $this, 'button' );
@@ -1173,7 +1184,7 @@ class Premium_Button extends Widget_Base {
 				'global'   => array(
 					'default' => Global_Typography::TYPOGRAPHY_PRIMARY,
 				),
-				'selector' => '{{WRAPPER}} .premium-button',
+				'selector' => '{{WRAPPER}} .premium-button .premium-button-text-icon-wrapper span',
 			)
 		);
 
@@ -1235,7 +1246,10 @@ class Premium_Button extends Widget_Base {
 						'premium_button_hover_effect!' => array( 'style3', 'style4' ),
 					),
 					'selectors' => array(
-						'{{WRAPPER}} .premium-drawable-icon *, {{WRAPPER}} svg:not([class*="premium-"])' => 'stroke: {{VALUE}};',
+						// Drawable SVG icons
+						'{{WRAPPER}} .premium-drawable-icon *' => 'stroke: {{VALUE}};',
+						// Normal SVG icons (exclude Lottie SVGs)
+						'{{WRAPPER}} svg:not(.premium-lottie-animation):not(.premium-lottie-animation svg)' => 'stroke: {{VALUE}};',
 					),
 				)
 			);
@@ -1328,6 +1342,9 @@ class Premium_Button extends Widget_Base {
 				),
 				'condition' => array(
 					'button_adv_radius' => 'yes',
+				),
+				'ai'        => array(
+					'active' => false,
 				),
 			)
 		);
@@ -1467,7 +1484,10 @@ class Premium_Button extends Widget_Base {
 						'premium_button_hover_effect!' => 'style4',
 					),
 					'selectors' => array(
-						'{{WRAPPER}} .premium-button:hover .premium-drawable-icon *, {{WRAPPER}} .premium-button:hover svg:not([class*="premium-"])' => 'stroke: {{VALUE}};',
+						// Drawable SVG icons
+						'{{WRAPPER}} .premium-button:hover .premium-drawable-icon *' => 'stroke: {{VALUE}};',
+						// Normal SVG icons (exclude Lottie SVGs)
+						'{{WRAPPER}} .premium-button:hover svg:not(.premium-lottie-animation):not(.premium-lottie-animation svg)' => 'stroke: {{VALUE}};',
 					),
 				)
 			);
@@ -1588,6 +1608,9 @@ class Premium_Button extends Widget_Base {
 				),
 				'condition' => array(
 					'button_hover_adv_radius' => 'yes',
+				),
+				'ai'        => array(
+					'active' => false,
 				),
 			)
 		);
@@ -1740,6 +1763,7 @@ class Premium_Button extends Widget_Base {
 						'data-lottie-url'     => $settings['lottie_url'],
 						'data-lottie-loop'    => $settings['lottie_loop'],
 						'data-lottie-reverse' => $settings['lottie_reverse'],
+						'data-lottie-hover'   => $settings['svg_hover'],
 					)
 				);
 			}
@@ -1834,7 +1858,7 @@ class Premium_Button extends Widget_Base {
 							?>
 						<?php elseif ( 'svg' === $icon_type ) : ?>
 							<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'icon' ) ); ?>>
-								<?php $this->print_unescaped_setting( 'custom_svg' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<?php echo Helper_Functions::sanitize_svg( $this->get_settings_for_display( 'custom_svg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitize_svg passes through wp_kses with a strict SVG allowlist ?>
 							</div>
 						<?php else : ?>
 							<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'lottie' ) ); ?>></div>
@@ -1875,14 +1899,4 @@ class Premium_Button extends Widget_Base {
 
 		<?php
 	}
-
-	/**
-	 * Render Button widget output in the editor.
-	 *
-	 * Written as a Backbone JavaScript template and used to generate the live preview.
-	 *
-	 * @since 1.0.0
-	 * @access protected
-	 */
-	protected function content_template() {}
 }

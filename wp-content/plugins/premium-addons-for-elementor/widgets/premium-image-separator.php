@@ -114,7 +114,8 @@ class Premium_Image_Separator extends Widget_Base {
 			$settings = $this->get_settings();
 
 			if ( 'yes' === $settings['draw_svg'] ) {
-				array_push( $scripts, 'pa-tweenmax', 'pa-motionpath' );
+				$scripts[] = 'pa-tweenmax';
+				$scripts[] = 'pa-motionpath';
 			}
 
 			if ( 'animation' === $settings['separator_type'] ) {
@@ -239,6 +240,9 @@ class Premium_Image_Separator extends Widget_Base {
 				'condition'   => array(
 					'separator_type' => 'svg',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -268,6 +272,9 @@ class Premium_Image_Separator extends Widget_Base {
 				'label_block' => true,
 				'condition'   => array(
 					'separator_type' => 'animation',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -672,7 +679,7 @@ class Premium_Image_Separator extends Widget_Base {
 				),
 				'default'   => 'contain',
 				'selectors' => array(
-					'{{WRAPPER}} .premium-image-separator-container img, .premium-image-separator-container svg' => 'mask-size: {{VALUE}}; -webkit-mask-size: {{VALUE}}',
+					'{{WRAPPER}} .premium-image-separator-container img, {{WRAPPER}} .premium-image-separator-container svg' => 'mask-size: {{VALUE}}; -webkit-mask-size: {{VALUE}}',
 				),
 				'condition' => array(
 					'separator_type!' => 'icon',
@@ -699,7 +706,7 @@ class Premium_Image_Separator extends Widget_Base {
 				),
 				'default'   => 'center center',
 				'selectors' => array(
-					'{{WRAPPER}} .premium-image-separator-container img, .premium-image-separator-container svg' => 'mask-position: {{VALUE}}; -webkit-mask-position: {{VALUE}}',
+					'{{WRAPPER}} .premium-image-separator-container img, {{WRAPPER}} .premium-image-separator-container svg' => 'mask-position: {{VALUE}}; -webkit-mask-position: {{VALUE}}',
 				),
 				'condition' => array(
 					'separator_type!' => 'icon',
@@ -721,7 +728,7 @@ class Premium_Image_Separator extends Widget_Base {
 				),
 				'default'   => 'center center',
 				'selectors' => array(
-					'{{WRAPPER}} .premium-image-separator-container img, .premium-image-separator-container svg' => 'mask-position: {{VALUE}}; -webkit-mask-position: {{VALUE}}',
+					'{{WRAPPER}} .premium-image-separator-container img, {{WRAPPER}} .premium-image-separator-container svg' => 'mask-position: {{VALUE}}; -webkit-mask-position: {{VALUE}}',
 				),
 				'condition' => array(
 					'separator_type!' => 'icon',
@@ -752,6 +759,8 @@ class Premium_Image_Separator extends Widget_Base {
 				'content_classes' => 'editor-pa-doc',
 			)
 		);
+
+		Helper_Functions::register_element_feedback_controls( $this );
 
 		$this->end_controls_section();
 
@@ -931,6 +940,9 @@ class Premium_Image_Separator extends Widget_Base {
 					'separator_adv_radius' => 'yes',
 					'separator_type!'      => 'animation',
 				),
+				'ai'        => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -993,9 +1005,13 @@ class Premium_Image_Separator extends Widget_Base {
 
 		if ( 'image' === $type ) {
 
-			$image_id = apply_filters( 'wpml_object_id', $settings['premium_image_separator_image']['id'], 'attachment', true );
+			$image_id = isset( $settings['premium_image_separator_image']['id'] ) ? (int) apply_filters( 'wpml_object_id', $settings['premium_image_separator_image']['id'], 'attachment', true ) : 0;
 
-			$image_url = wp_get_attachment_image_url( $image_id, 'full' );
+			if ( $image_id ) {
+				$image_url = wp_get_attachment_image_url( $image_id, 'full' );
+			} else {
+				$image_url = $settings['premium_image_separator_image']['url'];
+			}
 
 			$alt = esc_attr( Control_Media::get_image_alt( $settings['premium_image_separator_image'] ) );
 		} elseif ( 'animation' === $type ) {
@@ -1046,7 +1062,7 @@ class Premium_Image_Separator extends Widget_Base {
 
 	<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'container' ) ); ?>>
 		<?php if ( 'image' === $type ) : ?>
-			<img src="<?php echo esc_attr( $image_url ); ?>" alt="<?php echo esc_attr( $alt ); ?>">
+			<img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $alt ); ?>">
 			<?php
 		elseif ( 'icon' === $type ) :
 			if ( 'yes' !== $settings['draw_svg'] ) :
@@ -1068,7 +1084,7 @@ class Premium_Image_Separator extends Widget_Base {
 			?>
 		<?php elseif ( 'svg' === $type ) : ?>
 			<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'icon' ) ); ?>>
-				<?php $this->print_unescaped_setting( 'custom_svg' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo Helper_Functions::sanitize_svg( $this->get_settings_for_display( 'custom_svg' ) ); ?>
 			</div>
 		<?php else : ?>
 			<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'separator_lottie' ) ); ?>></div>

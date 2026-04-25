@@ -211,7 +211,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			
 			return($title);
 		}
-
+		
 
 		/**
 		 *
@@ -889,7 +889,31 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 			return(null);
 		}
+		
+		/**
+		 * get first post term name by taxonomy
+		 */
+		public static function getPostTerm_firstTermName($postID, $taxName){
+			
+			if(empty($taxName))
+				$taxName = "category";
+			
+			$arrTerms = wp_get_post_terms($postID, $taxName);
 
+			if(empty($arrTerms))
+				return(null);
+
+			foreach($arrTerms as $term){
+
+				$slug = $term->name;
+				
+				return($slug);
+			}
+
+			return("");
+		}
+		
+		
 		/**
 		 * get post terms title string
 		 */
@@ -2321,15 +2345,26 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		$arrQuery = $wp_query->query;
 		$titleFilter = UniteFunctionsUC::getVal($arrQuery, "title_filter");
 
-		if(!empty($titleFilter)){
-			if(!empty($where))
-				$where .= " AND";
-
-			$where .= " wp_posts.post_title like '%$titleFilter%'";
+		if ( ! is_string( $titleFilter ) ) {
+			return $where;
 		}
+		
+		$titleFilter = UniteFunctionsUC::sanitize( $titleFilter, UniteFunctionsUC::SANITIZE_SQL_INJECTS );
+		
+		if ( $titleFilter !== '' ) {
+			if ( ! empty( $where ) ) {
+				$where .= ' AND';
+			}
 
+			// esc_like: % _ \ are literal in LIKE; prepare: value is bound (no SQL injection).
+			$like = '%' . $wpdb->esc_like( $titleFilter ) . '%';
+			$where .= $wpdb->prepare( " {$wpdb->posts}.post_title LIKE %s", $like );
+		}
+		
+		
 		return ($where);
 	}
+	
 
 	/**
 	 *
@@ -3289,7 +3324,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 		if($isWPML)
 			$thumbID = UniteCreatorWpmlIntegrate::getTranslatedAttachmentID($thumbID);
-
+		
 		$arrImage = wp_get_attachment_image_src($thumbID, $size);
 		if(empty($arrImage))
 			return (false);
@@ -3856,6 +3891,29 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	}
 
 	/**
+	 * get user names from list of user objects for debug
+	 * returns array of formatted strings: "Display Name (ID: X, Login: Y)"
+	 */
+	public static function getUsersNamesShort($arrUsers){
+		
+		if(empty($arrUsers))
+			return(array());
+		
+		$arrUserNames = array();
+		
+		foreach($arrUsers as $user){
+			
+			$userName = $user->display_name;
+			$userID = $user->ID;
+			$userLogin = $user->user_login;
+			
+			$arrUserNames[] = "$userName (ID: $userID, Login: $userLogin)";
+		}
+		
+		return($arrUserNames);
+	}
+
+	/**
 	 * get roles as name/value array
 	 */
 	public static function getRolesShort($addAll = false){
@@ -3872,15 +3930,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		return ($arrShort);
 	}
 
-	/**
-	 * get all admin users
-	 */
-	public static function getAdminUsers(){
-		
-		$arrAdminUsers = get_users( array( 'role' => 'Administrator' ) );
-		
-		return($arrAdminUsers);
-	}
 	
 	/**
 	 * get users array short
@@ -3896,9 +3945,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 			return (self::$cacheAuthorsShort);
 		}
-
-		$args = array("role__not_in" => array("subscriber", "customer"));
-
+		
+		$args = array(
+			"role__in" => array("administrator", "editor", "author"),
+			"number"   => 200
+		);
 		$arrUsers = get_users($args);
 
 		$arrUsersShort = array();
@@ -4089,6 +4140,83 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		}
 
 		return ($argsNew);
+	}
+	
+	/**
+	 * Expand tax_query terms for debug output (avoid fatals if missing).
+	 * Adds readable info (name/slug) alongside numeric term IDs.
+	 */
+	public static function expandTaxQueryTermsForDebug($args){
+		
+		if(empty($args) || is_array($args) == false)
+			return($args);
+		
+		$taxQuery = UniteFunctionsUC::getVal($args, "tax_query");
+		if(empty($taxQuery) || is_array($taxQuery) == false)
+			return($args);
+		
+		foreach($taxQuery as $index => $clause){
+			
+			if(is_array($clause) == false)
+				continue;
+			
+			$terms = UniteFunctionsUC::getVal($clause, "terms");
+			if(empty($terms) || is_array($terms) == false)
+				continue;
+			
+			$taxonomy = UniteFunctionsUC::getVal($clause, "taxonomy");
+			if(empty($taxonomy))
+				continue;
+			
+			$field = UniteFunctionsUC::getVal($clause, "field");
+			if(empty($field))
+				$field = "term_id";
+			
+			//expand only numeric IDs
+			if($field !== "term_id" && $field !== "id")
+				continue;
+			
+			$arrExpanded = array();
+			foreach($terms as $termID){
+				
+				if(is_numeric($termID) == false){
+					$arrExpanded[] = $termID;
+					continue;
+				}
+				
+				$termID = (int)$termID;
+				$objTerm = get_term($termID, $taxonomy);
+				if(empty($objTerm) || is_wp_error($objTerm)){
+					$arrExpanded[] = $termID;
+					continue;
+				}
+				
+				$slug = UniteFunctionsUC::getVal($objTerm, "slug");
+				$name = UniteFunctionsUC::getVal($objTerm, "name");
+				
+				$str = $termID;
+				if(!empty($slug) || !empty($name)){
+					$str .= " (";
+					if(!empty($slug))
+						$str .= "slug:{$slug}";
+					if(!empty($name)){
+						if(!empty($slug))
+							$str .= ", ";
+						$str .= "name:{$name}";
+					}
+					$str .= ")";
+				}
+				
+				$arrExpanded[] = $str;
+			}
+			
+			$clause["terms"] = $arrExpanded;
+			$taxQuery[$index] = $clause;
+		}
+		
+		$args["tax_query"] = $taxQuery;
+		
+		return($args);
 	}
 
 	/**
@@ -4874,6 +5002,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	public static function onFrontInit(){
 		
 		add_action('wp_print_scripts', array('UniteFunctionsWPUC', 'onStylesAndScriptsDeregister'), PHP_INT_MAX);
+
+        add_action('wp_after_insert_post', function ($post_id, $post, $update) { GlobalsUC::$hideDebug = true; }, 10, 3);
 		
 	}
 	

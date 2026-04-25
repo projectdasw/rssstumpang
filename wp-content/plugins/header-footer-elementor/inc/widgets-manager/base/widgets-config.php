@@ -262,6 +262,32 @@ class Widgets_Config {
 				'is_pro'      => false,
 				'demo_url'    => 'https://ultimateelementor.com/widgets/woo-product-grid/',
 			],
+			'Counter'                 => [
+				'slug'        => 'hfe-counter',
+				'title'       => __( 'Counter', 'header-footer-elementor' ),
+				'description' => __( 'Display animated counters with customizable styling for showcasing statistics and achievements.', 'header-footer-elementor' ),
+				'keywords'    => [ 'uael', 'hfe', 'counter', 'number', 'stats', 'statistics', 'animate' ],
+				'icon'        => 'hfe-icon-counter',
+				'title_url'   => '#',
+				'default'     => true,
+				'doc_url'     => 'https://ultimateelementor.com/docs/counter-widget/?utm_source=plugin-editor&utm_medium=need-help-button&utm_campaign=uae-documentation',
+				'category'    => 'content',
+				'is_pro'      => false,
+				'demo_url'    => 'https://ultimateelementor.com/widgets/counter/',
+			],
+			'Post_Duplicator'         => [
+				'slug'        => 'hfe-post-duplicator',
+				'title'       => __( 'Duplicator', 'header-footer-elementor' ),
+				'description' => __( 'Adds one-click duplication support for posts and pages..', 'header-footer-elementor' ),
+				'keywords'    => [ 'uael', 'hfe', 'duplicate', 'copy', 'clone', 'post', 'page' ],
+				'icon'        => 'hfe-icon-cdcp',
+				'title_url'   => '#',
+				'default'     => false,
+				'doc_url'     => 'https://ultimateelementor.com/docs/duplicator/?utm_source=plugin-editor&utm_medium=need-help-button&utm_campaign=uae-documentation',
+				'category'    => 'extension',
+				'is_pro'      => false,
+				'demo_url'    => 'https://ultimateelementor.com/widgets/duplicator/',
+			],
 		];
 
 		return apply_filters( 'hfe_widgets_data', self::$widget_list );
@@ -1192,7 +1218,7 @@ class Widgets_Config {
 			'suretriggers/suretriggers.php'                => [
 				'icon'         => $images_url . 'ottokit.svg',
 				'type'         => 'plugin',
-				'name'         => esc_html__( 'OttoKit (Formerly SureTriggers)', 'header-footer-elementor' ),
+				'name'         => esc_html__( 'OttoKit', 'header-footer-elementor' ),
 				'desc'         => esc_html__( 'Automate WordPress tasks effortlessly.', 'header-footer-elementor' ),
 				'wporg'        => 'https://wordpress.org/plugins/suretriggers/',
 				'url'          => 'https://downloads.wordpress.org/plugin/suretriggers.zip',

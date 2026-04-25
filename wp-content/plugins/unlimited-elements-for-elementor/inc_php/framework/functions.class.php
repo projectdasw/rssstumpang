@@ -19,8 +19,10 @@ class UniteFunctionsUC{
 	const SANITIZE_VIMEO = "sanitize_vimeo";
 	const SANITIZE_WISTIA = "sanitize_wistia";
 	const SANITIZE_URL = "sanitize_url";
+	const SANITIZE_URL_TRAVERSE = "sanitize_url_traverse";
 	const SANITIZE_ATTR = "sanitize_attr";
 	const SANITIZE_HTML = "sanitize_html";
+	const SANITIZE_SQL_INJECTS = "SQL_INJECTS";
 	
 	
 	private static $serial = 0;
@@ -797,9 +799,11 @@ class UniteFunctionsUC{
 	/**
 	 * Modify data array for show - for DEBUG purposes
 	 * Convert single arrays like in post meta (multi-level support)
+	 * fordebug for debug debug array debug
 	 */
 	public static function modifyDataArrayForShow($arrData, $convertSingleArray = false) {
-	    // Check if input is not an array
+
+		// Check if input is not an array
 	    if (!is_array($arrData)) {
 	        return $arrData;
 	    }
@@ -819,8 +823,10 @@ class UniteFunctionsUC{
 	            $value = UniteFunctionsUC::truncateString($value, $truncateSize);
 	        }
 	        
-	        if(is_string($value))
+	        if(is_string($value)){
 	        	$value = htmlspecialchars($value);
+	        	
+	        }
 	        
 	        // If the value is an array, process it recursively
 	        if (is_array($value)) {
@@ -1137,13 +1143,34 @@ class UniteFunctionsUC{
 	}
 	
 	/**
-	 * strip all tags, leave only needed for the text
+	 * normalize content for text output
 	 */
-	public static function normalizeContentForText($content){
-		
-		$content = wp_strip_all_tags($content, "<br><em><b><strong>");
-		
-		return($content);
+	public static function normalizeContentForText( $content ) {
+	
+	    $allowed_tags = array(
+	        'br'     => array(),
+	        'p'      => array(),
+	        'strong' => array(),
+	        'b'      => array(),
+	        'em'     => array(),
+	        'i'      => array(),
+	        'u'      => array(),
+	        'span'   => array(
+	            'style' => array(),
+	            'class' => array(),
+	        ),
+	        'ul'     => array(),
+	        'ol'     => array(),
+	        'li'     => array(),
+	        'a'      => array(
+	            'href'  => array(),
+	            'title' => array(),
+	            'rel'   => array(),
+	            'target'=> array(),
+	        ),
+	    );
+	
+	    return wp_kses( $content, $allowed_tags );
 	}
 	
 	/**
@@ -1158,7 +1185,7 @@ class UniteFunctionsUC{
 					
 		$originalValue = $value;
 		
-		$value = wp_strip_all_tags($value,"<br><em><b><strong>");
+		$value = self::normalizeContentForText($value);
 		
 		$stringLen = mb_strlen($value, $charset);
 		
@@ -1333,6 +1360,7 @@ class UniteFunctionsUC{
 		$arrSanitize[self::SANITIZE_KEY] = __("Sanitize KEY", "unlimited-elements-for-elementor");
 		$arrSanitize[self::SANITIZE_TEXT_FIELD] = __("Sanitize Text Field", "unlimited-elements-for-elementor");
 		$arrSanitize[self::SANITIZE_NOTHING] = __("No Sanitize (not recomended)", "unlimited-elements-for-elementor");
+		$arrSanitize[self::SANITIZE_SQL_INJECTS] = __("Sanitize SQL injects (title search)", "unlimited-elements-for-elementor");
 
 		return($arrSanitize);
 	}
@@ -1875,7 +1903,28 @@ class UniteFunctionsUC{
 			
 		return($str);
 	}
-
+	
+	/**
+	 * validate json string
+	 */
+	public static function jsonDecodeValidate($str){
+		
+		if(empty($str))
+			return(array());
+		
+		$arrJSON = self::jsonDecode($str);
+		
+		if(!empty($arrJSON))
+			return($arrJSON);
+				
+		$errorMessage = json_last_error_msg();
+		
+		UniteFunctionsUC::throwError($errorMessage);
+		
+		return($errorMessage);
+	}
+	
+	
 	/**
 	 * maybe json decode
 	 */
@@ -2408,6 +2457,7 @@ class UniteFunctionsUC{
 	 * return if the variable is alphanumeric
 	 */
 	public static function isAlphaNumeric($val){
+		
 		$match = preg_match('/^[\w_]+$/', $val);
 
 		if($match == 0)
@@ -2415,7 +2465,69 @@ class UniteFunctionsUC{
 
 		return(true);
 	}
-
+	
+	/**
+	 * check that meta key is valid
+	 */
+	public static function isMetaKeyValid($metaKey){
+		
+		if(is_string($metaKey) == false)
+			return(false);
+			
+		if(empty($metaKey))
+			return(false);
+		
+		 // length limit
+	    if ( strlen( $metaKey ) > 255 )
+	        return false;
+			
+		if ( ! preg_match('/^[A-Za-z0-9_\-]+$/', $metaKey) )
+			return false;
+		
+		return(true);
+	}
+	
+	
+	/**
+	 * check if taxonomy name is valid
+	 */
+	public static function isTaxonomyNameValid($taxonomy){
+		
+	    // must be a string
+	    if ( ! is_string( $taxonomy ) ) {
+	        return false;
+	    }
+	
+	    // not empty
+	    if ( $taxonomy === '' ) {
+	        return false;
+	    }
+	
+	    // max length 32 chars (WordPress internal limit)
+	    if ( strlen( $taxonomy ) > 32 ) {
+	        return false;
+	    }
+	
+	    // must be lowercase only
+	    if ( strtolower( $taxonomy ) !== $taxonomy ) {
+	        return false;
+	    }
+	
+	    // allowed characters: letters, digits, underscore
+	    if ( ! preg_match('/^[a-z0-9_]+$/', $taxonomy) ) {
+	        return false;
+	    }
+	
+	    // cannot start with a number
+	    if ( preg_match('/^[0-9]/', $taxonomy) ) {
+	        return false;
+	    }
+	
+	    return true;
+	}
+	
+	
+	
 	/**
 	 * validate id's list, allowed only numbers and commas
 	 * @param $val
@@ -2595,7 +2707,8 @@ class UniteFunctionsUC{
 
 			return $arrErrors;
 	}
-
+	
+	
 	public static function z________SANITIZE________(){}
 	
 	/**
@@ -2627,11 +2740,17 @@ class UniteFunctionsUC{
 			case self::SANITIZE_URL:
 				$str = self::sanitizeSecuredUrl($str);
 			break;
+			case self::SANITIZE_URL_TRAVERSE:
+				$str = self::sanitizeUrlTraverse($str);
+			break;
 			case self::SANITIZE_ATTR:
 				$str = self::sanitizeSecuredAttribute($str);
 			break;
 			case self::SANITIZE_HTML:
 				$str = self::sanitizeHTMLRemoveJS($str);
+			break;
+			case self::SANITIZE_SQL_INJECTS:
+				$str = self::sanitizeSqlInjects($str);
 			break;
 			default:
 				self::throwError("Sanitize string error: wrong type: $type");
@@ -2642,6 +2761,20 @@ class UniteFunctionsUC{
 			dmp("sanitize output: $str");
 		
 		return($str);
+	}
+
+	/**
+	 * Strip characters unsuitable for plain title / LIKE search (defense in depth; use with wpdb::prepare).
+	 */
+	public static function sanitizeSqlInjects($str){
+
+		if ( is_string( $str ) == false ) {
+			return '';
+		}
+
+		$stripped = preg_replace( '/[^\p{L}\p{N}\s\'.,&\x{2019}-]+/u', '', $str );
+
+		return is_string( $stripped ) ? trim( $stripped ) : '';
 	}
 
 	/**
@@ -2743,6 +2876,49 @@ class UniteFunctionsUC{
 	
 	
 	/**
+	 * Whether the URL string contains a path traversal segment (e.g. ../).
+	 */
+	private static function urlHasPathTraversal($url){
+
+		if(empty($url))
+			return(false);
+
+		$decodedUrl = self::urlDecode($url);
+		$normalized = str_replace('\\', '/', $decodedUrl);
+
+		if(strpos($normalized, '../') !== false)
+			return(true);
+
+		$patterns = array(
+			'/\.\.(?:[\/\\\\]|%2[fF]|%5[cC])/i',
+			'/(?:^|[\/\\\\]|%2[fF]|%5[cC])(?:%2[eE]\.|\.%2[eE]|%2[eE]%2[eE])(?:[\/\\\\]|%2[fF]|%5[cC])/i',
+		);
+
+		foreach($patterns as $pattern){
+			if(preg_match($pattern, $decodedUrl))
+				return(true);
+		}
+
+		return(false);
+	}
+
+
+	/**
+	 * Reject URLs whose path contains traversal (../). Otherwise same as esc_url().
+	 */
+	public static function sanitizeUrlTraverse($url){
+
+		if(empty($url))
+			return($url);
+
+		if(self::urlHasPathTraversal($url))
+			return("");
+
+		return(esc_url($url));
+	}
+
+
+	/**
 	 * Sanitizes a URL by detecting malicious payloads.
 	 * Returns an empty string if the URL contains potential threats.
 	 */
@@ -2750,6 +2926,9 @@ class UniteFunctionsUC{
 		
 		if(empty($url))
 			return($url);
+
+		if(self::urlHasPathTraversal($url))
+			return("");
 	    			
 	    // Trim and decode the URL for better detection
 	    $decodedUrl = self::urlDecode($url);
@@ -3296,9 +3475,14 @@ class UniteFunctionsUC{
 	 * check if path under base path
 	 */
 	public static function isPathUnderBase($path, $basePath){
+				
 		$path = self::pathToUnix($path);
 		$basePath = self::pathToUnix($basePath);
-
+		
+		//check path traversal
+		if(strpos($path, '../') !== false)
+			return(false);
+		
 		if(strpos($path, $basePath) === 0)
 			return(true);
 
@@ -3412,13 +3596,20 @@ class UniteFunctionsUC{
 
 	public static function z___________TIME_AND_DATE__________(){}
 
-
+	
 	/**
 	 * get time ago since now
 	 */
 	public static function getTimeAgoString($time_stamp, $textFormat="long"){
 		
-		$time_difference = strtotime('now') - $time_stamp;
+		$now = time();
+		
+		if ( $time_stamp > $now ) {
+					
+			return self::getTimeFromNowString( $time_stamp, $textFormat );
+		}
+		
+		$time_difference = $now - $time_stamp;
 				
 		$textHours = __('hours',"unlimited-elements-for-elementor"); 
 		$textHour = __('hour',"unlimited-elements-for-elementor");
@@ -3440,7 +3631,6 @@ class UniteFunctionsUC{
 			$textMunites = __('min',"unlimited-elements-for-elementor");
 			$textMunite = __('min',"unlimited-elements-for-elementor");
 		}
-		
 		
 		//year
 		if ($time_difference >= 60 * 60 * 24 * 365.242199)
@@ -3472,7 +3662,7 @@ class UniteFunctionsUC{
 	 */
 	private static function getTimeAgoStringUnit($time_stamp, $divisor, $strUnit, $strUnitSingle){
 
-		$time_difference = strtotime("now") - $time_stamp;
+		$time_difference = time() - $time_stamp;
 		$time_units      = floor($time_difference / $divisor);
 
 		settype($time_units, 'string');
@@ -3488,6 +3678,93 @@ class UniteFunctionsUC{
 		$output = apply_filters("ue_modify_time_ago_string", $output);
 		
 		return($output);
+	}
+
+
+	/**
+	 * Relative time for future timestamps (e.g. scheduled posts): "in 2 hours", not "-120 minutes ago".
+	 */
+	private static function getTimeFromNowString( $time_stamp, $textFormat = "long" ) {
+
+		$time_difference = $time_stamp - time();
+
+		$textHours = __( 'hours', 'unlimited-elements-for-elementor' );
+		$textHour  = __( 'hour', 'unlimited-elements-for-elementor' );
+
+		$textMunites = __( 'minutes', 'unlimited-elements-for-elementor' );
+		$textMunite  = __( 'minute', 'unlimited-elements-for-elementor' );
+
+		$textYears = __( 'years', 'unlimited-elements-for-elementor' );
+		$textYear  = __( 'year', 'unlimited-elements-for-elementor' );
+
+		$textWeeks = __( 'weeks', 'unlimited-elements-for-elementor' );
+		$textWeek  = __( 'week', 'unlimited-elements-for-elementor' );
+
+		if ( $textFormat == 'short' ) {
+
+			$textHours   = __( 'h', 'unlimited-elements-for-elementor' );
+			$textHour    = __( 'h', 'unlimited-elements-for-elementor' );
+			$textMunites = __( 'min', 'unlimited-elements-for-elementor' );
+			$textMunite  = __( 'min', 'unlimited-elements-for-elementor' );
+		}
+
+		if ( $time_difference >= 60 * 60 * 24 * 365.242199 ) {
+			return self::getTimeFromNowStringUnit( $time_stamp, 60 * 60 * 24 * 365.242199, $textYears, $textYear );
+		}
+
+		if ( $time_difference >= 60 * 60 * 24 * 30.4368499 ) {
+			return self::getTimeFromNowStringUnit( $time_stamp, 60 * 60 * 24 * 30.4368499, __( 'months', 'unlimited-elements-for-elementor' ), __( 'month', 'unlimited-elements-for-elementor' ) );
+		}
+
+		if ( $time_difference >= 60 * 60 * 24 * 7 ) {
+			return self::getTimeFromNowStringUnit( $time_stamp, 60 * 60 * 24 * 7, $textWeeks, $textWeek );
+		}
+
+		if ( $time_difference >= 60 * 60 * 24 ) {
+			return self::getTimeFromNowStringUnit( $time_stamp, 60 * 60 * 24, __( 'days', 'unlimited-elements-for-elementor' ), __( 'day', 'unlimited-elements-for-elementor' ) );
+		}
+
+		if ( $time_difference >= 60 * 60 ) {
+			return self::getTimeFromNowStringUnit( $time_stamp, 60 * 60, $textHours, $textHour );
+		}
+
+		return self::getTimeFromNowStringUnit( $time_stamp, 60, $textMunites, $textMunite );
+	}
+
+
+	/**
+	 * Format a future interval as "in N unit(s)".
+	 */
+	private static function getTimeFromNowStringUnit( $time_stamp, $divisor, $strUnit, $strUnitSingle ) {
+
+		$time_difference = $time_stamp - time();
+		$time_units      = floor( $time_difference / $divisor );
+
+		settype( $time_units, 'string' );
+
+		if ( $time_units === '0' ) {
+			$time_units = 1;
+		}
+
+		if ( $time_units == 1 ) {
+			$output = sprintf(
+				/* translators: 1: number (typically 1), 2: time unit singular, e.g. "minute" */
+				__( 'in %1$s %2$s', 'unlimited-elements-for-elementor' ),
+				$time_units,
+				$strUnitSingle
+			);
+		} else {
+			$output = sprintf(
+				/* translators: 1: number, 2: time unit plural, e.g. "minutes" */
+				__( 'in %1$s %2$s', 'unlimited-elements-for-elementor' ),
+				$time_units,
+				$strUnit
+			);
+		}
+
+		$output = apply_filters( 'ue_modify_time_ago_string', $output );
+
+		return $output;
 	}
 
 
@@ -3994,10 +4271,15 @@ class UniteFunctionsUC{
 	public static function downloadFile($filepath, $filename = null){
 
 		UniteFunctionsUC::validateFilepath($filepath,"export file");
-
+		
 		if(empty($filename))
 			$filename = basename($filepath);
 
+		// Clear all output buffers to prevent any previous output from corrupting the file
+		while (ob_get_level()) {
+			ob_end_clean();
+		}
+ 		
 		header('Content-Description: File Transfer');
 		header('Content-Type: application/octet-stream');
 		header('Content-Disposition: attachment; filename="'.$filename.'"');

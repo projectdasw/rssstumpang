@@ -205,6 +205,9 @@ class Premium_SVG_Drawer extends Widget_Base {
 				'condition'   => array(
 					'icon_type' => 'custom',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -682,6 +685,8 @@ class Premium_SVG_Drawer extends Widget_Base {
 
 		}
 
+		Helper_Functions::register_element_feedback_controls( $this );
+
 		$this->end_controls_section();
 
 		/*Start Icon Style*/
@@ -846,6 +851,9 @@ class Premium_SVG_Drawer extends Widget_Base {
 				'condition' => array(
 					'icon_adv_radius' => 'yes',
 				),
+				'ai'        => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -951,7 +959,7 @@ class Premium_SVG_Drawer extends Widget_Base {
 
 				<?php else : ?>
 
-					<?php $this->print_unescaped_setting( 'custom_svg' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo Helper_Functions::sanitize_svg( $this->get_settings_for_display( 'custom_svg' ) ); ?>
 
 				<?php endif; ?>
 

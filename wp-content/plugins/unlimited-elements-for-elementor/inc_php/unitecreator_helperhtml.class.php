@@ -233,7 +233,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 		/**
-		 * get version text
+		 * get version text (first changelog section, e.g. "= 2.0.7 - 2026-04-12 =" through the line before the next "= x.x.x =")
 		 */
 		public static function getVersionText(){
 
@@ -244,10 +244,46 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			
 			$content = UniteFunctionsUC::fileGetContents($filepath);
 			$content = trim($content);
-			
-			//$content = substr($content, 0, 10000);
-			
-			return ($content);
+
+			$firstSection = self::getFirstChangelogVersionSection($content);
+			if($firstSection !== null)
+				return $firstSection;
+
+			return substr($content, 0, 7000);
+		}
+
+		/**
+		 * Extract first version block from changelog.txt body (readme-style lines: "= 1.2.3 - date =").
+		 *
+		 * @param string $content
+		 * @return string|null
+		 */
+		private static function getFirstChangelogVersionSection($content){
+
+			$normalized = str_replace("\r\n", "\n", $content);
+			$lines = explode("\n", $normalized);
+			$versionLinePattern = '/^= .+ =\s*$/';
+
+			$startIndex = null;
+			foreach($lines as $i => $line){
+				if(preg_match($versionLinePattern, $line)){
+					$startIndex = (int) $i;
+					break;
+				}
+			}
+
+			if($startIndex === null)
+				return null;
+
+			$sectionLines = array($lines[$startIndex]);
+			$count = count($lines);
+			for($j = $startIndex + 1; $j < $count; $j++){
+				if(preg_match($versionLinePattern, $lines[$j]))
+					break;
+				$sectionLines[] = $lines[$j];
+			}
+
+			return trim(implode("\n", $sectionLines));
 		}
 
 		/**
@@ -487,14 +523,14 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 			return($html);
 		}
-
-		protected function z_________PUTTERS_______(){}
+		
+		protected function z_________DEBUG_______(){}
 		
 		/**
 		 * put debug box
 		 */
 		public static function putHtmlDataDebugBox($data){
-						
+			
 			self::putHtmlDataDebugBox_start();
 			
 			if(is_array($data))
@@ -555,6 +591,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			
 			return($html);
 		}
+		
+		
+		protected function z_________PUTTERS_______(){}
+		
 		
 		
 		/**
@@ -1288,10 +1328,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 			UniteFunctionsUC::obStart();
 			HelperHtmlUC::putAddonTypesBrowserDialogs();
-			
-			//php info not available
+
 			phpinfo();
-			
+
 			$content = ob_get_contents();
 
 			ob_end_clean();

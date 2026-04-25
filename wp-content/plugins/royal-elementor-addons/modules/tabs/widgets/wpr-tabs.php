@@ -1456,6 +1456,8 @@ class Wpr_Tabs extends Widget_Base {
 		// Add CSS in Editor
 		$type = get_post_meta(get_the_ID(), '_wpr_template_type', true) || get_post_meta($id, '_elementor_template_type', true);
 		$has_css = 'internal' === get_option( 'elementor_css_print_method' ) || '' !== $type;
+
+		Utilities::enqueue_inner_template_assets( $id );
 		
 		return Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $id, $has_css ) . $edit_link;
 	}
@@ -1479,7 +1481,7 @@ class Wpr_Tabs extends Widget_Base {
 			'activeTab' 		=> $settings['active_tab'],
 			'trigger' 			=>  $settings['tabs_trigger'],
 			'autoplay' 			=> isset($settings['autoplay']) ? $settings['autoplay'] : '',
-			'autoplaySpeed'		=> absint( $settings['autoplay_duration'] * 1000 ),
+			'autoplaySpeed'		=> absint( ( floatval( $settings['autoplay_duration'] ?: 1 ) ) * 1000 ),
 		];
 
 		$this->add_render_attribute( 'tabs-attribute', [

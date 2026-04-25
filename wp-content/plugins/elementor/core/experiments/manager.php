@@ -121,7 +121,9 @@ class Manager extends Base_Object {
 		$installs_history = Upgrade_Manager::get_installs_history();
 
 		if ( empty( $installs_history ) ) {
-			return false;
+			// Fresh installation: upgrade manager hasn't written history yet on this first request.
+			// Use the current plugin version as the effective first-install version.
+			return version_compare( ELEMENTOR_VERSION, $version, '>=' );
 		}
 
 		$cleaned_version = preg_replace( '/-(beta|cloud|dev)\d*$/', '', key( $installs_history ) );
@@ -653,7 +655,10 @@ class Manager extends Base_Object {
 			<div class="<?php echo $indicator_classes; ?>" data-tooltip="<?php echo $indicator_tooltip; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"></div>
 			<label class="e-experiment__title__label" for="e-experiment-<?php echo $feature['name']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"><?php echo $feature['title']; ?></label>
 			<?php foreach ( $feature['tags'] as $tag ) { ?>
-				<span class="e-experiment__title__tag e-experiment__title__tag__<?php echo $tag['type']; ?>"><?php echo $tag['label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+				<?php
+				$tag_classes = 'e-experiment__title__tag e-experiment__title__tag__' . $tag['type'] . ' e-editor-one';
+				?>
+				<span class="<?php echo esc_attr( $tag_classes ); ?>"><?php echo $tag['label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 			<?php } ?>
 			<?php if ( $feature['deprecated'] ) { ?>
 				<span class="e-experiment__title__tag e-experiment__title__tag__deprecated"><?php echo esc_html__( 'Deprecated', 'elementor' ); ?></span>
@@ -726,8 +731,6 @@ class Manager extends Base_Object {
 	 * @param array  $old_feature_data
 	 * @param string $new_state
 	 * @param string $old_state
-	 *
-	 * @throws Dependency_Exception If the feature dependency is not available or not active.
 	 */
 	private function on_feature_state_change( array $old_feature_data, $new_state, $old_state ) {
 		$new_feature_data = $this->get_features( $old_feature_data['name'] );
@@ -746,7 +749,7 @@ class Manager extends Base_Object {
 	}
 
 	/**
-	 * @throws Dependency_Exception If the feature dependency is not available or not active.
+	 * @throws Exceptions\Dependency_Exception If the feature dependency is not available or not active.
 	 */
 	private function validate_dependency( array $feature, $new_state ) {
 		$rollback = function ( $feature_option_key, $state ) {
@@ -936,7 +939,7 @@ class Manager extends Base_Object {
 	 * @param array $experimental_data
 	 * @return array
 	 *
-	 * @throws Dependency_Exception If the feature dependency is not initialized or depends on a hidden experiment.
+	 * @throws Exceptions\Dependency_Exception If the feature dependency is not initialized or depends on a hidden experiment.
 	 */
 	private function initialize_feature_dependencies( array $experimental_data ): array {
 		foreach ( $experimental_data['dependencies'] as $key => $dependency ) {

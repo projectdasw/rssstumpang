@@ -7,7 +7,6 @@ namespace PremiumAddons\Includes;
 
 // Premium Addons Pro Classes.
 use PremiumAddonsPro\Includes\White_Label\Helper;
-
 use PremiumAddons\Admin\Includes\Admin_Helper;
 
 // Elementor Classes.
@@ -548,36 +547,43 @@ class Helper_Functions {
 
 		$vimeo_data = get_transient( 'premium_vimeo_' . $video_id );
 
-		if( $vimeo_data === false ) {
+		if ( false === $vimeo_data ) {
 
-			$vimeo_data = wp_remote_get( 'http://www.vimeo.com/api/v2/video/' . intval( $video_id ) . '.php' );
+			$response = wp_remote_get(
+				'https://vimeo.com/api/oembed.json?url=' . rawurlencode( 'https://vimeo.com/' . intval( $video_id ) ) . '&width=1280',
+				array(
+					'timeout'   => 5,
+					'sslverify' => true,
+				)
+			);
 
-			if ( is_wp_error( $vimeo_data ) ) {
+			if ( is_wp_error( $response ) ) {
 				return false;
 			}
 
-			if ( isset( $vimeo_data['response']['code'] ) ) {
+			$status_code = wp_remote_retrieve_response_code( $response );
 
-				if ( 200 === $vimeo_data['response']['code'] ) {
+			if ( 200 === $status_code ) {
 
-					$response  = maybe_unserialize( $vimeo_data['body'] );
-					$thumbnail = isset( $response[0]['thumbnail_large'] ) ? $response[0]['thumbnail_large'] : false;
+				$body = json_decode( wp_remote_retrieve_body( $response ), true );
 
-					$data = array(
-						'src'      => $thumbnail,
-						'url'      => $response[0]['user_url'],
-						'portrait' => $response[0]['user_portrait_huge'],
-						'title'    => $response[0]['title'],
-						'user'     => $response[0]['user_name'],
-					);
-
-					set_transient( 'premium_vimeo_' . $video_id, $data, WEEK_IN_SECONDS );
-
-					return $data;
-
+				if ( ! is_array( $body ) ) {
+					return false;
 				}
-			}
 
+				$vimeo_data = array(
+					'src'      => isset( $body['thumbnail_url'] ) ? $body['thumbnail_url'] : false,
+					'url'      => isset( $body['author_url'] ) ? $body['author_url'] : false,
+					'portrait' => false,
+					'title'    => isset( $body['title'] ) ? $body['title'] : false,
+					'user'     => isset( $body['author_name'] ) ? $body['author_name'] : false,
+				);
+
+				set_transient( 'premium_vimeo_' . $video_id, $vimeo_data, WEEK_IN_SECONDS );
+
+				return $vimeo_data;
+
+			}
 		}
 
 		return $vimeo_data;
@@ -612,16 +618,33 @@ class Helper_Functions {
 			$thumbnail_src = is_array( $vimeo ) ? $vimeo['src'] : '';
 
 		} elseif ( 'dailymotion' === $type ) {
-			$video_data = wp_remote_get( 'https://api.dailymotion.com/video/' . $video_id . '?fields=thumbnail_url' );
 
-			if ( is_wp_error( $video_data ) || 200 !== wp_remote_retrieve_response_code( $video_data ) ) {
-				return $thumbnail_src;
+			$cache_key = 'pa_dm_' . $video_id;
+
+			$thumbnail_src = get_transient( $cache_key );
+
+			if ( false === $thumbnail_src ) {
+
+				$video_data = wp_remote_get(
+					'https://api.dailymotion.com/video/' . $video_id . '?fields=thumbnail_url',
+					array(
+						'timeout'   => 5,
+						'sslverify' => true,
+					)
+				);
+
+				if ( is_wp_error( $video_data ) || 200 !== wp_remote_retrieve_response_code( $video_data ) ) {
+					$thumbnail_src = 'transparent';
+				} else {
+					$video_data = wp_remote_retrieve_body( $video_data );
+					$video_data = json_decode( $video_data );
+
+					$thumbnail_src = isset( $video_data->thumbnail_url ) ? $video_data->thumbnail_url : 'transparent';
+				}
+
+				set_transient( $cache_key, $thumbnail_src, WEEK_IN_SECONDS );
+
 			}
-
-			$video_data = wp_remote_retrieve_body( $video_data );
-			$video_data = json_decode( $video_data );
-
-			$thumbnail_src = $video_data->thumbnail_url;
 		}
 
 		return $thumbnail_src;
@@ -734,7 +757,21 @@ class Helper_Functions {
 	}
 
 	/**
-	 * Valide HTML Tag
+	 * Check Elementor Version
+	 *
+	 * Check if Elementor is installed and activated
+	 *
+	 * @since 4.11.54
+	 * @access public
+	 *
+	 * @return boolean
+	 */
+	public static function check_elementor_version() {
+		return defined( 'ELEMENTOR_VERSION' ) && class_exists( 'Elementor\Plugin' );
+	}
+
+	/**
+	 * Validate HTML Tag
 	 *
 	 * Validates an HTML tag against a safe allowed list.
 	 *
@@ -743,7 +780,8 @@ class Helper_Functions {
 	 * @return string
 	 */
 	public static function validate_html_tag( $tag ) {
-		return in_array( strtolower( $tag ), self::ALLOWED_HTML_WRAPPER_TAGS, true ) ? $tag : 'div';
+		$tag = strtolower( (string) $tag );
+		return in_array( $tag, self::ALLOWED_HTML_WRAPPER_TAGS, true ) ? $tag : 'div';
 	}
 
 	/**
@@ -899,9 +937,17 @@ class Helper_Functions {
 	 */
 	public static function get_location_time_zone() {
 
+		static $cached_timezone = null;
+
+		if ( null !== $cached_timezone ) {
+			return $cached_timezone;
+		}
+
 		$ip_address = self::get_user_ip_address();
 
-		return self::get_timezone_by_ip( $ip_address );
+		$cached_timezone = self::get_timezone_by_ip( $ip_address );
+
+		return $cached_timezone;
 	}
 
 	/**
@@ -914,20 +960,73 @@ class Helper_Functions {
 	 */
 	public static function get_user_ip_address() {
 
+		$ip_address = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+
 		if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
 
 			$x_forward = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) );
 
-			if ( is_array( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+			$ips = explode( ',', $x_forward );
 
-				$http_x_headers         = explode( ',', filter_var_array( $x_forward ) );
-				$_SERVER['REMOTE_ADDR'] = $http_x_headers[0];
-			} else {
-				$_SERVER['REMOTE_ADDR'] = $x_forward;
+			if ( ! empty( $ips ) ) {
+				$ip_address = trim( $ips[0] );
 			}
 		}
 
-		return isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+		return '::1' === $ip_address ? '127.0.0.1' : $ip_address;
+	}
+
+	/**
+	 * Get IP location data.
+	 *
+	 * Uses multi-layered caching (object cache + transients) to optimize performance.
+	 *
+	 * @access public
+	 * @since 4.11.54
+	 *
+	 * @param string $ip_address user's ip address.
+	 *
+	 * @return array|false
+	 */
+	public static function get_ip_location_data( $ip_address ) {
+
+		if ( '127.0.0.1' === $ip_address || empty( $ip_address ) ) {
+			return false;
+		}
+
+		$cache_key = 'pa_ip_loc_' . md5( $ip_address );
+
+		$location_data = wp_cache_get( $cache_key, 'premium_addons' );
+
+		if ( false === $location_data ) {
+
+			$location_data = get_transient( $cache_key );
+
+			if ( false === $location_data ) {
+
+				$response = wp_remote_get(
+					'https://api.findip.net/' . $ip_address . '/?token=e21d68c353324af0af206c907e77ff97',
+					array(
+						'timeout'   => 15,
+						'sslverify' => true,
+					)
+				);
+
+				if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+					return false;
+				}
+
+				$location_data = json_decode( wp_remote_retrieve_body( $response ), true );
+
+				set_transient( $cache_key, $location_data, 24 * HOUR_IN_SECONDS );
+
+			}
+
+			wp_cache_set( $cache_key, $location_data, 'premium_addons' );
+
+		}
+
+		return $location_data;
 	}
 
 	/**
@@ -942,27 +1041,13 @@ class Helper_Functions {
 	 */
 	public static function get_timezone_by_ip( $ip_address ) {
 
-		if ( '127.0.0.1' === $ip_address || empty( $ip_address ) ) {
+		$location_data = self::get_ip_location_data( $ip_address );
+
+		if ( ! $location_data || ! isset( $location_data['location']['time_zone'] ) ) {
 			return date_default_timezone_get();
 		}
 
-		$location_data = wp_remote_get(
-			'https://api.findip.net/' . $ip_address . '/?token=e21d68c353324af0af206c907e77ff97',
-			array(
-				'timeout'   => 15,
-				'sslverify' => false,
-			)
-		);
-
-		if ( is_wp_error( $location_data ) || empty( $location_data ) ) {
-			return date_default_timezone_get(); // localhost.
-		}
-
-		$location_data = json_decode( wp_remote_retrieve_body( $location_data ), true );
-
-		$time_zone = strtolower( $location_data['location']['time_zone'] );
-
-		return $time_zone;
+		return strtolower( $location_data['location']['time_zone'] );
 	}
 
 	/**
@@ -1148,6 +1233,34 @@ class Helper_Functions {
 		return str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $path );
 	}
 
+	public static function get_safe_url( $url ) {
+		if ( is_ssl() ) {
+			$url = wp_parse_url( $url );
+
+			if ( ! empty( $url['host'] ) ) {
+				$url['scheme'] = 'https';
+			}
+
+			return self::unparse_url( $url );
+		}
+
+		return $url;
+	}
+
+	public static function unparse_url( $parsed_url ) {
+		$scheme   = isset( $parsed_url['scheme'] ) ? $parsed_url['scheme'] . '://' : '';
+		$host     = isset( $parsed_url['host'] ) ? $parsed_url['host'] : '';
+		$port     = isset( $parsed_url['port'] ) ? ':' . $parsed_url['port'] : '';
+		$user     = isset( $parsed_url['user'] ) ? $parsed_url['user'] : '';
+		$pass     = isset( $parsed_url['pass'] ) ? ':' . $parsed_url['pass'] : '';
+		$pass     = ( $user || $pass ) ? "$pass@" : '';
+		$path     = isset( $parsed_url['path'] ) ? $parsed_url['path'] : '';
+		$query    = isset( $parsed_url['query'] ) ? '?' . $parsed_url['query'] : '';
+		$fragment = isset( $parsed_url['fragment'] ) ? '#' . $parsed_url['fragment'] : '';
+
+		return "$scheme$user$pass$host$port$path$query$fragment";
+	}
+
 	/**
 	 * Check if the current post type should include addons.
 	 *
@@ -1300,98 +1413,6 @@ class Helper_Functions {
 	}
 
 	/**
-	 * Get Contact Form Body
-	 *
-	 * @since 4.10.2
-	 * @access public
-	 *
-	 * @param string $preset form preset.
-	 *
-	 * @return void
-	 */
-	public static function get_cf_form_body( $preset ) {
-
-		$forms_array = array(
-
-			'preset1' => '<div class="premium-cf-full"><label class="premium-cf-label">Email</label>
-            [email* email-1 class:premium-cf-field placeholder "john@smith.com"]</div>
-            [submit "Subscribe"]',
-
-			'preset2' => '<div class="premium-cf-full"><label class="premium-cf-label">Name</label>
-            [text* text-1 class:premium-cf-field placeholder "John Smith"]</div>
-
-            <div class="premium-cf-full"><label class="premium-cf-label">Email</label>
-            [email* email-1 class:premium-cf-field placeholder "john@smith.com"]</div>
-
-            [submit "Send"]',
-
-			'preset3' => '<div class="premium-cf-full"><label class="premium-cf-label">Name</label>
-            [text* text-1 class:premium-cf-field placeholder "John Smith"]</div>
-
-            <div class="premium-cf-full"><label class="premium-cf-label">Email</label>
-            [email* email-1 class:premium-cf-field placeholder "john@smith.com"]</div>
-
-            <div class="premium-cf-full"><label class="premium-cf-label">Message</label>
-            [textarea* textarea-1 class:premium-cf-field placeholder "Enter your message here..."]</div>
-
-            [submit "Send"]',
-
-			'preset4' => '<div class="premium-cf-half"><label class="premium-cf-label">Name</label>
-            [text* text-1 class:premium-cf-field placeholder "John Smith"]</div>
-
-            <div class="premium-cf-half"><label class="premium-cf-label">Email</label>
-            [email* email-1 class:premium-cf-field placeholder "john@smith.com"]</div>
-
-            <div class="premium-cf-full"><label class="premium-cf-label">Message</label>
-            [textarea* textarea-1 class:premium-cf-field placeholder "Enter your message here..."]</div>
-
-            [submit "Send"]',
-
-			'preset5' => '<div class="premium-cf-half"><label class="premium-cf-label">First Name</label>
-            [text* text-1 class:premium-cf-field placeholder "John"]</div>
-
-            <div class="premium-cf-half"><label class="premium-cf-label">Last Name</label>
-            [text* text-2 class:premium-cf-field placeholder "Smith"]</div>
-
-            <div class="premium-cf-half"><label class="premium-cf-label">Email</label>
-            [email* email-1 class:premium-cf-field placeholder "john@smith.com"]</div>
-
-            <div class="premium-cf-half"><label class="premium-cf-label">Phone</label>
-            [tel* tel-1 class:premium-cf-field placeholder "+13137262547"]</div>
-
-            <div class="premium-cf-full"><label class="premium-cf-label">Gender</label>
-            [select menu-1 "Male" "Female"]</div>
-
-            <div class="premium-cf-full"><label class="premium-cf-label">Message</label>
-            [textarea* textarea-1 class:premium-cf-field placeholder "Enter your message here..."]</div>
-            [submit "Send"]',
-
-			'preset6' => '<div class="premium-cf-half"><label class="premium-cf-label">First Name</label>
-            [text* text-1 class:premium-cf-field placeholder "John"]</div>
-
-            <div class="premium-cf-half"><label class="premium-cf-label">Last Name</label>
-            [text* text-2 class:premium-cf-field placeholder "Smith"]</div>
-
-            <div class="premium-cf-half"><label class="premium-cf-label">Email</label>
-            [email* email-1 class:premium-cf-field placeholder "john@smith.com"]</div>
-
-            <div class="premium-cf-half"><label class="premium-cf-label">Phone</label>
-            [tel* tel-1 class:premium-cf-field placeholder "+13137262547"]</div>
-
-			<div class="premium-cf-full"><label class="premium-cf-label">Company Size</label>
-            [radio radio-1 default:1 "1-10 employees" "11-30 employees" "30-50 employees" "Above 50 employee"]
-			</div>
-
-            <div class="premium-cf-full"><label class="premium-cf-label">Message</label>
-            [textarea* textarea-1 class:premium-cf-field placeholder "Enter your message here..."]</div>
-            [submit "Send"]',
-
-		);
-
-		return $forms_array[ $preset ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}
-
-	/**
 	 * Render Rating Stars
 	 *
 	 * @since 4.10.13
@@ -1442,7 +1463,7 @@ class Helper_Functions {
 
 		if ( null === self::$shapes ) {
 
-			self::$shapes = require PREMIUM_ADDONS_PATH . 'modules/premium-shape-divider/shapes.php';
+			self::$shapes = require PREMIUM_ADDONS_PATH . 'addons/shapes.php';
 
 		}
 
@@ -1515,6 +1536,21 @@ class Helper_Functions {
 				'separator'   => 'before',
 				'label_block' => true,
 				'condition'   => $conditions,
+			)
+		);
+
+		$elem->add_control(
+			'button_hover_effect_notice',
+			array(
+				'raw'             => __( 'Important: You need to set a background to the button to see the effects.', 'premium-addons-for-elementor' ),
+				'type'            => Controls_Manager::RAW_HTML,
+				'content_classes' => 'elementor-panel-alert elementor-panel-alert-warning',
+				'condition'       => array_merge(
+					$conditions,
+					array(
+						'premium_button_hover_effect!' => 'none',
+					)
+				),
 			)
 		);
 
@@ -1615,7 +1651,7 @@ class Helper_Functions {
 
 		if ( ! self::check_papro_version() ) {
 
-			$pro_link = Helper_Functions::get_campaign_link( 'https://premiumaddons.com/pro/#get-pa-pro', $keyword, 'wp-editor', 'get-pro' );
+			$pro_link = self::get_campaign_link( 'https://premiumaddons.com/pro/#get-pa-pro', $keyword, 'wp-editor', 'get-pro' );
 
 			$element->start_controls_section(
 				'section_pro_features_field',
@@ -1630,12 +1666,46 @@ class Helper_Functions {
 					'type'        => Controls_Manager::NOTICE,
 					'notice_type' => 'info',
 					'dismissible' => false,
-					'content'     => __( '<b>Build smarter and faster</b> with premium widgets, 580+ container blocks, and advanced customization controls — all available in the <a href="'. esc_url( $pro_link ) .'" target="_blank">PA Pro</a>. <b>Save up to 25%!</b>.', 'premium-addons-for-elementor' ),
+					'content'     => __( '<b>Build smarter and faster</b> with premium widgets, 580+ container blocks, and advanced customization controls — all available in the <a href="' . esc_url( $pro_link ) . '" target="_blank">PA Pro</a>. <b>Save up to 20%!</b>.', 'premium-addons-for-elementor' ),
 				)
 			);
 
 			$element->end_controls_section();
 		}
+	}
+
+	/**
+	 * Register Element Feedback Controls
+	 *
+	 * @since 4.11.36
+	 * @access public
+	 *
+	 * @param object $element widget object.
+	 */
+	public static function register_element_feedback_controls( $element ) {
+
+		$element->add_control(
+			'feedback_message',
+			array(
+				'label'       => __( 'Feedback & Feature Request', 'premium-addons-for-elementor' ),
+				'type'        => Controls_Manager::TEXTAREA,
+				'placeholder' => __( 'Share your feedback or feature request here...', 'premium-addons-for-elementor' ),
+				'label_block' => true,
+				'render_type' => 'ui',
+				'ai'          => array(
+					'active' => false,
+				),
+			)
+		);
+
+		$element->add_control(
+			'feedback_message_submit',
+			array(
+				'type'        => Controls_Manager::RAW_HTML,
+				'raw'         => '<form onsubmit="submitFeedbackMessage(this,\'' . $element->get_title() . '\');" action="javascript:void(0);"><input type="submit" value="Send Feedback" class="elementor-button" style="background-color: rgba(207, 211, 215, 0.35); color: #000;"></form>',
+				'label_block' => true,
+			)
+		);
 	}
 
 	/**
@@ -1652,7 +1722,7 @@ class Helper_Functions {
 
 		$class = '';
 
-		$papro_activated = apply_filters( 'papro_activated', false );
+		$papro_activated = self::check_papro_version();
 
 		if ( ! $papro_activated && ! in_array( $settings['premium_button_hover_effect'], array( 'none', 'style1', 'style2' ) ) ) {
 			return '';
@@ -1770,7 +1840,7 @@ class Helper_Functions {
 		// If icon library is SVG, then go to Elementor. Used for widgets where this function is called in all cases.
 		if ( false === strpos( $icon['library'], 'fa-' ) ) {
 
-			if( is_string( $attributes ) ) {
+			if ( is_string( $attributes ) ) {
 				$attributes = str_replace( '"', '', $attributes );
 			}
 
@@ -1838,6 +1908,14 @@ class Helper_Functions {
 			return;
 		}
 
+		$cache_key = 'pa_tpl_id_' . md5( $title );
+
+		$post_id = wp_cache_get( $cache_key, 'premium_addons' );
+
+		if ( false !== $post_id ) {
+			return $post_id;
+		}
+
 		$args = array(
 			'post_type'        => 'elementor_library',
 			'post_status'      => 'publish',
@@ -1855,6 +1933,8 @@ class Helper_Functions {
 
 			wp_reset_postdata();
 		}
+
+		wp_cache_set( $cache_key, $post_id, 'premium_addons' );
 
 		return $post_id;
 	}
@@ -1898,5 +1978,298 @@ class Helper_Functions {
 		$template_content = $frontend->get_builder_content_for_display( $id, true );
 
 		return $template_content;
+	}
+
+	/**
+	 * Get Device Type
+	 *
+	 * @since 4.11.50
+	 * @access public
+	 *
+	 * @return string device type.
+	 */
+	public static function get_device_type() {
+
+		static $device_type = null;
+
+		// Return cached result if already detected.
+		if ( null !== $device_type ) {
+			return $device_type;
+		}
+
+		// Default to desktop.
+		$device_type = 'desktop';
+
+		// Only load Device_Detector if not already loaded.
+		if ( ! class_exists( 'PremiumAddons\Includes\Helpers\Device_Detector' ) ) {
+			require_once PREMIUM_ADDONS_PATH . 'includes/helpers/device-detector.php';
+		}
+
+		$detect = new Helpers\Device_Detector();
+
+		// Detect device type with priority: tablet > mobile > desktop.
+		if ( $detect->isTablet() ) {
+			$device_type = 'tablet';
+		} elseif ( $detect->isMobile() ) {
+			$device_type = 'mobile';
+		}
+
+		return $device_type;
+	}
+
+	/**
+	 * Get Widget Class Name
+	 *
+	 * @since 4.11.51
+	 * @access public
+	 *
+	 * @param string $widget_key Widget slug/key, e.g. 'premium-banner'.
+	 * @return string|false Fully-qualified class name on success, false on failure.
+	 */
+	public static function get_widget_class_name( $widget_key ) {
+
+		static $classes_list = null;
+
+		$default_namespace = 'PremiumAddons\\Widgets\\';
+
+		// load the map once.
+		if ( null === $classes_list ) {
+
+			$map_file = PREMIUM_ADDONS_PATH . 'includes/helpers/widget-class-map.php';
+
+			if ( file_exists( $map_file ) ) {
+
+				$map          = include $map_file;
+				$classes_list = is_array( $map ) ? $map : array();
+			} else {
+				$classes_list = array();
+			}
+		}
+
+		if ( empty( $widget_key ) || ! is_string( $widget_key ) ) {
+			return false;
+		}
+
+		if ( ! isset( $classes_list[ $widget_key ] ) ) {
+			return false;
+		}
+
+		$class_name = $classes_list[ $widget_key ];
+
+		if ( is_string( $class_name ) && false !== strpos( $class_name, '\\' ) ) {
+			return $class_name;
+		}
+
+		// Otherwise treat as short class name and prepend the default namespace.
+		$short_class = (string) $class_name;
+		$full_class  = rtrim( $default_namespace, '\\' ) . '\\' . ltrim( $short_class, '\\' );
+
+		return $full_class;
+	}
+
+	/**
+	 * Get Enabled Widgets
+	 *
+	 * @since 4.11.54
+	 * @access public
+	 *
+	 * @return array enabled widgets.
+	 */
+	public static function get_enabled_widgets() {
+
+		$enabled_elements = Admin_Helper::get_enabled_elements();
+
+		$enabled_elements = array_filter(
+			$enabled_elements,
+			function ( $value, $key ) {
+				return ( strpos( $key, 'premium-' ) === 0 || strpos( $key, 'mini-' ) === 0 || strpos( $key, 'woo-' ) === 0 ) && filter_var( $value, FILTER_VALIDATE_BOOLEAN );
+			},
+			ARRAY_FILTER_USE_BOTH
+		);
+
+		return array_keys( $enabled_elements );
+	}
+
+	/*
+	 * Get Enabled Widgets Names
+	 *
+	 * @since 4.11.54
+	 * @access public
+	 *
+	 * @return array enabled widgets names.
+	 */
+	public static function get_enabled_widgets_names() {
+
+		$enabled_elements = self::get_enabled_widgets();
+
+		$enabled_names = array();
+
+		$map_file = PREMIUM_ADDONS_PATH . 'includes/helpers/widget-name-map.php';
+
+		if ( file_exists( $map_file ) ) {
+
+			$map        = include $map_file;
+			$names_list = is_array( $map ) ? $map : array();
+		} else {
+			$names_list = array();
+		}
+
+		foreach ( $enabled_elements as $key ) {
+
+			$widget_name     = isset( $names_list[ $key ] ) ? $names_list[ $key ] : $key;
+			$enabled_names[] = $widget_name;
+		}
+
+		return $enabled_names;
+	}
+
+	/**
+	 * Sanitize SVG
+	 *
+	 * Strips dangerous attributes (on* event handlers, javascript: hrefs) and
+	 * disallowed tags from a raw SVG string. Used as sanitize_callback for
+	 * custom_svg controls to prevent Stored XSS (CVE-2026-4790).
+	 *
+	 * @since 4.11.71
+	 * @access public
+	 *
+	 * @param string $svg Raw SVG input.
+	 * @return string Sanitized SVG string.
+	 */
+	public static function sanitize_svg( $svg ) {
+
+		$allowed_tags = array(
+			'svg'      => array(
+				'xmlns'       => array(),
+				'xmlns:xlink' => array(),
+				'viewbox'     => array(),
+				'width'       => array(),
+				'height'      => array(),
+				'fill'        => array(),
+				'stroke'      => array(),
+				'class'       => array(),
+				'id'          => array(),
+				'role'        => array(),
+				'aria-hidden' => array(),
+				'aria-label'  => array(),
+				'focusable'   => array(),
+				'style'       => array(),
+			),
+			'circle'   => array(
+				'cx'           => array(),
+				'cy'           => array(),
+				'r'            => array(),
+				'fill'         => array(),
+				'stroke'       => array(),
+				'stroke-width' => array(),
+				'class'        => array(),
+				'id'           => array(),
+				'style'        => array(),
+			),
+			'ellipse'  => array(
+				'cx'           => array(),
+				'cy'           => array(),
+				'rx'           => array(),
+				'ry'           => array(),
+				'fill'         => array(),
+				'stroke'       => array(),
+				'stroke-width' => array(),
+				'class'        => array(),
+				'id'           => array(),
+				'style'        => array(),
+			),
+			'rect'     => array(
+				'x'            => array(),
+				'y'            => array(),
+				'width'        => array(),
+				'height'       => array(),
+				'rx'           => array(),
+				'ry'           => array(),
+				'fill'         => array(),
+				'stroke'       => array(),
+				'stroke-width' => array(),
+				'class'        => array(),
+				'id'           => array(),
+				'style'        => array(),
+			),
+			'line'     => array(
+				'x1'           => array(),
+				'y1'           => array(),
+				'x2'           => array(),
+				'y2'           => array(),
+				'stroke'       => array(),
+				'stroke-width' => array(),
+				'class'        => array(),
+				'id'           => array(),
+				'style'        => array(),
+			),
+			'polyline' => array(
+				'points'       => array(),
+				'fill'         => array(),
+				'stroke'       => array(),
+				'stroke-width' => array(),
+				'class'        => array(),
+				'id'           => array(),
+				'style'        => array(),
+			),
+			'polygon'  => array(
+				'points'       => array(),
+				'fill'         => array(),
+				'stroke'       => array(),
+				'stroke-width' => array(),
+				'class'        => array(),
+				'id'           => array(),
+				'style'        => array(),
+			),
+			'path'     => array(
+				'd'            => array(),
+				'fill'         => array(),
+				'stroke'       => array(),
+				'stroke-width' => array(),
+				'fill-rule'    => array(),
+				'clip-rule'    => array(),
+				'class'        => array(),
+				'id'           => array(),
+				'style'        => array(),
+			),
+			'g'        => array(
+				'fill'      => array(),
+				'stroke'    => array(),
+				'transform' => array(),
+				'class'     => array(),
+				'id'        => array(),
+				'style'     => array(),
+			),
+			'defs'     => array(
+				'class' => array(),
+				'id'    => array(),
+			),
+			'text'     => array(
+				'x'           => array(),
+				'y'           => array(),
+				'dx'          => array(),
+				'dy'          => array(),
+				'fill'        => array(),
+				'font-size'   => array(),
+				'font-family' => array(),
+				'text-anchor' => array(),
+				'class'       => array(),
+				'id'          => array(),
+				'style'       => array(),
+			),
+			'tspan'    => array(
+				'x'     => array(),
+				'y'     => array(),
+				'dx'    => array(),
+				'dy'    => array(),
+				'class' => array(),
+				'id'    => array(),
+				'style' => array(),
+			),
+			'title'    => array(),
+			'desc'     => array(),
+		);
+
+		return wp_kses( $svg, $allowed_tags );
 	}
 }

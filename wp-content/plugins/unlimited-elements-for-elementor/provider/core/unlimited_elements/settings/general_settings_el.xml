@@ -120,6 +120,33 @@
            label="Edit Pro Settings"
            description="Edit Pro Settings for the Widgets">
     </field>
+
+    <field name="allow_upload_file_types"
+      type="statictext"
+      label="Allow Upload File Types">
+    </field>
+	
+    <field name="allow_upload_documents"
+      type="checkbox"
+      default="false"
+      addfield="allow_upload_zip,allow_upload_svg"
+      label="unite_setting_notext"
+      text_near="Documents (pdf, doc, docx, ppt etc...) ">
+    </field>
+
+    <field name="allow_upload_zip"
+      type="checkbox"
+      default="false"
+      label="unite_setting_notext"
+      text_near="Zip ">
+    </field>
+
+    <field name="allow_upload_svg"
+      type="checkbox"
+      default="false"
+      label="unite_setting_notext"
+      text_near="SVG">
+    </field>
 	
   </fieldset>
   
@@ -236,6 +263,25 @@
       label="Exchange Rate API Key"
       description="Used in currency exchange related widgets. Get your API key &lt;a href='https://app.exchangerate-api.com/sign-up' target='_blank'&gt;here&lt;/a&gt;."
       default="">
+    </field>
+
+    <field name="serpapi_heading"
+      type="statictext"
+      label="&lt;b&gt;Serp API&lt;/b&gt;">
+    </field>
+
+    <field name="serpapi_key"
+      type="text"
+      label="Serp API Key"
+      description="Used for google reviews. Get your API key here: &lt;a href='https://serpapi.com/' target='_blank'&gt;serpapi.com&lt;/a&gt;."
+      default="">
+    </field>
+
+    <field name="serpapi_requests_log_button"
+      type="button"
+      value="Show Requests Log"
+      gotoview="requests-log"
+      label=" ">
     </field>
 
     <field name="wpml_heading"
@@ -470,6 +516,14 @@
       value="Show DB Tables"
       gotoview="troubleshooting-tables"
       label="Show The DB Tables available"
+    >
+    </field>
+
+    <field name="text_showobjects_button"
+      type="button"
+      value="Show Objects"
+      gotoview="troubleshooting-showobjects"
+      label="Show objects - like posts or terms"
     >
     </field>
     

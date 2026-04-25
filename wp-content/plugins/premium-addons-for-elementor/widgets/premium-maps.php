@@ -94,7 +94,7 @@ class Premium_Maps extends Widget_Base {
 	 */
 	public function get_style_depends() {
 
-		$icons_css = apply_filters( 'papro_activated', false ) ? array( 'elementor-icons' ) : array();
+		$icons_css = Helper_Functions::check_papro_version() ? array( 'elementor-icons' ) : array();
 
 		return array_merge(
 			$icons_css,
@@ -225,6 +225,9 @@ class Premium_Maps extends Widget_Base {
 				'condition'   => array(
 					'premium_map_ip_location!' => 'true',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -239,6 +242,9 @@ class Premium_Maps extends Widget_Base {
 				'label_block' => true,
 				'condition'   => array(
 					'premium_map_ip_location!' => 'true',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -346,7 +352,7 @@ class Premium_Maps extends Widget_Base {
 
 		$get_pro = Helper_Functions::get_campaign_link( 'https://premiumaddons.com/pro', 'maps-widget', 'wp-editor', 'get-pro' );
 
-		$papro_activated = apply_filters( 'papro_activated', false );
+		$papro_activated = Helper_Functions::check_papro_version();
 
 		if ( ! $papro_activated ) {
 			$repeater->add_control(
@@ -477,6 +483,9 @@ class Premium_Maps extends Widget_Base {
 					esc_html__( 'Get the Google Map ID from %s. You can leave it empty, but this will use the old Google Maps API.', 'premium-addons-for-elementor' ),
 					'<a href="https://developers.google.com/maps/documentation/javascript/map-ids/get-map-id" target="_blank">' . esc_html__( 'here', 'premium-addons-for-elementor' ) . '</a>'
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -517,19 +526,22 @@ class Premium_Maps extends Widget_Base {
 			)
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'premium_maps_map_zoom',
 			array(
-				'label'   => __( 'Zoom', 'premium-addons-for-elementor' ),
-				'type'    => Controls_Manager::SLIDER,
-				'default' => array(
+				'label'     => __( 'Zoom', 'premium-addons-for-elementor' ),
+				'type'      => Controls_Manager::SLIDER,
+				'default'   => array(
 					'size' => 12,
 				),
-				'range'   => array(
+				'range'     => array(
 					'px' => array(
 						'min' => 0,
 						'max' => 22,
 					),
+				),
+				'selectors' => array(
+					'{{WRAPPER}}' => '--pa-map-zoom: {{SIZE}}',
 				),
 			)
 		);
@@ -671,6 +683,9 @@ class Premium_Maps extends Widget_Base {
 				'description' => __( 'Add the CSS ID given to Premium Carousel to link carousel slides with the maps marker. ', 'premium-addons-for-elementor' ) .
 					'<a href="https://premiumaddons.com/docs/how-to-link-google-maps-markers-carousel/" target="_blank">' . __( 'Learn more', 'premium-addons-for-elementor' ) . '</a>',
 				'label_block' => true,
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -690,6 +705,9 @@ class Premium_Maps extends Widget_Base {
 				'type'        => Controls_Manager::TEXTAREA,
 				'description' => 'Get your custom styling from <a href="https://snazzymaps.com/" target="_blank">here</a>',
 				'label_block' => true,
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -723,6 +741,8 @@ class Premium_Maps extends Widget_Base {
 				'content_classes' => 'editor-pa-doc',
 			)
 		);
+
+		Helper_Functions::register_element_feedback_controls( $this );
 
 		$this->end_controls_section();
 
@@ -1154,7 +1174,7 @@ class Premium_Maps extends Widget_Base {
 	 */
 	protected function render() {
 
-		$papro_activated = apply_filters( 'papro_activated', false );
+		$papro_activated = Helper_Functions::check_papro_version();
 
 		$settings = $this->get_settings_for_display();
 
@@ -1201,32 +1221,21 @@ class Premium_Maps extends Widget_Base {
 
 		if ( 'true' === $ip_location ) {
 
-			require_once PREMIUM_ADDONS_PATH . 'widgets/dep/urlopen.php';
+			$ip_address = Helper_Functions::get_user_ip_address();
 
-			if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+			$env = Helper_Functions::get_ip_location_data( $ip_address );
 
-				$http_x_headers = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) );
-
-				if ( is_array( $http_x_headers ) ) {
-					$http_x_headers = explode( ',', filter_var_array( $http_x_headers ) );
-				}
-
-				$_SERVER['REMOTE_ADDR'] = $http_x_headers[0];
+			if ( ! $env ) {
+				return;
 			}
 
-			$ip_address = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+			$centerlat = isset( $env['location']['latitude'] ) ? $env['location']['latitude'] : $centerlat;
 
-			$env = unserialize( rplg_urlopen( "http://www.geoplugin.net/php.gp?ip=$ip_address" )['data'] );
-
-			$centerlat = isset( $env['geoplugin_latitude'] ) ? $env['geoplugin_latitude'] : $centerlat;
-
-			$centerlong = isset( $env['geoplugin_longitude'] ) ? $env['geoplugin_longitude'] : $centerlong;
-
+			$centerlong = isset( $env['location']['longitude'] ) ? $env['location']['longitude'] : $centerlong;
 		}
 
 		$map_settings = array(
 			'mapId'             => $settings['premium_map_id'],
-			'zoom'              => $settings['premium_maps_map_zoom']['size'],
 			'maptype'           => $settings['premium_maps_map_type'],
 			'streetViewControl' => $street_view,
 			'centerlat'         => $centerlat,
@@ -1391,7 +1400,7 @@ class Premium_Maps extends Widget_Base {
 						<?php endif; ?>
 
 						<div class='premium-maps-info-img'>
-							<img src='<?php echo esc_attr( $pin['pin_img']['url'] ); ?>' alt='<?php echo esc_attr( $pin['pin_img']['alt'] ); ?>'>
+							<img src='<?php echo esc_attr( $pin['pin_img']['url'] ); ?>' alt='<?php echo esc_attr( isset( $pin['pin_img']['alt'] ) ? $pin['pin_img']['alt'] : '' ); ?>'>
 						</div>
 
 

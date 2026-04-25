@@ -1,6 +1,11 @@
 (function ($) {
 	$(window).on('elementor/frontend/init', function () {
 
+		//Prevent initialization of the same widget more than once
+		if ('undefined' !== typeof paElementsHandler && paElementsHandler.isElementAlreadyExists('paTestimonial')) {
+			return false;
+		}
+
 		var PremiumTestimonialsHandler = elementorModules.frontend.handlers.Base.extend({
 
 			getDefaultSettings: function () {
@@ -44,25 +49,26 @@
 					rtl = this.elements.$multipleTestimonials.data("rtl"),
 					colsNumber = 'skin4' !== settings.skin ? parseInt(100 / settings.testimonials_per_row.substr(0, settings.testimonials_per_row.indexOf('%'))) : 1,
 					colsTablet = 'skin4' !== settings.skin ? parseInt(100 / settings.testimonials_per_row_tablet.substr(0, settings.testimonials_per_row_tablet.indexOf('%'))) : 1,
-					colsMobile = 'skin4' !== settings.skin ? parseInt(100 / settings.testimonials_per_row_mobile.substr(0, settings.testimonials_per_row_mobile.indexOf('%'))) : 1;
+					colsMobile = 'skin4' !== settings.skin ? parseInt(100 / settings.testimonials_per_row_mobile.substr(0, settings.testimonials_per_row_mobile.indexOf('%'))) : 1,
+					slidesToScroll = parseFloat(getComputedStyle(this.$element[0]).getPropertyValue('--pa-carousel-slides'));
 
 				return Object.assign(this.getSettings('slick'), {
 
 					slide: '.premium-testimonial-container',
 					slidesToShow: colsNumber,
-					slidesToScroll: colsNumber,
+					slidesToScroll: slidesToScroll || colsNumber,
 					responsive: [{
 						breakpoint: 1025,
 						settings: {
 							slidesToShow: colsTablet,
-							slidesToScroll: 1
+							slidesToScroll: slidesToScroll || 1
 						}
 					},
 					{
 						breakpoint: 768,
 						settings: {
 							slidesToShow: colsMobile,
-							slidesToScroll: 1
+							slidesToScroll: slidesToScroll || 1
 						}
 					}
 					],
@@ -72,7 +78,8 @@
 					speed: 500,
 					// arrows: 'skin4' !== settings.skin ? true : false,
 					arrows: true,
-					fade: 'skin4' === settings.skin ? true : false
+					fade: 'skin4' === settings.skin ? true : false,
+					accessibility: false
 
 				});
 
@@ -110,6 +117,7 @@
 
 				var settings = this.getElementSettings(),
 					skin = settings.skin,
+					layout = settings.premium_testimonial_layout,
 					carousel = 'skin4' !== skin ? settings.carousel : true;
 
 				if (carousel) {
@@ -147,7 +155,8 @@
 							speed: 500,
 							autoplay: settings.carousel_play,
 							autoplaySpeed: settings.speed || 5000,
-							rtl: false
+							rtl: false,
+							accessibility: false
 						});
 
 						$multipleTestimonials.slick('slickGoTo', 1);
@@ -177,9 +186,19 @@
 					if ('none' !== settings.arrows_lq_effect) {
 						this.$element.find('a.slick-arrow').addClass('premium-con-lq__' + settings.arrows_lq_effect);
 					}
-
 				}
 
+				if ("masonry" === layout && !carousel) {
+					this.$element.imagesLoaded(function () {
+						$multipleTestimonials.isotope({
+							itemSelector: ".premium-testimonial-container",
+							percentPosition: true,
+							masonry: {
+								columnWidth: ".premium-testimonial-container"
+							}
+						});
+					});
+				}
 			}
 
 		});

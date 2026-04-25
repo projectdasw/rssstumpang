@@ -1008,3 +1008,11 @@ html:not([dir="rtl"]) .premium-promotion-pro-btn {
 .elementor-panel .elementor-control-global_cursor_notice .elementor-panel-alert {
 	font-style: normal;
 }
+
+.elementor-control-thumb_source .elementor-control-field-description {
+	margin-bottom: 10px;
+}
+
+.elementor-control-premium_testimonial_layout .elementor-choices label {
+	font-size: 18px;
+}

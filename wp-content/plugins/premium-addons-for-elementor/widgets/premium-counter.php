@@ -253,6 +253,9 @@ class Premium_Counter extends Widget_Base {
 				'dynamic'     => array( 'active' => true ),
 				'description' => __( 'Separator converts 125000 into 125,000', 'premium-addons-for-elementor' ),
 				'default'     => ',',
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -410,6 +413,9 @@ class Premium_Counter extends Widget_Base {
 						'premium_counter_icon_image' => 'svg',
 					)
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -424,6 +430,9 @@ class Premium_Counter extends Widget_Base {
 				'condition'   => array(
 					'premium_counter_icon_image' => 'animation',
 					'icon_switcher'              => 'yes',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -789,6 +798,8 @@ class Premium_Counter extends Widget_Base {
 			)
 		);
 
+		Helper_Functions::register_element_feedback_controls( $this );
+
 		$this->end_controls_section();
 
 		Helper_Functions::register_papro_promotion_controls( $this, 'counter' );
@@ -1100,6 +1111,9 @@ class Premium_Counter extends Widget_Base {
 				'condition' => array(
 					'premium_counter_icon_style' => 'design',
 					'icon_adv_radius'            => 'yes',
+				),
+				'ai'        => array(
+					'active' => false,
 				),
 			)
 		);
@@ -1572,7 +1586,7 @@ class Premium_Counter extends Widget_Base {
 
 				<?php elseif ( 'svg' === $icon_type ) : ?>
 					<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'icon' ) ); ?>>
-						<?php $this->print_unescaped_setting( 'custom_svg' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo Helper_Functions::sanitize_svg( $this->get_settings_for_display( 'custom_svg' ) ); ?>
 					</div>
 				<?php elseif ( 'custom' === $icon_type && ! empty( $settings['premium_counter_image_upload']['url'] ) ) : ?>
 					<img <?php echo wp_kses_post( $this->get_render_attribute_string( 'image' ) ); ?>>

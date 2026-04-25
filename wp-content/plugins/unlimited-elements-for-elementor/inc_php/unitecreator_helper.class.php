@@ -35,9 +35,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		 * heck if debug by url
 		 */
 		public static function isDebug(){
-			
+
 			$debug = UniteFunctionsUC::getGetVar("ucdebug","",UniteFunctionsUC::SANITIZE_KEY);
-			
+
 			if(empty($debug))
 				return(false);
 
@@ -573,8 +573,23 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 		public static function a________URL_AND_PATH_________(){}
-
-
+		
+		/**
+		 * check if some file exists and is under base path
+		 */
+		public static function isFileUnderBase($filepath){
+						
+			$isUnderBase = UniteFunctionsUC::isPathUnderBase($filepath, GlobalsUC::$path_base);
+			
+			if($isUnderBase == false)
+				return(false);
+		
+			if(is_file($filepath) == false)
+				return(false);
+			
+			return(true);
+		}
+	
 		/**
 		 * convert url to full url
 		 */
@@ -618,34 +633,28 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			return($url);
 		}
 
-		
+
 		/**
 		 * convert some url to relative
 		 */
 		public static function URLtoRelative($url, $isAssets = false){
-			
+
 			$replaceString = GlobalsUC::$url_base;
 			if($isAssets == true)
 				$replaceString = GlobalsUC::$url_assets;
-			
-			//$replaceString = UniteFunctionsUC::removeHttpHttps($replaceString);
-				
+
 			//in case of array take "url" from the array
 			if(is_array($url)){
 
 				$strUrl = UniteFunctionsUC::getVal($url, "url");
 				if(empty($strUrl))
 					return($url);
-			
-				//$strUrl = UniteFunctionsUC::removeHttpHttps($strUrl);
-					
+
 				$url["url"] = str_replace($replaceString, "", $strUrl);
 
 				return($url);
 			}
-			
-			//$url = UniteFunctionsUC::removeHttpHttps($url);
-			
+
 			$url = str_replace($replaceString, "", $url);
 
 			return($url);
@@ -669,11 +678,15 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		public static function urlToPath($url){
 
 			$urlRelative = self::URLtoRelative($url);
-						
+
+			//check path traversal
+			if(strpos($urlRelative, '../') !== false)
+				return(null);
+			
 			$path = GlobalsUC::$path_base.$urlRelative;
 			
 			$path = UniteFunctionsUC::cleanPath($path);
-						
+			
 			if(file_exists($path) == false)
 				return(null);
 
@@ -858,7 +871,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 		return ($handle);
 	}
-	
+
 	/**
 	 * convert title to alias
 	 */
@@ -988,7 +1001,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	 * get url content
 	 */
 	public static function getFileContentByUrl($url, $filterExtention = null){
-	
+		
 		if(!empty($filterExtention)){
 			$info = pathinfo($url);
 			$ext = UniteFunctionsUC::getVal($info, "extension");
@@ -1005,7 +1018,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 		if(file_exists($pathFile) == false)
 			return (null);
-
+		
 		$content = UniteFunctionsUC::fileGetContents($pathFile);
 
 		return ($content);
@@ -1357,10 +1370,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	 * get font awesome url
 	 */
 	public static function getUrlFontAwesome($version = null){
-				
+
 		if(empty($version))
 			$version = "fa5";
-		
+
 		if($version == "fa4")
 			$url = GlobalsUC::$url_assets_libraries . "font-awsome/css/font-awesome.min.css";
 		else    //fa5
@@ -1413,7 +1426,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			$handle = GlobalsUC::PLUGIN_NAME . "-" . $scriptName;
 
 		$url = GlobalsUC::$urlPlugin . $folder . "/" . $scriptName . ".js";
-		
+
 		UniteProviderFunctionsUC::addScript($handle, $url, $inFooter);
 	}
 
@@ -1541,13 +1554,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	 * @param $styleFilename
 	 */
 	public static function addStyle($styleName, $handle = null, $folder = "css"){
-		
+
 		if($handle == null)
 			$handle = GlobalsUC::PLUGIN_NAME . "-" . $styleName;
-		
+
 		UniteProviderFunctionsUC::addStyle($handle, GlobalsUC::$urlPlugin . $folder . "/" . $styleName . ".css");
 	}
-	
+
 	/**
 	 * print custom script
 	 */
@@ -1583,8 +1596,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		UniteProviderFunctionsUC::addStyle($handle, $styleUrl, $deps);
 	}
 
-	
-	
 	/**
 	 * output system message
 	 */
@@ -1599,7 +1610,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			echo esc_html($message) ?></div>;
 		<?php
 	}
-	
+
 	/**
 	 * output addon from storred data
 	 */

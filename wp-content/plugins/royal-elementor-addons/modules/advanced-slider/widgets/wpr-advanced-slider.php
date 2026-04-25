@@ -48,7 +48,7 @@ class Wpr_Advanced_Slider extends Widget_Base {
 	}
 	
 	public function get_script_depends() {
-		return [ 'imagesloaded', 'wpr-slick' ];
+		return [ 'wpr-dompurify', 'imagesloaded', 'wpr-slick' ];
 	}
 
 	public function get_style_depends() {
@@ -3008,6 +3008,8 @@ class Wpr_Advanced_Slider extends Widget_Base {
 		$type = get_post_meta(get_the_ID(), '_wpr_template_type', true) || get_post_meta($id, '_elementor_template_type', true);
 		$has_css = 'internal' === get_option( 'elementor_css_print_method' ) || '' !== $type;
 
+		Utilities::enqueue_inner_template_assets( $id );
+
 		return Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $id, $has_css ) . $edit_link;
 	}
 
@@ -3024,8 +3026,16 @@ class Wpr_Advanced_Slider extends Widget_Base {
 
 		$tags_whitelist = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'span', 'p'];
 
-		$settings_slider_title_tag = Utilities::validate_html_tags_wl( $settings['slider_title_tag'], 'h2', $tags_whitelist );
-		$settings_slider_sub_title_tag = Utilities::validate_html_tags_wl( $settings['slider_sub_title_tag'], 'h3', $tags_whitelist );
+		$settings_slider_title_tag = 'h2';
+		$settings_slider_sub_title_tag = 'h3';
+
+		if ( $settings['slider_title'] === 'yes' ) {
+			$settings_slider_title_tag = Utilities::validate_html_tags_wl( $settings['slider_title_tag'], 'h2', $tags_whitelist );
+		}
+
+		if ( $settings['slider_sub_title'] === 'yes' ) {
+			$settings_slider_sub_title_tag = Utilities::validate_html_tags_wl( $settings['slider_sub_title_tag'], 'h3', $tags_whitelist );
+		}
 		
 		foreach ( $settings['slider_items'] as $key => $item ) {
 
@@ -3033,8 +3043,16 @@ class Wpr_Advanced_Slider extends Widget_Base {
 				break;
 			}
 
-			$item_slider_title_tag = Utilities::validate_html_tags_wl( $item['slider_title_tag'], 'h2', $tags_whitelist );
-			$item_slider_sub_title_tag = Utilities::validate_html_tags_wl( $item['slider_sub_title_tag'], 'h3', $tags_whitelist );
+			$item_slider_title_tag = 'h2';
+			$item_slider_sub_title_tag = 'h3';
+
+			if ( isset($item['slider_title_tag']) ) {
+				$item_slider_title_tag = Utilities::validate_html_tags_wl( $item['slider_title_tag'], 'h2', $tags_whitelist );
+			}
+
+			if ( isset($item['slider_sub_title_tag']) ) {
+				$item_slider_sub_title_tag = Utilities::validate_html_tags_wl( $item['slider_sub_title_tag'], 'h3', $tags_whitelist );
+			}
 
 			if ( !defined('WPR_ADDONS_PRO_VERSION') || !wpr_fs()->can_use_premium_code() ) {
 				if ( in_array( $settings['slider_amount'], ['pro-3', 'pro-4', 'pro-5', 'pro-6'] ) ) {
@@ -3196,7 +3214,7 @@ class Wpr_Advanced_Slider extends Widget_Base {
 				if ( 'slide_vertical' === $settings['slider_effect'] ) {
 					$slider_amount = 1;
 				} else {
-					$slider_amount = +$settings['slider_amount'];
+					$slider_amount = +intval($settings['slider_amount']);
 				}
 
 				// Slider Overlay

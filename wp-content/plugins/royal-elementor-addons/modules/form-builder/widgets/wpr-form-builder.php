@@ -527,6 +527,7 @@ class Wpr_Form_Builder extends Widget_Base {
 			'upload' => esc_html__( 'File Upload', 'wpr-addons' ),
 			'password' => esc_html__( 'Password', 'wpr-addons' ),
 			'html' => esc_html__( 'HTML', 'wpr-addons' ),
+			'recaptcha-v2' => esc_html__( 'reCAPTCHA V2', 'wpr-addons' ),
 			'recaptcha-v3' => esc_html__( 'reCAPTCHA V3', 'wpr-addons'),
 			'hidden' => esc_html__( 'Hidden', 'wpr-addons' ),
 			'step' => esc_html__( 'Step', 'wpr-addons' ),
@@ -568,6 +569,20 @@ class Wpr_Form_Builder extends Widget_Base {
 			);
 		}
 
+		if ( '' == get_option( 'wpr_recaptcha_v2_site_key' ) ) {
+			$repeater->add_control(
+				'recaptcha_v2_key_notice',
+				[
+					'type' => Controls_Manager::RAW_HTML,
+					'raw' => sprintf( __( 'Navigate to <strong><a href="%s" target="_blank">Dashboard > %s > Integrations</a></strong> to set up <strong>reCAPTCHA v2 Site Key</strong>.', 'wpr-addons' ), admin_url( 'admin.php?page=wpr-addons&tab=wpr_tab_settings' ), Utilities::get_plugin_name() ),
+					'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
+					'condition' => [
+						'field_type' => 'recaptcha-v2'
+					]
+				]
+			);
+		}
+
 		$repeater->add_control(
 			'field_label',
 			[
@@ -577,6 +592,25 @@ class Wpr_Form_Builder extends Widget_Base {
 				'dynamic' => [
 					'active' => true,
 				],
+				'condition' => [
+					'field_type!' => 'recaptcha-v2'
+				]
+			]
+		);
+
+		$repeater->add_control(
+			'alt_label',
+			[
+				'label' => esc_html__( 'Alternative Label', 'wpr-addons' ),
+				'description' => esc_html__( 'This Label will be used in Submit Actions instead of the Main Label.', 'wpr-addons' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => '',
+				'dynamic' => [
+					'active' => true,
+				],
+				'condition' => [
+					'field_type!' => 'recaptcha-v2'
+				]
 			]
 		);
 
@@ -746,6 +780,7 @@ class Wpr_Form_Builder extends Widget_Base {
 							'operator' => '!in',
 							'value' => [
 								'recaptcha',
+								'recaptcha-v2',
 								'recaptcha-v3',
 								'hidden',
 								'html',
@@ -927,6 +962,7 @@ class Wpr_Form_Builder extends Widget_Base {
 							'value' => [
 								'hidden',
 								'recaptcha',
+								'recaptcha-v2',
 								'recaptcha-v3',
 								'step',
 							],
@@ -966,7 +1002,7 @@ class Wpr_Form_Builder extends Widget_Base {
 					'terms' => [
 						[
 							'name' => 'field_type',
-							'value' => 'recaptcha',
+							'value' => 'recaptcha-v2',
 						],
 					],
 				],
@@ -987,7 +1023,7 @@ class Wpr_Form_Builder extends Widget_Base {
 					'terms' => [
 						[
 							'name' => 'field_type',
-							'value' => 'recaptcha',
+							'value' => 'recaptcha-v2',
 						],
 					],
 				],
@@ -3625,6 +3661,10 @@ class Wpr_Form_Builder extends Widget_Base {
 	}	
 	
 	protected function form_fields_render_attributes( $i, $instance, $item ) {
+		if ( 'upload' === $item['field_type'] ) {
+			update_option( 'wpr_form_upload_field_in_use_' . $this->get_attribute_id( $item ), true );
+		}
+
 		$this->add_render_attribute(
 			[
 				'field-group' . $i => [
@@ -3647,6 +3687,7 @@ class Wpr_Form_Builder extends Widget_Base {
 				'label' . $i => [
 					'for' => $this->get_attribute_id( $item ),
 					'class' => 'wpr-form-field-label',
+					'data-alt-label' => ! empty( $item['alt_label'] ) ? esc_attr( $item['alt_label'] ) : esc_attr( $item['field_label'] ),
 				],
 			]
 		);
@@ -3713,7 +3754,7 @@ class Wpr_Form_Builder extends Widget_Base {
 						<?php $this->render_form_icon($instance); ?>
 					<?php endif; ?>
 					<?php if ( ! empty( $instance['button_text'] ) ) : ?>
-						<span><?php echo $this->print_unescaped_setting( 'button_text' ); ?></span>
+						<span><?php echo esc_html__( $instance['button_text'] ); ?></span>
 					<?php endif; ?>
 					<?php if ( !empty( $instance['selected_button_icon'] ) && 'right' === $instance['button_icon_align'] ) : ?>
 						<?php $this->render_form_icon($instance); ?>
@@ -3928,7 +3969,8 @@ class Wpr_Form_Builder extends Widget_Base {
 					$this->form_fields_render_attributes( $item_index, $instance, $item );
 
 					$print_label = ! in_array( $item['field_type'], [ 'hidden', 'html', 'step' ], true );
-
+					$field_id = sanitize_key( $item['field_id'] );
+					$field_label = sanitize_text_field( $item['field_label'] );
 					
 					if ( 'step' === $item['field_type'] )  {
                         if ( isset($item['previous_button_text']) ) {
@@ -3939,8 +3981,8 @@ class Wpr_Form_Builder extends Widget_Base {
 							echo '<div class="wpr-step-tab wpr-step-tab-hidden">';
 						} else {
 								echo '<div class="wpr-stp-btns-wrap">';
-									echo '<button type="button" class="wpr-step-prev">'. $item['previous_button_text'] .'</button>';
-									echo '<button type="button" class="wpr-step-next">'. $item['next_button_text'] .'</button>';
+									echo '<button type="button" class="wpr-step-prev">'. esc_html__( $item['previous_button_text'] ) .'</button>';
+									echo '<button type="button" class="wpr-step-next">'. esc_html__( $item['next_button_text'] ) .'</button>';
 								echo '</div>';
 							echo '</div>';
 							echo '<div class="wpr-step-tab wpr-step-tab-hidden">';
@@ -3979,8 +4021,17 @@ class Wpr_Form_Builder extends Widget_Base {
 								// PHPCS - the method make_radio_checkbox_field is safe.
 								echo $this->make_radio_checkbox_field( $item, $item_index, $item['field_type'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								break;
+							case 'recaptcha-v2':
+								$recaptcha_v2_id = 'wpr-recaptcha-v2-' . $this->get_id() . '-' . $item_index;
+								$recaptcha_size  = isset( $item['recaptcha_size'] ) ? $item['recaptcha_size'] : 'normal';
+								$recaptcha_theme = isset( $item['recaptcha_style'] ) ? $item['recaptcha_style'] : 'light';
+								echo '<div class="wpr-recaptcha-v2-wrap">';
+								echo '<div id="' . esc_attr( $recaptcha_v2_id ) . '" class="wpr-recaptcha-v2-container" data-sitekey="' . esc_attr( get_option( 'wpr_recaptcha_v2_site_key' ) ) . '" data-size="' . esc_attr( $recaptcha_size ) . '" data-theme="' . esc_attr( $recaptcha_theme ) . '"></div>';
+								echo '</div>';
+								break;
 							case 'recaptcha-v3':
-								echo '<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" data-site-key="'. get_option('wpr_recaptcha_v3_site_key') .'" />';
+								echo '<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" data-site-key="' . esc_attr( get_option( 'wpr_recaptcha_v3_site_key' ) ) . '" />';
+								break;
 							case 'text':
 							case 'email':
 							case 'url':
@@ -4043,7 +4094,7 @@ class Wpr_Form_Builder extends Widget_Base {
 								echo '<input size="1 "'. $this->get_render_attribute_string( 'input' . $item_index ) .'>';
 								break;
 							case 'step':
-								echo '<input type="hidden" class="wpr-step-input" id=form-field-'. esc_attr( $item['field_id'] ) .' value='. esc_attr( $item['field_label'] ) .'>';
+								echo '<input type="hidden" class="wpr-step-input" id=form-field-'. esc_attr( $field_id ) .' value='. esc_attr( $field_label ) .'>';
 								break;
 							default:
 								$field_type = $item['field_type'];

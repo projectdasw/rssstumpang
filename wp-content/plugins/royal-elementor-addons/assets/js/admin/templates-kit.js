@@ -149,21 +149,32 @@ jQuery(document).ready(function( $ ) {
 			WprTemplatesKit.installRequiredTheme();
 
 			var kit = $('.grid-item[data-kit-id="'+ kitID +'"]');
-				WprTemplatesKit.requiredPlugins = kit.data('plugins') !== undefined ? kit.data('plugins') : false;
-			
+				WprTemplatesKit.requiredPlugins = kit.data('plugins') !== undefined ? kit.data('plugins') : {};
+
+			// Ensure requiredPlugins is an object (in case kit has no plugins defined)
+			if ( !WprTemplatesKit.requiredPlugins || typeof WprTemplatesKit.requiredPlugins !== 'object' ) {
+				WprTemplatesKit.requiredPlugins = {};
+			}
+
+			// Always include royal-backup-reset plugin (independent of template kit requirements)
+			WprTemplatesKit.requiredPlugins['royal-backup-reset'] = WprTemplatesKitLoc.royal_backup_reset_active ? true : false;
+
 			// Install Plugins
-			if ( WprTemplatesKit.requiredPlugins ) {
-				if ( 'contact-form-7' in WprTemplatesKit.requiredPlugins && false === WprTemplatesKit.requiredPlugins['contact-form-7'] ) {
-					WprTemplatesKit.installPluginViaAjax('contact-form-7');
-				}
-				
-				if ( 'woocommerce' in WprTemplatesKit.requiredPlugins && false === WprTemplatesKit.requiredPlugins['woocommerce'] ) {
-					WprTemplatesKit.installPluginViaAjax('woocommerce');
-				}
-				
-				if ( 'media-library-assistant' in WprTemplatesKit.requiredPlugins && false === WprTemplatesKit.requiredPlugins['media-library-assistant'] ) {
-					WprTemplatesKit.installPluginViaAjax('media-library-assistant');
-				}
+			if ( 'contact-form-7' in WprTemplatesKit.requiredPlugins && false === WprTemplatesKit.requiredPlugins['contact-form-7'] ) {
+				WprTemplatesKit.installPluginViaAjax('contact-form-7');
+			}
+
+			if ( 'woocommerce' in WprTemplatesKit.requiredPlugins && false === WprTemplatesKit.requiredPlugins['woocommerce'] ) {
+				WprTemplatesKit.installPluginViaAjax('woocommerce');
+			}
+
+			if ( 'media-library-assistant' in WprTemplatesKit.requiredPlugins && false === WprTemplatesKit.requiredPlugins['media-library-assistant'] ) {
+				WprTemplatesKit.installPluginViaAjax('media-library-assistant');
+			}
+
+			// Always install/activate royal-backup-reset if not already active
+			if ( 'royal-backup-reset' in WprTemplatesKit.requiredPlugins && false === WprTemplatesKit.requiredPlugins['royal-backup-reset'] ) {
+				WprTemplatesKit.installPluginViaAjax('royal-backup-reset');
 			}
 		},
 
@@ -203,6 +214,10 @@ jQuery(document).ready(function( $ ) {
 								WprTemplatesKit.requiredPlugins[slug] = true;
 							}
 						});
+                    } else {
+						// Plugin not available on wp.org or other install error - skip it so import can continue
+						console.warn('Plugin "' + slug + '" could not be installed (error: ' + xhr.errorCode + '). Skipping.');
+						WprTemplatesKit.requiredPlugins[slug] = true;
                     }
                 },
             });

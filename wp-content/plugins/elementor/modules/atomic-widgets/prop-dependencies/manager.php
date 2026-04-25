@@ -36,6 +36,8 @@ class Manager {
 	 *             operator: string,
 	 *             path: array<string>,
 	 *             value?: mixed,
+	 *             newValue?: array,
+	 *             effect?: 'hide'|'disable'
 	 *         }
 	 *     }
 	 */
@@ -70,10 +72,28 @@ class Manager {
 	 *  operator: string,
 	 *  path: array<string>,
 	 *  value?: mixed,
+	 *  newValue?: array,
+	 *  effect?: 'hide'|'disable'
 	 * }
 	 * @return self
 	 */
-	public function where( array $config ): self {
+	public function where( array $config, $new_value = null ): self {
+		if ( isset( $config['terms'] ) ) {
+			if ( empty( $this->dependencies ) ) {
+				$this->new();
+			}
+
+			$term = [
+				'terms' => $config['terms'],
+				'relation' => $config['relation'] ?? self::RELATION_OR,
+				'newValue' => $new_value ?? null,
+				'effect' => $config['effect'] ?? 'disable',
+			];
+			$this->dependencies['terms'][] = $term;
+
+			return $this;
+		}
+
 		if ( ! isset( $config['operator'] ) || ! isset( $config['path'] ) ) {
 			Utils::safe_throw( 'Term missing mandatory configurations' );
 		}
@@ -85,7 +105,10 @@ class Manager {
 		$term = [
 			'operator' => $config['operator'],
 			'path' => $config['path'],
+			'nestedPath' => $config['nestedPath'] ?? null,
 			'value' => $config['value'] ?? null,
+			'newValue' => $config['newValue'] ?? null,
+			'effect' => $config['effect'] ?? 'disable',
 		];
 
 		if ( empty( $this->dependencies ) ) {
@@ -115,8 +138,8 @@ class Manager {
 	}
 
 	/**
-	 * @param array<string, Prop_Type> $props_schema The props schema to analyze, where keys are prop names
-	 * @param ?array<string> $current_path The current property path being processed
+	 * @param array<string, Prop_Type>      $props_schema The props schema to analyze, where keys are prop names
+	 * @param ?array<string>                $current_path The current property path being processed
 	 * @param ?array<string, array<string>> $dependency_graph The dependency graph to build
 	 */
 	private static function build_dependency_graph( array $props_schema, ?array $current_path = [], ?array $dependency_graph = [] ): array {

@@ -220,7 +220,7 @@ class Premium_Notifications extends Widget_Base {
 	 */
 	protected function register_controls() { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 
-		$papro_activated = apply_filters( 'papro_activated', false );
+		$papro_activated = Helper_Functions::check_papro_version();
 
 		$draw_icon = $this->check_icon_draw();
 
@@ -303,6 +303,9 @@ class Premium_Notifications extends Widget_Base {
 				'condition'   => array(
 					'icon_type' => 'animation',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -314,6 +317,9 @@ class Premium_Notifications extends Widget_Base {
 				'description' => 'You can use these sites to create SVGs: <a href="https://danmarshall.github.io/google-font-to-svg-path/" target="_blank">Google Fonts</a> and <a href="https://boxy-svg.com/" target="_blank">Boxy SVG</a>',
 				'condition'   => array(
 					'icon_type' => 'svg',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -834,6 +840,9 @@ class Premium_Notifications extends Widget_Base {
 					'cookies'       => 'yes',
 					'shown_content' => 'template',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -990,6 +999,9 @@ class Premium_Notifications extends Widget_Base {
 					'header_icon_sw'   => 'yes',
 					'header_icon_type' => 'animation',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -1002,6 +1014,9 @@ class Premium_Notifications extends Widget_Base {
 				'condition'   => array(
 					'header_icon_sw'   => 'yes',
 					'header_icon_type' => 'svg',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -1582,7 +1597,6 @@ class Premium_Notifications extends Widget_Base {
 				'label'       => __( 'Title HTML Tag', 'premium-addons-for-elementor' ),
 				'description' => __( 'Select a heading tag for the post title.', 'premium-addons-for-elementor' ),
 				'type'        => Controls_Manager::SELECT,
-				'default'     => 'h2',
 				'options'     => array(
 					'h1'   => 'H1',
 					'h2'   => 'H2',
@@ -1594,6 +1608,7 @@ class Premium_Notifications extends Widget_Base {
 					'span' => 'span',
 					'p'    => 'p',
 				),
+				'default'     => 'h2',
 				'label_block' => true,
 			)
 		);
@@ -1986,6 +2001,8 @@ class Premium_Notifications extends Widget_Base {
 
 		}
 
+		Helper_Functions::register_element_feedback_controls( $this );
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -2104,6 +2121,9 @@ class Premium_Notifications extends Widget_Base {
 				),
 				'condition' => array(
 					'icon_adv_radius' => 'yes',
+				),
+				'ai'        => array(
+					'active' => false,
 				),
 			)
 		);
@@ -2245,6 +2265,9 @@ class Premium_Notifications extends Widget_Base {
 				),
 				'condition' => array(
 					'icon_adv_radius_hover' => 'yes',
+				),
+				'ai'        => array(
+					'active' => false,
 				),
 			)
 		);
@@ -2389,6 +2412,9 @@ class Premium_Notifications extends Widget_Base {
 				'condition' => array(
 					'number_adv_radius' => 'yes',
 				),
+				'ai'        => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -2503,6 +2529,9 @@ class Premium_Notifications extends Widget_Base {
 				),
 				'condition' => array(
 					'number_adv_radius_hover' => 'yes',
+				),
+				'ai'        => array(
+					'active' => false,
 				),
 			)
 		);
@@ -3604,7 +3633,7 @@ class Premium_Notifications extends Widget_Base {
 
 		$settings = $this->get_settings();
 
-		$papro_activated = apply_filters( 'papro_activated', false );
+		$papro_activated = Helper_Functions::check_papro_version();
 
 		if ( ! $papro_activated && ( in_array( $settings['premium_blog_skin'], array( 'cards', 'banner' ), true ) || 'post' !== $settings['post_type_filter'] ) ) {
 			?>
@@ -3807,7 +3836,7 @@ class Premium_Notifications extends Widget_Base {
 
 				<?php elseif ( 'svg' === $icon_type ) : ?>
 					<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'icon' ) ); ?>>
-						<?php $this->print_unescaped_setting( 'custom_svg' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo Helper_Functions::sanitize_svg( $this->get_settings_for_display( 'custom_svg' ) ); ?>
 					</div>
 				<?php else : ?>
 					<p class="premium-not-icon-text premium-notification-icon">
@@ -3881,7 +3910,7 @@ class Premium_Notifications extends Widget_Base {
 
 							<?php else : ?>
 								<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'header_icon' ) ); ?>>
-									<?php $this->print_unescaped_setting( 'header_custom_svg' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									<?php echo Helper_Functions::sanitize_svg( $this->get_settings_for_display( 'header_custom_svg' ) ); ?>
 								</div>
 							<?php endif; ?>
 

@@ -8,7 +8,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class UniteCreatorOutputWork extends HtmlOutputBaseUC{
-	
+
 	private static $serial = 0;
 
 	const SELECTOR_VALUE_PLACEHOLDER = "{{value}}";
@@ -59,6 +59,8 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 	private static $arrGeneratedIDs = array();
 		
 	private $htmlDebug = "";
+
+    private $processedItemsData = false;
 
 
 	/**
@@ -162,7 +164,7 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 	 * check that the include located in cache
 	 */
 	private function isIncludeInCache($url, $handle, $type){
-		
+
 		if(empty($url) || empty($handle))
 			return(false);
 
@@ -416,6 +418,13 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 			if(empty($handle))
 				$handle = HelperUC::getUrlHandle($url, $addonName);
+
+			if( $handle == 'jquery' ) {
+				if ( !wp_script_is( 'jquery', 'enqueued' ) ) {
+					wp_enqueue_script( 'jquery' );
+				}	
+				continue;
+			}
 			
 			$isInCache = $this->isIncludeInCache($url, $handle, $type);
 			
@@ -562,9 +571,7 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 	private function ______CSS_SELECTORS_______(){}
 
-	/**
-	 * process css selector of number param
-	 */
+    /*
 	private function processParamCSSSelector_number($param, $selectors){
 
 		$values = array(
@@ -587,10 +594,46 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 		return $style;
 	}
+    */
 
 	/**
-	 * process css selector of background param
+	 * process css selector of number param
 	 */
+    private function processParamCSSSelector_number($param, $selectors){
+        $value = UniteFunctionsUC::getVal($param, "value");
+        
+        $isOldFormat = is_array($value) && !empty($value);
+        
+        if($isOldFormat){
+            $values = array(
+                "desktop" => $value,
+                "tablet" => UniteFunctionsUC::getVal($param, "value_tablet"),
+                "mobile" => UniteFunctionsUC::getVal($param, "value_mobile"),
+            );
+        } else {
+            $values = array(
+                "desktop" => UniteFunctionsUC::getVal($param, "value"),
+                "tablet" => UniteFunctionsUC::getVal($param, "value_tablet"),
+                "mobile" => UniteFunctionsUC::getVal($param, "value_mobile"),
+            );
+        }
+
+        $style = "";
+
+        foreach($values as $device => $value){
+            if(empty($value) === true)
+                continue;
+
+            foreach($selectors as $selector => $selectorValue){
+                $css = $this->prepareCSSSelectorValueCSS($selectorValue, $value);
+                $style .= $this->prepareCSSSelectorStyle($selector, $css, $device);
+            }
+        }
+
+        return $style;
+    }
+
+    /*
 	private function processParamCSSSelector_background($param, $selectors){
 
 		$name = UniteFunctionsUC::getVal($param, "name");
@@ -651,15 +694,107 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 		return $style;
 	}
+    */
 
-	/**
-	 * process css selector of border param
-	 */
+	/*
+	 * process css selector of background param
+    */
+    private function processParamCSSSelector_background($param, $selectors){
+        $name = UniteFunctionsUC::getVal($param, "name");
+        $value = UniteFunctionsUC::getVal($param, "value");
+
+        $isOldFormat = is_array($value) && !empty($value);
+        
+        if($isOldFormat){
+            $type = UniteFunctionsUC::getVal($value, $name . "_type");
+        } else {
+            $type = UniteFunctionsUC::getVal($param, "background_type");
+            $value = $param; 
+        }
+
+        $selector = $this->combineCSSSelectors($selectors);
+
+        $style = '';
+
+        switch($type){
+            case "solid":
+                $regularFields = array(
+                    $name . "_solid_color" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "color"),
+                    $name . "_solid_image_attachment" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "attachment"),
+                );
+
+                $responsiveFields = array(
+                    $name . "_solid_image" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "image"),
+                    $name . "_solid_image_position" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "position"),
+                    $name . "_solid_image_repeat" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "repeat"),
+                    $name . "_solid_image_size" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "size"),
+                );
+
+                // Нужно преобразовать ключи для нового формата
+                if(!$isOldFormat){
+                    // Для нового формата ключи без префикса name
+                    $regularFields = array(
+                        "solid_color" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "color"),
+                        "solid_image_attachment" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "attachment"),
+                    );
+
+                    $responsiveFields = array(
+                        "solid_bg_image" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "image"),
+                        "solid_bg_image_position" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "position"),
+                        "solid_bg_image_repeat" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "repeat"),
+                        "solid_bg_image_size" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "size"),
+                    );
+                }
+
+                $style .= $this->prepareCSSSelectorFieldsStyle($regularFields, $selector, $value);
+                $style .= $this->prepareCSSSelectorResponsiveFieldsStyle($responsiveFields, $selector, $value);
+            break;
+            case "gradient":
+                // Определяем префиксы ключей в зависимости от формата
+                $prefix = $isOldFormat ? $name . "_" : "";
+                
+                $color1 = UniteFunctionsUC::getVal($value, $prefix . "gradient_color1");
+                $stop1 = UniteFunctionsUC::getVal($value, $prefix . "gradient1_stop");
+                $color2 = UniteFunctionsUC::getVal($value, $prefix . "gradient_color2");
+                $stop2 = UniteFunctionsUC::getVal($value, $prefix . "gradient2_stop");
+                $gradientType = UniteFunctionsUC::getVal($value, $prefix . "gradient_type");
+                $angle = UniteFunctionsUC::getVal($value, $prefix . "gradient_angle");
+                $position = UniteFunctionsUC::getVal($value, $prefix . "gradient_position");
+
+                $stop1 = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $stop1);
+                $stop2 = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $stop2);
+                $angle = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $angle);
+
+                if($color1 !== "" && $stop1 !== "" && $color2 !== "" && $stop2 !== "" && $gradientType !== "" && $angle !== "" && $position !== ""){
+                    $selectorValue = ($gradientType === "radial")
+                        ? HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "radial-gradient")
+                        : HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BACKGROUND, "linear-gradient");
+
+                    $css = $this->processCSSSelectorReplaces($selectorValue, array(
+                        "{{angle}}" => $angle,
+                        "{{position}}" => $position,
+                        "{{color1}}" => $color1,
+                        "{{stop1}}" => $stop1,
+                        "{{color2}}" => $color2,
+                        "{{stop2}}" => $stop2,
+                    ));
+
+                    $style .= $this->prepareCSSSelectorStyle($selector, $css);
+                }
+            break;
+        }
+
+        return $style;
+    }
+
+	/*
 	private function processParamCSSSelector_border($param, $selectors){
 
 		$value = UniteFunctionsUC::getVal($param, "value");
 		$type = UniteFunctionsUC::getVal($value, "type", "none");
 		$color = UniteFunctionsUC::getVal($value, "color", "#000000");
+
+        // echo json_encode($param) . ' ==[2]';
 
 		if($type === "none")
 			return null;
@@ -693,10 +828,90 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 		return $style;
 	}
+    */
 
-	/**
-	 * process css selector of dimentions param
-	 */
+    private function processParamCSSSelector_border($param, $selectors){
+        $value = UniteFunctionsUC::getVal($param, "value");
+        
+        $isOldFormat = is_array($value) && !empty($value);
+        
+        if($isOldFormat){
+            // from block settings
+            $type = UniteFunctionsUC::getVal($value, "type", "none");
+            $color = UniteFunctionsUC::getVal($value, "color", "#000000");
+        } else {
+            // from block defaults
+            $type = UniteFunctionsUC::getVal($param, "border_type", "none");
+            $color = UniteFunctionsUC::getVal($param, "border_color", "#000000");
+            $value = $param; // для единообразия
+        }
+
+        if($type === "none")
+            return null;
+
+        $style = "";
+        $selector = $this->combineCSSSelectors($selectors);
+
+        // border-style
+        $selectorValue = HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BORDER, "style");
+        $css = $this->prepareCSSSelectorValueCSS($selectorValue, $type);
+        $style .= $this->prepareCSSSelectorStyle($selector, $css);
+
+        // border-color
+        $selectorValue = HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BORDER, "color");
+        $css = $this->prepareCSSSelectorValueCSS($selectorValue, $color);
+        $style .= $this->prepareCSSSelectorStyle($selector, $css);
+
+        // border-width (responsive)
+        $widths = array();
+        
+        if($isOldFormat){
+            $widths = array(
+                "desktop" => UniteFunctionsUC::getVal($value, "width"),
+                "tablet" => UniteFunctionsUC::getVal($value, "width_tablet"),
+                "mobile" => UniteFunctionsUC::getVal($value, "width_mobile"),
+            );
+        } else {
+            // Новый формат: width_desktop_top, width_tablet_top, width_mobile_top
+            $widths = array(
+                "desktop" => array(
+                    "top" => UniteFunctionsUC::getVal($value, "width_desktop_top"),
+                    "right" => UniteFunctionsUC::getVal($value, "width_desktop_right"),
+                    "bottom" => UniteFunctionsUC::getVal($value, "width_desktop_bottom"),
+                    "left" => UniteFunctionsUC::getVal($value, "width_desktop_left"),
+                    "unit" => "px"
+                ),
+                "tablet" => array(
+                    "top" => UniteFunctionsUC::getVal($value, "width_tablet_top"),
+                    "right" => UniteFunctionsUC::getVal($value, "width_tablet_right"),
+                    "bottom" => UniteFunctionsUC::getVal($value, "width_tablet_bottom"),
+                    "left" => UniteFunctionsUC::getVal($value, "width_tablet_left"),
+                    "unit" => "px"
+                ),
+                "mobile" => array(
+                    "top" => UniteFunctionsUC::getVal($value, "width_mobile_top"),
+                    "right" => UniteFunctionsUC::getVal($value, "width_mobile_right"),
+                    "bottom" => UniteFunctionsUC::getVal($value, "width_mobile_bottom"),
+                    "left" => UniteFunctionsUC::getVal($value, "width_mobile_left"),
+                    "unit" => "px"
+                ),
+            );
+        }
+
+        $selectorValue = HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BORDER, "width");
+
+        foreach($widths as $device => $widthValue){
+            if(empty($widthValue) === true)
+                continue;
+
+            $css = $this->prepareCSSSelectorDimentionsCSS($selectorValue, $widthValue);
+            $style .= $this->prepareCSSSelectorStyle($selector, $css, $device);
+        }
+
+        return $style;
+    }
+
+    /*
 	private function processParamCSSSelector_dimentions($param, $selectors, $type){
 
 		$values = array(
@@ -719,81 +934,215 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 		return $style;
 	}
+    */
 
-	/**
-	 * process css selector of slider param
-	 */
-	private function processParamCSSSelector_slider($param, $selectors){
+    /**
+     * process css selector of dimentions param
+     */
+    private function processParamCSSSelector_dimentions($param, $selectors, $type){
+        $value = UniteFunctionsUC::getVal($param, "value");
+        
+        $isOldFormat = is_array($value) && !empty($value);
+        
+        if($isOldFormat){
+            $values = array(
+                "desktop" => $value,
+                "tablet" => UniteFunctionsUC::getVal($param, "value_tablet"),
+                "mobile" => UniteFunctionsUC::getVal($param, "value_mobile"),
+            );
+        } else {
+            $values = array(
+                "desktop" => UniteFunctionsUC::getVal($param, "value"),
+                "tablet" => UniteFunctionsUC::getVal($param, "value_tablet"),
+                "mobile" => UniteFunctionsUC::getVal($param, "value_mobile"),
+            );
+        }
 
-		$values = array(
-			"desktop" => UniteFunctionsUC::getVal($param, "value"),
-			"tablet" => UniteFunctionsUC::getVal($param, "value_tablet"),
-			"mobile" => UniteFunctionsUC::getVal($param, "value_mobile"),
-		);
+        $style = "";
+        $selector = $this->combineCSSSelectors($selectors);
+        $selectorValue = HelperHtmlUC::getCSSSelectorValueByParam($type);
 
-		$style = "";
+        foreach($values as $device => $value){
+            if(empty($value) === true)
+                continue;
 
-		foreach($values as $device => $value){
-			if(empty($value) === true)
-				continue;
+            $css = $this->prepareCSSSelectorDimentionsCSS($selectorValue, $value);
+            $style .= $this->prepareCSSSelectorStyle($selector, $css, $device);
+        }
 
-			foreach($selectors as $selector => $selectorValue){
-				$css = $this->prepareCSSSelectorSliderCSS($selectorValue, $value);
-				$style .= $this->prepareCSSSelectorStyle($selector, $css, $device);
-			}
-		}
+        return $style;
+    }
 
-		return $style;
-	}
+    /**
+     * process css selector of slider param
+     */
+    private function processParamCSSSelector_slider($param, $selectors){
+        $name = UniteFunctionsUC::getVal($param, "name");
+        $value = UniteFunctionsUC::getVal($param, "value");
+        
+        $isOldFormat = is_array($value) && isset($value["size"]);
+        
+        if($isOldFormat){
+            $tabletValue = UniteFunctionsUC::getVal($param, "value_tablet");
+            $mobileValue = UniteFunctionsUC::getVal($param, "value_mobile");
+            
+            $values = array(
+                "desktop" => $value,
+                "tablet" => is_array($tabletValue) && isset($tabletValue["size"]) ? $tabletValue : null,
+                "mobile" => is_array($mobileValue) && isset($mobileValue["size"]) ? $mobileValue : null,
+            );
+        } else {
+            $defaultValue = UniteFunctionsUC::getVal($param, "default_value");
+            $defaultValueTablet = UniteFunctionsUC::getVal($param, "default_value_tablet");
+            $defaultValueMobile = UniteFunctionsUC::getVal($param, "default_value_mobile");
+            
+            $desktopValue = UniteFunctionsUC::getVal($param, "value");
+            if(empty($desktopValue) && $desktopValue !== "0") $desktopValue = $defaultValue;
+            
+            $tabletValue = UniteFunctionsUC::getVal($param, "value_tablet");
+            if(empty($tabletValue) && $tabletValue !== "0") $tabletValue = $defaultValueTablet;
+            
+            $mobileValue = UniteFunctionsUC::getVal($param, "value_mobile");
+            if(empty($mobileValue) && $mobileValue !== "0") $mobileValue = $defaultValueMobile;
+            
+            $desktopUnit = UniteFunctionsUC::getVal($param, "unit");
+            $tabletUnit = UniteFunctionsUC::getVal($param, "unit_tablet");
+            $mobileUnit = UniteFunctionsUC::getVal($param, "unit_mobile");
+            
+            $defaultUnit = UniteFunctionsUC::getVal($param, "units");
+            if(empty($defaultUnit)) $defaultUnit = "px";
 
-	/**
-	 * process css selector of typography param
-	 */
-	private function processParamCSSSelector_typography($param, $selectors){
+            if(strpos($defaultUnit, "_") !== false){
+                $unitsArray = explode("_", $defaultUnit);
+                $defaultUnit = $unitsArray[0];
+            }
+            
+            if(empty($desktopUnit)) $desktopUnit = $defaultUnit;
+            if(empty($tabletUnit)) $tabletUnit = $desktopUnit;
+            if(empty($mobileUnit)) $mobileUnit = $desktopUnit;
+            
+            $values = array(
+                "desktop" => (!empty($desktopValue) || $desktopValue === "0") ? array("size" => (int)$desktopValue, "unit" => $desktopUnit) : null,
+                "tablet" => (!empty($tabletValue) || $tabletValue === "0") ? array("size" => (int)$tabletValue, "unit" => $tabletUnit) : null,
+                "mobile" => (!empty($mobileValue) || $mobileValue === "0") ? array("size" => (int)$mobileValue, "unit" => $mobileUnit) : null,
+            );
+        }
 
-		$value = UniteFunctionsUC::getVal($param, "value");
+        $style = "";
 
-		$style = "";
-		$selector = $this->combineCSSSelectors($selectors);
+        // $style .= "/* =[12] " . json_encode($param) . " */ ";
 
-		// import font family
-		$fontFamily = UniteFunctionsUC::getVal($value, "font_family");
+        foreach($values as $device => $value){
+            if($value === null || (is_array($value) && empty($value)))
+                continue;
+                
+            if(is_array($value) && (!isset($value["size"]) || $value["size"] === ""))
+                continue;
 
-		if(empty($fontFamily) === false){
-			$fontData = HelperUC::getFontPanelData();
-			$googleFonts = UniteFunctionsUC::getVal($fontData, "arrGoogleFonts");
+            foreach($selectors as $selector => $selectorValue){
+                $css = $this->prepareCSSSelectorSliderCSS($selectorValue, $value);
+                $style .= $this->prepareCSSSelectorStyle($selector, $css, $device);
+            }
+        }
 
-			if(empty($googleFonts[$fontFamily]) === false){
-				$fontUrl = HelperHtmlUC::getGoogleFontUrl($googleFonts[$fontFamily]);
+        return $style;
+    }
 
-				$this->addon->addCssInclude($fontUrl);
-			}
-		}
+    /**
+     * process css selector of typography param
+     */
+    private function processParamCSSSelector_typography($param, $selectors){
+        $value = UniteFunctionsUC::getVal($param, "value");
+        
+        // Проверяем, является ли $value массивом с данными (старый формат)
+        $isOldFormat = is_array($value) && !empty($value);
+        
+        if(!$isOldFormat){
+            // Новый формат: значения прямо в $param
+            $value = $param;
+        }
 
-		$regularFields = array(
-			"font_family" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "family"),
-			"font_style" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "style"),
-			"font_weight" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "weight"),
-			"text_decoration" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "decoration"),
-			"text_transform" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "transform"),
-		);
+        $style = "";
+        $selector = $this->combineCSSSelectors($selectors);
 
-		$responsiveFields = array(
-			"font_size" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "size"),
-			"line_height" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "line-height"),
-			"letter_spacing" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "letter-spacing"),
-			"word_spacing" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "word-spacing"),
-		);
+        // import font family
+        $fontFamily = UniteFunctionsUC::getVal($value, "font_family");
 
-		$style .= $this->prepareCSSSelectorFieldsStyle($regularFields, $selector, $value);
-		$style .= $this->prepareCSSSelectorResponsiveFieldsStyle($responsiveFields, $selector, $value);
+        if(empty($fontFamily) === false){
+            $fontData = HelperUC::getFontPanelData();
+            $googleFonts = UniteFunctionsUC::getVal($fontData, "arrGoogleFonts");
 
-		return $style;
-	}
+            if(empty($googleFonts[$fontFamily]) === false){
+                $fontUrl = HelperHtmlUC::getGoogleFontUrl($googleFonts[$fontFamily]);
 
-	/**
-	 * process css selector of text shadow param
-	 */
+                $this->addon->addCssInclude($fontUrl);
+            }
+        }
+
+        $regularFields = array(
+            "font_family" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "family"),
+            "font_style" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "style"),
+            "font_weight" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "weight"),
+            "text_decoration" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "decoration"),
+            "text_transform" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "transform"),
+        );
+
+        $responsiveFields = array(
+            "font_size" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "size"),
+            "line_height" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "line-height"),
+            "letter_spacing" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "letter-spacing"),
+            "word_spacing" => HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TYPOGRAPHY, "word-spacing"),
+        );
+
+        $style .= $this->prepareCSSSelectorFieldsStyle($regularFields, $selector, $value);
+        $style .= $this->prepareCSSSelectorResponsiveFieldsStyle($responsiveFields, $selector, $value);
+
+        return $style;
+    }
+
+    /**
+     * process css selector of text shadow param
+     */
+    private function processParamCSSSelector_textShadow($param, $selectors){
+        $value = UniteFunctionsUC::getVal($param, "value");
+        
+        // Проверяем, является ли $value массивом с данными (старый формат)
+        $isOldFormat = is_array($value) && !empty($value);
+        
+        if(!$isOldFormat){
+            // Новый формат: значения прямо в $param
+            $value = $param;
+        }
+
+        $x = UniteFunctionsUC::getVal($value, "x");
+        $y = UniteFunctionsUC::getVal($value, "y");
+        $blur = UniteFunctionsUC::getVal($value, "blur");
+        $color = UniteFunctionsUC::getVal($value, "color");
+
+        $x = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $x);
+        $y = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $y);
+        $blur = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $blur);
+
+        $css = "";
+
+        if($x !== "" && $y !== "" && $blur !== "" && $color !== ""){
+            $selectorValue = HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TEXTSHADOW);
+
+            $css = $this->processCSSSelectorReplaces($selectorValue, array(
+                "{{x}}" => $x,
+                "{{y}}" => $y,
+                "{{blur}}" => $blur,
+                "{{color}}" => $color,
+            ));
+        }
+
+        $selector = $this->combineCSSSelectors($selectors);
+        $style = $this->prepareCSSSelectorStyle($selector, $css);
+
+        return $style;
+    }
+
+    /*
 	private function processParamCSSSelector_textShadow($param, $selectors){
 
 		$value = UniteFunctionsUC::getVal($param, "value");
@@ -824,9 +1173,45 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 		return $style;
 	}
+    */
 
+    private function processParamCSSSelector_textStroke($param, $selectors){
+        $value = UniteFunctionsUC::getVal($param, "value");
+        
+        // Проверяем, является ли $value массивом с данными (старый формат)
+        $isOldFormat = is_array($value) && !empty($value);
+        
+        if(!$isOldFormat){
+            // Новый формат: значения прямо в $param
+            $value = $param;
+        }
 
+        $width = UniteFunctionsUC::getVal($value, "width");
+        $color = UniteFunctionsUC::getVal($value, "color");
 
+        // Prepare CSS for stroke width
+        $width = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $width);
+
+        $css = "";
+
+        // If both width and color are available, apply the text stroke
+        if($width !== "" && $color !== ""){
+            $selectorValue = HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_TEXTSTROKE);
+
+            $css = $this->processCSSSelectorReplaces($selectorValue, array(
+                "{{width}}" => $width,
+                "{{color}}" => $color,
+            ));
+        }
+
+        // Combine the selectors and prepare the style
+        $selector = $this->combineCSSSelectors($selectors);
+        $style = $this->prepareCSSSelectorStyle($selector, $css);
+
+        return $style;
+    }
+
+    /*
 	private function processParamCSSSelector_textStroke($param, $selectors){
 
 		$value = UniteFunctionsUC::getVal($param, "value");
@@ -853,14 +1238,57 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 		$style = $this->prepareCSSSelectorStyle($selector, $css);
 
 		return $style;
-	}
+	}    
+    */
 
+    /**
+     * process css selector of box shadow param
+     */
+    private function processParamCSSSelector_boxShadow($param, $selectors){
+        $value = UniteFunctionsUC::getVal($param, "value");
+        
+        // Проверяем, является ли $value массивом с данными (старый формат)
+        $isOldFormat = is_array($value) && !empty($value);
+        
+        if(!$isOldFormat){
+            // Новый формат: значения прямо в $param
+            $value = $param;
+        }
 
+        $x = UniteFunctionsUC::getVal($value, "x");
+        $y = UniteFunctionsUC::getVal($value, "y");
+        $blur = UniteFunctionsUC::getVal($value, "blur");
+        $spread = UniteFunctionsUC::getVal($value, "spread");
+        $color = UniteFunctionsUC::getVal($value, "color");
+        $position = UniteFunctionsUC::getVal($value, "position");
 
+        $x = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $x);
+        $y = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $y);
+        $blur = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $blur);
+        $spread = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $spread);
 
-	/**
-	 * process css selector of box shadow param
-	 */
+        $css = "";
+
+        if($x !== "" && $y !== "" && $blur !== "" && $spread !== "" && $color !== "" && $position !== ""){
+            $selectorValue = HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_BOXSHADOW);
+
+            $css = $this->processCSSSelectorReplaces($selectorValue, array(
+                "{{x}}" => $x,
+                "{{y}}" => $y,
+                "{{blur}}" => $blur,
+                "{{spread}}" => $spread,
+                "{{color}}" => $color,
+                "{{position}}" => $position,
+            ));
+        }
+
+        $selector = $this->combineCSSSelectors($selectors);
+        $style = $this->prepareCSSSelectorStyle($selector, $css);
+
+        return $style;
+    }
+
+	/*
 	private function processParamCSSSelector_boxShadow($param, $selectors){
 
 		$value = UniteFunctionsUC::getVal($param, "value");
@@ -896,10 +1324,55 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 		return $style;
 	}
+    */
 
-	/**
-	 * process css selector of css filters param
-	 */
+    /**
+     * process css selector of css filters param
+     */
+    private function processParamCSSSelector_cssFilters($param, $selectors){
+        $value = UniteFunctionsUC::getVal($param, "value");
+        
+        // Проверяем, является ли $value массивом с данными (старый формат)
+        $isOldFormat = is_array($value) && !empty($value);
+        
+        if(!$isOldFormat){
+            // Новый формат: значения прямо в $param
+            $value = $param;
+        }
+
+        $blur = UniteFunctionsUC::getVal($value, "blur");
+        $brightness = UniteFunctionsUC::getVal($value, "brightness");
+        $contrast = UniteFunctionsUC::getVal($value, "contrast");
+        $saturation = UniteFunctionsUC::getVal($value, "saturation");
+        $hue = UniteFunctionsUC::getVal($value, "hue");
+
+        $blur = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $blur);
+        $brightness = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $brightness);
+        $contrast = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $contrast);
+        $saturation = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $saturation);
+        $hue = $this->prepareCSSSelectorSliderCSS(self::SELECTOR_VALUE_PLACEHOLDER, $hue);
+
+        $css = "";
+
+        if($blur !== "" && $brightness !== "" && $contrast !== "" && $saturation !== "" && $hue !== ""){
+            $selectorValue = HelperHtmlUC::getCSSSelectorValueByParam(UniteCreatorDialogParam::PARAM_CSS_FILTERS);
+
+            $css = $this->processCSSSelectorReplaces($selectorValue, array(
+                "{{blur}}" => $blur,
+                "{{brightness}}" => $brightness,
+                "{{contrast}}" => $contrast,
+                "{{saturate}}" => $saturation,
+                "{{hue}}" => $hue,
+            ));
+        }
+
+        $selector = $this->combineCSSSelectors($selectors);
+        $style = $this->prepareCSSSelectorStyle($selector, $css);
+
+        return $style;
+    }
+
+    /*
 	private function processParamCSSSelector_cssFilters($param, $selectors){
 
 		$value = UniteFunctionsUC::getVal($param, "value");
@@ -934,10 +1407,80 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 		return $style;
 	}
+    */
 
-	/**
-	 * process css selector based on value
-	 */
+    /**
+     * process css selector based on value
+     */
+    private function processParamCSSSelector_value($param, $selectors){
+        $value = UniteFunctionsUC::getVal($param, "value");
+        $name = UniteFunctionsUC::getVal($param, "name");
+        
+        $isOldFormat = is_array($value) && !empty($value);
+        
+        if($isOldFormat){
+            $values = array(
+                "desktop" => $value,
+                "tablet" => UniteFunctionsUC::getVal($param, "value_tablet"),
+                "mobile" => UniteFunctionsUC::getVal($param, "value_mobile"),
+            );
+        } else {
+            // Получаем значения или используем default_value
+            $defaultValue = UniteFunctionsUC::getVal($param, "default_value");
+            $defaultValueTablet = UniteFunctionsUC::getVal($param, "default_value_tablet");
+            $defaultValueMobile = UniteFunctionsUC::getVal($param, "default_value_mobile");
+            
+            $desktopValue = UniteFunctionsUC::getVal($param, "value");
+            if(empty($desktopValue) && $desktopValue !== "0") $desktopValue = $defaultValue;
+            
+            $tabletValue = UniteFunctionsUC::getVal($param, "value_tablet");
+            if(empty($tabletValue) && $tabletValue !== "0") $tabletValue = $defaultValueTablet;
+            
+            $mobileValue = UniteFunctionsUC::getVal($param, "value_mobile");
+            if(empty($mobileValue) && $mobileValue !== "0") $mobileValue = $defaultValueMobile;
+            
+            $values = array(
+                "desktop" => $desktopValue,
+                "tablet" => $tabletValue,
+                "mobile" => $mobileValue,
+            );
+        }
+
+        $options = UniteFunctionsUC::getVal($param, "options");
+
+        if(empty($options) === false){
+            $phpFilter = UniteFunctionsUC::getVal($param, "php_filter_name");
+
+            if(empty($phpFilter) === false)
+                $options = array_flip($options);
+
+            foreach($values as $device => $value){
+                if(in_array($value, $options) === false)
+                    unset($values[$device]);
+            }
+        }
+
+        $style = "";
+
+        // $style .= "/* " . json_encode($param) . " */ /* " . $name . ": start */ ";
+
+        foreach($values as $device => $value){
+            // Улучшенная проверка пустых значений
+            if($value === null || $value === "")
+                continue;
+
+            foreach($selectors as $selector => $selectorValue){
+                $css = $this->prepareCSSSelectorValueCSS($selectorValue, $value);
+                $style .= $this->prepareCSSSelectorStyle($selector, $css, $device);
+            }
+        }
+
+        // $style .= "/* " . $name . ": end */ ";
+
+        return $style;
+    }
+
+	/*
 	private function processParamCSSSelector_value($param, $selectors){
 
 		$values = array(
@@ -977,27 +1520,56 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 		return $style;
 	}
+    */
+
+
 
 	/**
 	 * prepare css selector dimentions css
 	 */
-	private function prepareCSSSelectorDimentionsCSS($selectorValue, $value){
+    function prepareCSSSelectorDimentionsCSS($selectorValue, $value){
 
-		$top = UniteFunctionsUC::getVal($value, "top");
-		$right = UniteFunctionsUC::getVal($value, "right");
-		$bottom = UniteFunctionsUC::getVal($value, "bottom");
-		$left = UniteFunctionsUC::getVal($value, "left");
-		$unit = UniteFunctionsUC::getVal($value, "unit", "px");
+        $top    = UniteFunctionsUC::getVal($value, "top");
+        $right  = UniteFunctionsUC::getVal($value, "right");
+        $bottom = UniteFunctionsUC::getVal($value, "bottom");
+        $left   = UniteFunctionsUC::getVal($value, "left");
+        $unit   = UniteFunctionsUC::getVal($value, "unit", "px");
 
-		$css = $this->processCSSSelectorReplaces($selectorValue, array(
-			"{{top}}" => $top . $unit,
-			"{{right}}" => $right . $unit,
-			"{{bottom}}" => $bottom . $unit,
-			"{{left}}" => $left . $unit,
-		));
+        $rawSides = array($top, $right, $bottom, $left);
+        $hasValue = false;
 
-		return $css;
-	}
+        foreach ($rawSides as $sideValue) {
+            if ($sideValue !== '' && $sideValue !== null && $sideValue !== false) {
+                $sideValue = trim((string)$sideValue);
+                if ($sideValue !== '') {
+                    $hasValue = true;
+                    break;
+                }
+            }
+        }
+
+        if ($hasValue === false) return "";
+
+        $prepareSide = function($v) use ($unit) {
+            if ($v === '' || $v === null || $v === false)
+                return '';
+
+            $v = trim((string)$v);
+            if ($v === '')
+                return '';
+
+            return $v . $unit;
+        };
+
+        $css = $this->processCSSSelectorReplaces($selectorValue, array(
+            "{{top}}"    => $prepareSide($top),
+            "{{right}}"  => $prepareSide($right),
+            "{{bottom}}" => $prepareSide($bottom),
+            "{{left}}"   => $prepareSide($left),
+        ));
+
+        return $css;
+    }
 
 	/**
 	 * prepare css selector image css
@@ -1156,7 +1728,7 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 		$selectors = array_unique($selectors);
 
 		foreach($selectors as $index => $selector){
-			$selectors[$index] = "#" . $wrapperId . " " . trim($selector);
+			$selectors[$index] = ".ue-widget-root." . $wrapperId . " " . trim($selector);
 		}
 
 		return implode(",", $selectors);
@@ -1211,46 +1783,358 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 	/**
 	 * process params css selector
 	 */
-	private function processParamsCSSSelector($params, $paramsCats = array()){
+    private function processParamsCSSSelector($params, $paramsCats = array()){
 
-		$styles = '';
+        $styles = '';
 
-		$displayCats = array();
-		foreach($paramsCats as $cat) {
-			
-			$catID = UniteFunctionsUC::getVal($cat, "id");
-			
-			if(empty($catID))
-				continue;
-			
-			$displayCats[$catID] = UEParamsManager::isParamPassesConditions($params, $cat);
-		}
-		
-		foreach($params as $param){
-			
-			$passed = UEParamsManager::isParamPassesConditions($params, $param);
+        $displayCats = array();
+        foreach($paramsCats as $cat) {
+            $catID = UniteFunctionsUC::getVal($cat, "id");
+            if(empty($catID))
+                continue;
+            $displayCats[$catID] = UEParamsManager::isParamPassesConditions($params, $cat);
+        }
 
-			if($passed === false)
-				continue;
+        foreach($params as $param){
+            $passed = UEParamsManager::isParamPassesConditions($params, $param);
+            if($passed === false) {
+                continue;
+            }
+                
 
-			// param's cat disabled
-			$catID = UniteFunctionsUC::getVal($param, GlobalsUC::ATTR_CATID);
-			
-			$isDisplayCat = UniteFunctionsUC::getVal($displayCats, $catID);
-			$isDisplayCat == UniteFunctionsUC::strToBool($isDisplayCat);
-			
-			if(!empty($catID) && $isDisplayCat == false) {
-				continue;
-			}
+            // param's cat disabled
+            $catID = UniteFunctionsUC::getVal($param, GlobalsUC::ATTR_CATID);
+            $isDisplayCat = UniteFunctionsUC::getVal($displayCats, $catID);
+            $isDisplayCat == UniteFunctionsUC::strToBool($isDisplayCat);
 
-			$style = $this->processParamCSSSelector($param);
+            if(!empty($catID) && $isDisplayCat == false) {
+                continue;
+            }
 
-			if(empty($style) === false)
-				$styles .= $style;
-		}
+            $style = $this->processParamCSSSelector($param);
 
-		return $styles;
-	}
+            if(empty($style) === false)
+                $styles .= $style;
+        }
+
+        return $styles;
+    }
+
+    /**
+     * process advanced tab css selectors
+    */
+    public function getAdvancedTabCssSelectors() {
+
+        $styles = '';
+
+        $wrapperId = $this->getWidgetWrapperID();
+        $paramsTmp = $this->getAddonParams();
+
+        // Get default values for advanced parameters
+        $allParams = $this->addon->getParams();
+        $advancedDefaults = array();
+
+        foreach($allParams as $param) {
+            $paramName = UniteFunctionsUC::getVal($param, 'name');
+            
+            // Only process advanced_ parameters
+            if (strpos($paramName, 'advanced_') === 0) {
+                $defaultValue = UniteFunctionsUC::getVal($param, 'default_value');
+                
+                // Check if default value exists and is not empty
+                if ($defaultValue !== null && $defaultValue !== '' && $defaultValue !== false) {
+                    // Only add if not already set by user
+                    $currentValue = UniteFunctionsUC::getVal($paramsTmp, $paramName);
+                    if ($currentValue === '' || $currentValue === null) {
+                        $advancedDefaults[$paramName] = $defaultValue;
+                    }
+                }
+            }
+        }
+
+        // Merge defaults with user-set values (user values take precedence)
+        if (!empty($advancedDefaults)) {
+            $paramsTmp = array_merge($advancedDefaults, $paramsTmp);
+        }
+
+        $advanced_styles = '';
+
+        // z-index
+        $zIndexVal = UniteFunctionsUC::getVal($paramsTmp, 'advanced_z_index');
+        if ($zIndexVal !== '' && $zIndexVal !== null) {
+            $zIndex = (int)$zIndexVal['size'];
+            $advanced_styles .= 'z-index: ' . $zIndex . '; ';
+        }
+
+        $sides = ['top', 'right', 'bottom', 'left'];
+
+        // padding
+        $padding = UniteFunctionsUC::getVal($paramsTmp, 'advanced_padding');
+        if (is_array($padding)) {
+
+            $unit = !empty($padding['unit']) ? $padding['unit'] : 'px';
+
+            if(!empty($padding['is_linked']) && $padding['is_linked'] && $padding['top'] !== '' && $padding['top'] !== null) {
+                $val = (string)$padding['top'];
+                if ($val !== '' && $val !== null && $val !== false) {
+                    $val = trim((string)$val);
+                    if ($val !== '') {
+                        $advanced_styles .= 'padding: ' . $val . $unit . '; ';
+                    }
+                }
+            } else {
+                foreach($sides as $side) {
+                    $val = UniteFunctionsUC::getVal($padding, $side);
+
+                    if ($val === '' || $val === null || $val === false) {
+                        continue;
+                    }
+
+                    $val = trim((string)$val);
+                    if ($val === '') {
+                        continue;
+                    }
+
+                    $advanced_styles .= 'padding-' . $side . ': ' . $val . $unit . '; ';
+                }
+            }
+        }
+
+        // margin
+        $margin = UniteFunctionsUC::getVal($paramsTmp, 'advanced_margin');
+        if (is_array($margin)) {
+            if(!empty($margin['is_linked']) && $margin['is_linked'] && $margin['top'] !== '' && $margin['top'] !== null) {
+                $val = (string)$margin['top'];
+                if($val !== '' && $val !== null) {
+                    $advanced_styles .= 'margin: ' . $val . $margin['unit'] . '; ';
+                }
+            } else {
+                foreach($sides as $side) {
+                    $val = UniteFunctionsUC::getVal($margin, $side);
+                    if($val !== '' && $val !== null && $val !== false) {
+                        $advanced_styles .= 'margin-' . $side . ': ' . (string)$val . $margin['unit'] . '; ';
+                    }
+                }
+            }
+        }
+
+        // background
+        $bgType = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_type'); 
+
+        if (!empty($bgType)) {
+
+            if ($bgType === 'solid') {
+                $bgColor = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_color');
+                if (empty($bgColor)) {
+                    $bgColor = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_solid_color');
+                }
+                if (!empty($bgColor)) {
+                    $advanced_styles .= 'background-color:' . $bgColor . '; ';
+                }
+
+                $bgImage = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_image');
+                if (empty($bgImage)) {
+                    $bgImage = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_solid_image');
+                }
+
+                $bgUrl = '';
+                if (is_array($bgImage)) {
+                    $attachment_id = UniteFunctionsUC::getVal($bgImage, 'id');
+                    if ($attachment_id) {
+                        $bgUrl = wp_get_attachment_url($attachment_id);
+                    } else {
+                        $bgUrl = UniteFunctionsUC::getVal($bgImage, 'url');
+                    }
+                } elseif (is_string($bgImage)) {
+                    $bgUrl = $bgImage;
+                }
+                if (!empty($bgUrl)) {
+                    if (strpos($bgUrl, 'http') !== 0) {
+                        $uploads = wp_upload_dir();
+                        $bgUrl = rtrim($uploads['baseurl'], '/') . '/' . ltrim($bgUrl, '/');
+                    }
+                }
+
+                if (!empty($bgUrl)) {
+                    if (stripos($bgUrl, 'url(') === false) {
+                        $advanced_styles .= "background-image:url('".$bgUrl."'); ";
+                    } else {
+                        $advanced_styles .= 'background-image:' . $bgUrl . '; ';
+                    }
+
+                    $bgRepeat = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_repeat');
+                    if (empty($bgRepeat)) {
+                        $bgRepeat = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_solid_image_repeat');
+                    }
+                    if (!empty($bgRepeat)) {
+                        $advanced_styles .= 'background-repeat:' . $bgRepeat . '; ';
+                    }
+
+                    $bgPos = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_position');
+                    if (empty($bgPos)) {
+                        $bgPos = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_solid_image_position');
+                    }
+                    if (!empty($bgPos)) {
+                        $advanced_styles .= 'background-position:' . $bgPos . '; ';
+                    }
+
+                    $bgSize = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_size');
+                    if (empty($bgSize)) {
+                        $bgSize = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_solid_image_size');
+                    }
+                    if (!empty($bgSize)) {
+                        $advanced_styles .= 'background-size:' . $bgSize . '; ';
+                    }
+
+                    $bgAttach = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_attachment');
+                    if (empty($bgAttach)) {
+                        $bgAttach = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_solid_image_attachment');
+                    }
+                    if (!empty($bgAttach)) {
+                        $advanced_styles .= 'background-attachment:' . $bgAttach . '; ';
+                    }
+                }
+
+            } elseif ($bgType === 'gradient') {
+
+                $c1 = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_gradient1_color');
+                $c2 = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_gradient2_color');
+
+                $stop1Raw = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_gradient1_stop');
+                $stop2Raw = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_gradient2_stop');
+
+                $stop1 = '';
+                if (is_array($stop1Raw)) {
+                    $s  = UniteFunctionsUC::getVal($stop1Raw, 'size', '');
+                    $u  = UniteFunctionsUC::getVal($stop1Raw, 'unit', '%');
+                    if ($s !== '' && $s !== null) $stop1 = trim($s) . (empty($u) ? '%' : $u);
+                } elseif (is_numeric($stop1Raw)) {
+                    $stop1 = $stop1Raw . '%';
+                }
+
+                $stop2 = '';
+                if (is_array($stop2Raw)) {
+                    $s  = UniteFunctionsUC::getVal($stop2Raw, 'size', '');
+                    $u  = UniteFunctionsUC::getVal($stop2Raw, 'unit', '%');
+                    if ($s !== '' && $s !== null) $stop2 = trim($s) . (empty($u) ? '%' : $u);
+                } elseif (is_numeric($stop2Raw)) {
+                    $stop2 = $stop2Raw . '%';
+                }
+
+                $gType = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_gradient_type', 'linear');
+                $gType = strtolower(trim((string)$gType));
+                if ($gType !== 'radial') {
+                    $gType = 'linear';
+                }
+
+                $angleRaw = UniteFunctionsUC::getVal($paramsTmp, 'advanced_background_gradient_angle');
+                $angle    = 180; 
+                if (is_array($angleRaw)) {
+                    $sz = UniteFunctionsUC::getVal($angleRaw, 'size');
+                    if ($sz !== '' && $sz !== null && is_numeric($sz)) {
+                        $angle = (int)$sz;
+                    }
+                } elseif ($angleRaw !== '' && $angleRaw !== null && is_numeric($angleRaw)) {
+                    $angle = (int)$angleRaw;
+                }
+
+                $angle = $angle % 360;
+                if ($angle < 0) $angle += 360;
+
+                if (!empty($c1)) {
+                    $advanced_styles .= 'background-color:' . $c1 . '; ';
+                }
+
+                if ($gType === 'linear') {
+                    $parts = [];
+                    $parts[] = $c1 . (!empty($stop1) ? ' ' . $stop1 : '');
+                    $parts[] = $c2 . (!empty($stop2) ? ' ' . $stop2 : '');
+                    $advanced_styles .= 'background-image: linear-gradient(' . $angle . 'deg, ' . implode(', ', $parts) . '); ';
+                } else {
+                    $parts = [];
+                    $parts[] = $c1 . (!empty($stop1) ? ' ' . $stop1 : '');
+                    $parts[] = $c2 . (!empty($stop2) ? ' ' . $stop2 : '');
+                    $advanced_styles .= 'background-image: radial-gradient(circle, ' . implode(', ', $parts) . '); ';
+                }
+
+            }
+        }
+
+        // border
+        $borderType = UniteFunctionsUC::getVal($paramsTmp, 'advanced_border_type'); 
+        $bw         = UniteFunctionsUC::getVal($paramsTmp, 'advanced_border_width'); 
+        $bColor     = UniteFunctionsUC::getVal($paramsTmp, 'advanced_border_color');
+
+        if (is_string($borderType)) {
+            $borderType = trim($borderType);
+        }
+
+        if (!empty($borderType) && $borderType !== 'none') {
+
+            if (empty($bColor)) {
+                $bColor = '#000';
+            }
+
+            if (is_array($bw) && !empty($bw['is_linked']) && $bw['is_linked'] && $bw['top'] !== '' && $bw['top'] !== null) {
+                $unit = !empty($bw['unit']) ? $bw['unit'] : 'px';
+                $w    = (string)$bw['top'];
+
+                $advanced_styles .= 'border:' . $w . $unit . ' ' . $borderType . ' ' . $bColor . '; ';
+
+            } else {
+                $unit = 'px';
+                if (is_array($bw) && !empty($bw['unit'])) {
+                    $unit = $bw['unit'];
+                }
+
+                $advanced_styles .= 'border-style:' . $borderType . '; border-color:' . $bColor . '; ';
+
+                if (is_array($bw)) {
+                    foreach (array('top','right','bottom','left') as $side) {
+                        $val = UniteFunctionsUC::getVal($bw, $side);
+                        if ($val !== '' && $val !== null && $val !== false) {
+                            $advanced_styles .= 'border-' . $side . '-width:' . (string)$val . $unit . '; ';
+                        }
+                    }
+                }
+            }
+        }
+
+        if($advanced_styles != '') {
+            $styles .= "\n." . $wrapperId . " {" . $advanced_styles . "}";
+        }
+
+        // -------------------- RESPONSIVE VISIBILITY --------------------
+        $hideDesktop = UniteFunctionsUC::getVal($paramsTmp, 'advanced_hide_on_desktop');
+        $hideTablet  = UniteFunctionsUC::getVal($paramsTmp, 'advanced_hide_on_tablet');
+        $hideMobile  = UniteFunctionsUC::getVal($paramsTmp, 'advanced_hide_on_mobile');
+
+        $isAdmin = function_exists('is_admin') && is_admin();
+
+        if ($isAdmin) {
+            if ((int)$hideDesktop) {
+                $styles .= "\n@media (min-width:1025px){ #{$wrapperId}{ opacity:.55; filter:blur(1px) grayscale(1); pointer-events:none; } }";
+            }
+            if ((int)$hideTablet) {
+                $styles .= "\n@media (min-width:768px) and (max-width:1024px){ #{$wrapperId}{ opacity:.55; filter:blur(1px) grayscale(1); pointer-events:none; } }";
+            }
+            if ((int)$hideMobile) {
+                $styles .= "\n@media (max-width:767px){ #{$wrapperId}{ opacity:.55; filter:blur(1px) grayscale(1); pointer-events:none; } }";
+            }
+        } else {
+            if ((int)$hideDesktop) {
+                $styles .= "\n@media (min-width:1025px){ #{$wrapperId}{ display:none !important; } }";
+            }
+            if ((int)$hideTablet) {
+                $styles .= "\n@media (min-width:768px) and (max-width:1024px){ #{$wrapperId}{ display:none !important; } }";
+            }
+            if ((int)$hideMobile) {
+                $styles .= "\n@media (max-width:767px){ #{$wrapperId}{ display:none !important; } }";
+            }
+        }
+        
+        return $styles;
+    }
 
 	/**
 	 * process param css selector
@@ -1321,13 +2205,20 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 		$styles .= $this->processItemsSelectors();
 
+        $styles .= $this->getAdvancedTabCssSelectors();
+
 		if(empty($styles) === true)
 			return null;
 
-		UniteProviderFunctionsUC::printCustomStyle($styles);
-
 		return $styles;
 	}
+
+    private function getProcessedItemsData() {
+        if(empty($this->processedItemsData)) {
+            $this->processedItemsData = $this->addon->getProcessedItemsData($this->processType);
+        }
+        return $this->processedItemsData;
+    }
 
 	/**
 	 * process items selectors
@@ -1337,14 +2228,18 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 		$styles = "";
 
 		$items = $this->addon->getArrItemsNonProcessed();
+        $itemsProcessed = $this->getProcessedItemsData();
 		$params = $this->addon->getProcessedItemsParams();
+
+        // $styles = '/* =[8] ' . json_encode($items) . ' =[9] */';
 
 		if (empty($items) === true || empty($params) === true)
 			return $styles;
 
-		foreach($items as $item){
-			$itemId = UniteFunctionsUC::getVal($item, "_generated_id");
-			$itemParams = array();
+		foreach($items as $k => $item){
+            $itemData = $itemsProcessed[$k]['item'];
+			$itemId = UniteFunctionsUC::getVal($itemData, "_generated_id");
+            $itemParams = array();
 
 			foreach($params as $param){
 				$paramName = UniteFunctionsUC::getVal($param, "name");
@@ -1354,9 +2249,11 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 			}
 
 			$itemStyles = $this->processParamsCSSSelector($itemParams);
-			$itemStyles = $this->processCSSSelectorReplaces($itemStyles, array("{{current_item}}" => ".elementor-repeater-item-" . $itemId));
+			
+            $itemStyles = $this->processCSSSelectorReplaces($itemStyles, array("{{current_item}}" => ".elementor-repeater-item-" . $itemId));
 
 			$styles .= $itemStyles;
+
 		}
 
 		return $styles;
@@ -1366,7 +2263,7 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 	 * get selectors css
 	 */
 	public function getSelectorsCss(){
-				
+
 		$style = $this->processPreviewParamsSelectors();
 
 		return $style;
@@ -1396,6 +2293,7 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 		$htmlInlcudesJS = $this->getHtmlIncludes($arrIncludes,"js");
 
 		//process selectors only for preview (elementor output uses its own processing)
+
 		$this->processPreviewParamsSelectors();
 
 		$arrCssCustomStyles = UniteProviderFunctionsUC::getCustomStyles();
@@ -1657,7 +2555,7 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 	}
 
 	/**
-	 * modify debug array
+	 * modify debug array - output for debug, fordebug
 	 */
 	private function modifyDebugArray($arrDebug){
 		
@@ -1722,8 +2620,8 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 		$html .= dmpGet("<b> ----------Terms--------- </b>");
 
-		$terms = UniteFunctionsWPUC::getPostTerms($post);
-
+		$terms = UniteFunctionsWPUC::getPostTermsTitlesString($post, true);
+		
 		$html .= dmpGet($terms);
 		
 		return($html);
@@ -1752,8 +2650,23 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 			if($item instanceof WP_Post)
 				$isPost = true;
 
+			//check the multisource type
 			if($isPost == false){
+				
+				$itemTest = UniteFunctionsUC::getVal($item, "item");
+				
+				$objectType = UniteFunctionsUC::getVal($itemTest, "object_type");
+				$objectID = UniteFunctionsUC::getVal($itemTest, "object_id");
+				
+				if(!empty($objectID) && $objectType === "posts"){
+					$item = get_post($objectID);
+					$isPost = true;					
+				}
+			}
 
+			
+			if($isPost == false){
+				
 				$item = UniteFunctionsUC::getVal($item, "item");
 
 				$postData = UniteFunctionsUC::getArrFirstValue($item);
@@ -1790,15 +2703,21 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 
 			if($isShowMeta == false)
 				continue;
-
+		
+			$html .= ("<b> ------- Post Meta ------- </b>");
+			
 			$postMeta = get_post_meta($id, "", false);
-
-			$postMeta = UniteFunctionsUC::modifyDataArrayForShow($postMeta, true);
-
+						
+			$postMeta = $this->modifyDebugArray($postMeta);
+			
 			$html .= dmpGet($postMeta);
 
-			//$postMeta = get_post_meta($post_id)
-
+			$html .= ("<b> ------- Post Terms ------- </b>");
+			
+			$terms = UniteFunctionsWPUC::getPostTermsTitlesString($post, true);
+			
+			$html .= dmpGet($terms);
+			
 		}
 
 
@@ -1916,13 +2835,13 @@ $js
 		
 		if($isInsideEditor == true){
 			
-			$css = "#{$ucID}-root .uc-background-editor-placeholder{
+			$css = ".{$ucID}-root .uc-background-editor-placeholder{
 				font-size:12px;
 				padding:20px;
 				color:black;
 			}
 			
-			#{$ucID}-root{
+			.{$ucID}-root{
 				position:relative;
 				border:1px solid gray;
 				background-color:lightgray;
@@ -1944,7 +2863,7 @@ $js
 		
 		$css = "
 /* background wrapper */
-#{$ucID}-root.uc-background-active{
+.{$ucID}-root.uc-background-active{
 	position: absolute;
 	top:0px;
 	left:0px;
@@ -2020,7 +2939,8 @@ $css
 				$arrItemsForShow[] = $item;
 				continue;
 			}
-			
+
+
 			$item = UniteFunctionsUC::getVal($item, "item");
 
 			$itemFirstValue = UniteFunctionsUC::getArrFirstValue($item);
@@ -2249,8 +3169,15 @@ $css
 
 				if(empty($rootId) === true)
 					$rootId = $this->getWidgetID();
+				
+                $currentHideDebug = GlobalsUC::$hideDebug;
+				GlobalsUC::$hideDebug = true;
+                $params = $this->addon->getProcessedMainParamsValues($this->processType);
+				GlobalsUC::$hideDebug = $currentHideDebug;
+				
+                $advancedAddClasses = UniteFunctionsUC::getVal($params, "advanced_css_classes");
 
-				$output .= "\n<div id=\"" . esc_attr($id) . "\" class=\"ue-widget-root\" data-id=\"" . esc_attr($rootId) . "\">";
+				$output .= "\n<div id=\"" . esc_attr($id) . "\" class=\"ue-widget-root " . esc_attr($advancedAddClasses) . " " . esc_attr($id) . "\" data-id=\"" . esc_attr($rootId) . "\">";
 			}
 			
 			
@@ -2356,6 +3283,17 @@ $css
 	 * get widget wrapper id
 	 */
 	private function getWidgetWrapperID(){
+
+        $params = $this->getAddonParams();
+
+        $cssId = UniteFunctionsUC::getVal($params, 'advanced_css_id');
+        if (!empty($cssId)) {
+            $cssId = preg_replace('/[^A-Za-z0-9\-_]/', '-', $cssId);
+            if (!empty($cssId)) return $cssId;
+        }
+
+        $rootId = UniteFunctionsUC::getVal($params, '_rootId');
+        if (!empty($rootId)) return $rootId;
 
 		return $this->getWidgetID() . "-root";
 	}
@@ -2481,13 +3419,15 @@ $css
 	 * get addon params
 	 */
 	private function getAddonParams(){
-
-		if(!empty($this->paramsCache))
+		if(!empty($this->paramsCache)) {
 			return($this->paramsCache);
-
-		$this->paramsCache = $this->addon->getProcessedMainParamsValues($this->processType);
+        }
+        
+		$this->paramsCache = $this->addon->getProcessedMainParamsValues($this->processType, true);
+        $allParamDefs = $this->addon->getParams();
 
 		return($this->paramsCache);
+
 	}
 
 
@@ -2601,10 +3541,23 @@ $css
 		$isModify = false;
 
 		$arrParams = $this->modifyTemplatesForOutput_getParamsForModify();
-
+		
+		$arrValues = $this->addon->getOriginalValues();
+		
+		$enableSchema = UniteFunctionsUC::getVal($arrValues, "ue_schema_enable");
+		$enableSchema = UniteFunctionsUC::strToBool($enableSchema);
+		
+		//add schema function
+		
+		if($enableSchema == true){
+			
+			$html .= "{{ucfunc(\"put_schema_items_json_global\")}}\n\n";
+			$isModify = true;
+		}
+		
 		if(empty($arrParams))
-			return(null);
-
+			$arrParams = array();
+		
 		foreach($arrParams as $param){
 
 			$name = UniteFunctionsUC::getVal($param, "name");
@@ -2764,7 +3717,7 @@ $css
 						$dataValue = UniteFunctionsUC::getVal($arrData, $paramName);
 
 						if(is_string($dataValue) && $dataValue === "uc_items"){
-							$arrItemData = $this->addon->getProcessedItemsData($this->processType);
+                            $arrItemData = $this->getProcessedItemsData();
 						}elseif(is_array($dataValue)){
 							$arrItemData = $dataValue;
 						}else{
@@ -2775,7 +3728,7 @@ $css
 						UniteCreatetorParamsProcessorMultisource::checkShowItemsDebug($arrItemData);
 					break;
 					default:
-						$arrItemData = $this->addon->getProcessedItemsData($this->processType);
+                        $arrItemData = $this->getProcessedItemsData();
 					break;
 				}
 
@@ -2844,7 +3797,7 @@ $css
 	 * init by addon
 	 */
 	public function initByAddon(UniteCreatorAddon $addon){
-		
+
 		if(empty($addon))
 			UniteFunctionsUC::throwError("Wrong addon given");
 

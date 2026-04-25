@@ -11,6 +11,43 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'PINTEREST_API_URL', 'https://api.pinterest.com/v5/' );
 
+function refresh_pinterest_token( $refresh_token ) {
+
+	$api_url = 'https://appfb.premiumaddons.com/wp-json/fbapp/v2/pinterest_refresh';
+
+	$response = wp_remote_post(
+		$api_url,
+		array(
+			'timeout'   => 15,
+			'sslverify' => true,
+			'body'      => array(
+				'refresh_token' => $refresh_token,
+			),
+		)
+	);
+
+	if ( is_wp_error( $response ) ) {
+		return;
+	}
+
+	$body = wp_remote_retrieve_body( $response );
+	$body = json_decode( $body, true );
+
+	if ( empty( $body ) || ! is_array( $body ) ) {
+		return;
+	}
+
+	if ( ! empty( $body['access_token'] ) ) {
+		update_option( 'pinterest_token', $body['access_token'] );
+	}
+
+	if ( ! empty( $body['refresh_token'] ) ) {
+		update_option( 'pinterest_refresh_token', $body['refresh_token'] );
+	}
+
+	return $body;
+}
+
 
 /**
  * Get Pinterset Data
@@ -24,7 +61,8 @@ function get_pinterest_data( $id, $settings, $endpoint ) {
 
 	$filter_id = $settings['match_id'];
 
-	$token = $settings['access_token'];
+	$token = get_option( 'pinterest_token', false );
+	$token = $token ?: $settings['access_token'];
 
 	$transient_name = sprintf( 'papro_pinterest_feed_%s_%s', $id, substr( $token, -8 ) );
 
@@ -70,7 +108,10 @@ function get_pinterest_data( $id, $settings, $endpoint ) {
 
 		$response = json_decode( $response, true );
 
-		if ( 'failure' === $response['status'] ) {
+		if ( isset( $response['status'] ) && 'failure' === $response['status'] ) {
+			$refresh_token = get_option( 'pinterest_refresh_token', false );
+			$refresh_token = $refresh_token ?: $settings['refresh_access_token'];
+			refresh_pinterest_token( get_option( 'pinterest_refresh_token', $refresh_token ) );
 			return;
 		}
 
@@ -89,11 +130,11 @@ function get_pinterest_data( $id, $settings, $endpoint ) {
 
 	if ( empty( $filter_id ) ) {
 
-		$detect = new \PA_Mobile_Detect();
+		$device_type = Helper_Functions::get_device_type();
 
-		if ( $detect->isTablet() && ! empty( $settings['no_of_posts_tablet'] ) ) {
+		if ( 'tablet' === $device_type && ! empty( $settings['no_of_posts_tablet'] ) ) {
 			$items = array_slice( $items, 0, $settings['no_of_posts_tablet'] );
-		} elseif ( $detect->isMobile() && ! empty( $settings['no_of_posts_mobile'] ) ) {
+		} elseif ( 'mobile' === $device_type && ! empty( $settings['no_of_posts_mobile'] ) ) {
 			$items = array_slice( $items, 0, $settings['no_of_posts_mobile'] );
 		}
 	}
@@ -184,11 +225,11 @@ function get_board_pins( $widget_id, $settings, $board_id ) {
 		set_transient( $transient_name, $response, $expire_time );
 	}
 
-	$detect = new \PA_Mobile_Detect();
+	$device_type = Helper_Functions::get_device_type();
 
-	if ( $detect->isTablet() && ! empty( $settings['pins_per_board_tablet'] ) ) {
+	if ( 'tablet' === $device_type && ! empty( $settings['pins_per_board_tablet'] ) ) {
 		$items = array_slice( $items, 0, $settings['pins_per_board_tablet'] );
-	} elseif ( $detect->isMobile() && ! empty( $settings['pins_per_board_mobile'] ) ) {
+	} elseif ( 'mobile' === $device_type && ! empty( $settings['pins_per_board_mobile'] ) ) {
 		$items = array_slice( $items, 0, $settings['pins_per_board_mobile'] );
 	}
 

@@ -80,6 +80,8 @@ function wpr_register_addons_settings() {
     register_setting( 'wpr-settings', 'wpr_recaptcha_v3_site_key' );
     register_setting( 'wpr-settings', 'wpr_recaptcha_v3_secret_key' );
     register_setting( 'wpr-settings', 'wpr_recaptcha_v3_score' );
+    register_setting( 'wpr-settings', 'wpr_recaptcha_v2_site_key' );
+    register_setting( 'wpr-settings', 'wpr_recaptcha_v2_secret_key' );
 
     // Lightbox
     register_setting( 'wpr-settings', 'wpr_lb_bg_color' );
@@ -117,6 +119,9 @@ function wpr_register_addons_settings() {
     register_setting('wpr-extension-settings', 'wpr-parallax-background');
     register_setting('wpr-extension-settings', 'wpr-parallax-multi-layer');
     register_setting('wpr-extension-settings', 'wpr-custom-css');
+    register_setting('wpr-extension-settings', 'wpr-display-conditions');
+    register_setting('wpr-extension-settings', 'wpr-equal-height');
+    // register_setting('wpr-extension-settings', 'wpr-column-slider');
     register_setting('wpr-extension-settings', 'wpr-sticky-section');
 
     // Element Toggle
@@ -126,6 +131,17 @@ function wpr_register_addons_settings() {
     foreach ( Utilities::get_registered_modules() as $title => $data ) {
         $slug = $data[0];
         register_setting( 'wpr-elements-settings', 'wpr-element-'. $slug, [ 'default' => 'on' ] );
+    }
+
+    // Pro widgets that appear in Elements tab (so their toggles are saved)
+    if ( defined( 'WPR_ADDONS_PRO_VERSION' ) && wpr_fs()->can_use_premium_code() ) {
+        $pro_element_slugs = [ 'breadcrumbs-pro' ];
+        if ( wpr_fs()->is_plan( 'expert' ) ) {
+            $pro_element_slugs = array_merge( $pro_element_slugs, [ 'category-grid-pro', 'advanced-filters-pro' ] );
+        }
+        foreach ( $pro_element_slugs as $slug ) {
+            register_setting( 'wpr-elements-settings', 'wpr-element-' . $slug, [ 'default' => 'on' ] );
+        }
     }
 
     // Theme Builder
@@ -210,6 +226,9 @@ function wpr_addons_settings_page() {
 
     // Render Create Templte Popup
     WPR_Templates_Loop::render_create_template_popup();
+
+    // Render Backup Plugin Popup
+    WPR_Templates_Loop::render_backup_plugin_popup();
     
     ?>
 
@@ -287,6 +306,8 @@ function wpr_addons_settings_page() {
         $modules = Utilities::get_registered_modules();
         $premium_modules = [
 			'Breadcrumbs' => ['breadcrumbs-pro', 'https://royal-elementor-addons.com/?ref=rea-plugin-backend-elements-breadcrumbs-widgets-upgrade-pro#purchasepro', '', 'pro'],
+			'Category Grid' => ['category-grid-pro', 'https://royal-elementor-addons.com/?ref=rea-plugin-backend-elements-catgrid-widgets-upgrade-pro#purchasepro', '', 'expert'],
+			'Advanced Filters' => ['advanced-filters-pro', 'https://royal-elementor-addons.com/?ref=rea-plugin-backend-elements-advancedfilters-widgets-upgrade-pro#purchasepro', '', 'expert'],
         ];
 
         foreach ( array_merge($modules, $premium_modules) as $title => $data ) {
@@ -311,6 +332,14 @@ function wpr_addons_settings_page() {
 
             if ( 'breadcrumbs-pro' == $data[0] && (defined('WPR_ADDONS_PRO_VERSION') && wpr_fs()->can_use_premium_code()) ) {
                 $url = '';
+            }
+
+            if ( 'category-grid-pro' == $data[0] && (defined('WPR_ADDONS_PRO_VERSION') && wpr_fs()->is_plan( 'expert' )) ) {
+                $url = '';
+            }
+
+            if ( 'advanced-filters-pro' == $data[0] && (defined('WPR_ADDONS_PRO_VERSION') && wpr_fs()->is_plan( 'expert' )) ) {
+                $url = 'https://demosites.royal-elementor-addons.com/fashion-v2/shop-fashion-v2/';
             }
 
             echo '<div class="wpr-element '. esc_attr($class) .'">';
@@ -361,6 +390,8 @@ function wpr_addons_settings_page() {
         <a href="https://youtu.be/f_3tNiBC3dw?t=238" target="_blank"><?php esc_html_e( 'How to use WooCommerce Builder Widgets', 'wpr-addons' ); ?></a>
         <br><br>
         <a href="https://www.youtube.com/watch?v=wis1rQTn1tg" target="_blank"><?php esc_html_e( 'How to use Wishlist & Compare', 'wpr-addons' ); ?></a>
+        <br><br>
+        <a href="https://www.youtube.com/watch?v=ejbvzt2BkJE" target="_blank"><?php esc_html_e( ' How to use Advanced Filters', 'wpr-addons' ); ?></a>
     </div>
     <div class="wpr-elements wpr-elements-woo">
     <?php
@@ -388,7 +419,7 @@ function wpr_addons_settings_page() {
 
             if ( 'pro' === $data[3] && (!defined('WPR_ADDONS_PRO_VERSION') || !wpr_fs()->can_use_premium_code()) ) {
                 $class = 'wpr-pro-element';
-            } elseif ( 'expert' === $data[3] && !wpr_fs()->is_plan( 'expert' ) ) {
+            } elseif ( 'expert' === $data[3] && (!defined('WPR_ADDONS_PRO_VERSION') || !wpr_fs()->is_plan( 'expert' )) ) {
                 $class = 'wpr-expert-element';
             }
 
@@ -803,6 +834,26 @@ function wpr_addons_settings_page() {
                 </h4>
 
                 <input type="number" name="wpr_recaptcha_v3_score" id="wpr_recaptcha_v3_score" placeholder="0.5" step="0.1" min="0" max="1" value="<?php echo esc_attr(get_option('wpr_recaptcha_v3_score')); ?>">
+            </div>
+
+            <div class="wpr-setting">
+                <h4>
+                    <span><?php esc_html_e( 'reCAPTCHA v2 (Checkbox) Site Key', 'wpr-addons' ); ?></span>
+                    <br>
+                    <a href="https://www.google.com/recaptcha/intro/v3.html" target="_blank"><?php esc_html_e( 'How to get reCAPTCHA keys?', 'wpr-addons' ); ?></a>
+                    <p class="wpr-settings-group-description"><?php esc_html_e( 'Use reCAPTCHA v2 checkbox in Form Builder. Create a "reCAPTCHA v2" type key in Google reCAPTCHA admin.', 'wpr-addons' ); ?></p>
+                </h4>
+
+                <input type="text" name="wpr_recaptcha_v2_site_key" id="wpr_recaptcha_v2_site_key" value="<?php echo esc_attr(get_option('wpr_recaptcha_v2_site_key')); ?>">
+            </div>
+
+            <div class="wpr-setting">
+                <h4>
+                    <span><?php esc_html_e( 'reCAPTCHA v2 Secret Key', 'wpr-addons' ); ?></span>
+                    <br>
+                </h4>
+
+                <input type="text" name="wpr_recaptcha_v2_secret_key" id="wpr_recaptcha_v2_secret_key" value="<?php echo esc_attr(get_option('wpr_recaptcha_v2_secret_key')); ?>">
             </div>
             
         </div>
@@ -1486,6 +1537,7 @@ function wpr_addons_settings_page() {
                 <ul>
                     <li><span>Dedicated Support</span></li>
                     <li><span>Free and Pro Functionality Included</span></li>
+                    <li><span><span style="color: yellow;">*New</span> - Advanced Filters - <a href="https://demosites.royal-elementor-addons.com/woo-advanced-filters-preview/preview-links/?ref=rea-plugin-backend-freevsprotab-filters">View Demos</a></span></li>
                     <li><span>Extended Custom Field Options </span></li>
                     <li><span>Ability to build Dynamic Websites</span></li>
                     <li><span>Dynamic Tags for All Widgets</span></li>
@@ -1498,6 +1550,7 @@ function wpr_addons_settings_page() {
                     <li><span>White Label Branding</span></li>
                     <li><span>Elementor Pro Not Required</span></li>
                     <li><span>Custom Field Widget</span></li>
+                    <li><span>Advanced Filters Widget</span></li>
                     <li>And More is Comming Soon...</li>
                 </ul>
             </div>
@@ -1528,9 +1581,9 @@ function wpr_addons_settings_page() {
         // array of option names
         $option_names = $new_allowed_options[ 'wpr-extension-settings' ];
 
-        echo '<div class="wpr-elements">';
+        echo '<div class="wpr-elements wpr-elements-extensions">';
 
-        foreach ($option_names as $option_name) {  
+        foreach ($option_names as $option_name) {
             $option_title = ucwords( preg_replace( '/-/i', ' ', preg_replace('/wpr-||-toggle/i', '', $option_name ) ));
 
             echo '<div class="wpr-element">';
@@ -1577,6 +1630,14 @@ function wpr_addons_settings_page() {
                         }
                     } elseif ( 'wpr-custom-css' === $option_name ) {
                         echo '<br><span>Tip: Edit any Section > Navigate to Advanced tab</span>';
+                    } elseif ( 'wpr-display-conditions' === $option_name ) {
+                        echo '<br><span>Tip: Edit any Element > Navigate to Visibility tab</span>';
+                    } elseif ( 'wpr-column-slider' === $option_name ) {
+                        echo '<br><span>Tip: Edit any Section > Navigate to Advanced tab</span>';
+                        // echo '<a href="https://www.youtube.com" target="_blank">Watch Video Tutorial</a>';
+                    } elseif ( 'wpr-equal-height' === $option_name ) {
+                        echo '<br><span>Tip: Edit any Section > Navigate to Advanced tab</span>';
+                        // echo '<a href="https://www.youtube.com" target="_blank">Watch Video Tutorial</a>';
                     }
 
                     // echo '<a href="https://royal-elementor-addons.com/elementor-particle-effects/?ref=rea-plugin-backend-extentions-prev">'. esc_html('View Extension Demo', 'wpr-addons') .'</a>';
@@ -1667,6 +1728,8 @@ function wpr_addons_add_upgrade_menu() {
     } else if ( wpr_fs()->is_plan( 'pro' ) ) {
         $label = 'Upgrade to Expert';
     }
+
+    $label = isset($label) ? $label : __('Upgrade', 'wpr-addons');
 
     add_submenu_page( 'wpr-addons', $label, $label, 'manage_options', 'wpr-upgrade', 'wpr_addons_upgrade_page', 999 );
 }

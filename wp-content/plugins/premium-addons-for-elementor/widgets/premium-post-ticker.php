@@ -17,6 +17,7 @@ use PremiumAddons\Includes\Controls\Premium_Background;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Text_Shadow;
+use Elementor\Group_Control_Text_Stroke;
 use Elementor\Core\Kits\Documents\Tabs\Global_Colors;
 use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 
@@ -55,6 +56,13 @@ class Premium_Post_Ticker extends Widget_Base {
 	 * @var options
 	 */
 	private $options = null;
+
+	/**
+	 * Check Premium Addons Pro Version.
+	 *
+	 * @var bool $papro_activated
+	 */
+	private $papro_activated;
 
 	/**
 	 * Check Icon Draw Option.
@@ -270,9 +278,9 @@ class Premium_Post_Ticker extends Widget_Base {
 		$this->add_query_section_controls();
 		$this->add_posts_section_controls();
 
-		$papro_activated = apply_filters( 'papro_activated', false );
+		$this->papro_activated = Helper_Functions::check_papro_version();
 
-		if ( $papro_activated ) {
+		if ( $this->papro_activated ) {
 			do_action( 'pa_ticker_stock_controls', $this );
 		}
 
@@ -337,9 +345,8 @@ class Premium_Post_Ticker extends Widget_Base {
 			)
 		);
 
-		$papro_activated = apply_filters( 'papro_activated', false );
-
-		if ( ! $papro_activated ) {
+		$this->papro_activated = Helper_Functions::check_papro_version();
+		if ( ! $this->papro_activated ) {
 
 			$get_pro = Helper_Functions::get_campaign_link( 'https://premiumaddons.com/pro', 'ticker-widget', 'wp-editor', 'get-pro' );
 
@@ -435,6 +442,9 @@ class Premium_Post_Ticker extends Widget_Base {
 					'ticker_title!'  => '',
 					'icon_type'      => 'svg',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -465,6 +475,9 @@ class Premium_Post_Ticker extends Widget_Base {
 					'ticker_icon_sw' => 'yes',
 					'ticker_title!'  => '',
 					'icon_type'      => 'lottie',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -855,6 +868,9 @@ class Premium_Post_Ticker extends Widget_Base {
 				'condition'   => array(
 					'show_date' => 'yes',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -909,9 +925,29 @@ class Premium_Post_Ticker extends Widget_Base {
 		$this->add_control(
 			'infinite',
 			array(
-				'label'   => __( 'Marquee Effect', 'premium-addons-for-elementor' ),
-				'type'    => Controls_Manager::SWITCHER,
-				'default' => 'yes',
+				'label'        => __( 'Marquee Effect', 'premium-addons-for-elementor' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'separator'    => 'before',
+				'render_type'  => 'template',
+				'default'      => 'yes',
+				'prefix_class' => 'pa-infinite-ticker-',
+			)
+		);
+
+		$this->add_control(
+			'fade_color',
+			array(
+				'label'     => __( 'Fade Color', 'premium-addons-for-elementor' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'after',
+				'condition' => array(
+					'infinite' => 'yes',
+				),
+				'selectors' => array(
+					'{{WRAPPER}}.premium-post-ticker__layout-1 .premium-post-ticker__posts-wrapper::after, {{WRAPPER}}.premium-post-ticker__layout-2 .premium-post-ticker__posts-wrapper::after' => 'background: linear-gradient(to right, {{VALUE}}, {{VALUE}} 0%, transparent 10%, transparent 90%, {{VALUE}}) !important;',
+					'{{WRAPPER}}.premium-post-ticker__layout-3 .premium-post-ticker__content::after' => 'background: linear-gradient(to right, {{VALUE}}, {{VALUE}} 0%, transparent 10%, transparent 90%, {{VALUE}}) !important;',
+					'{{WRAPPER}}.premium-post-ticker__layout-4 .premium-post-ticker__posts-wrapper::after' => 'background: linear-gradient(to bottom, {{VALUE}}, {{VALUE}} 0%, transparent 15%, transparent 85%, {{VALUE}}) !important;',
+				),
 			)
 		);
 
@@ -958,6 +994,9 @@ class Premium_Post_Ticker extends Widget_Base {
 					'infinite!'         => 'yes',
 					'typing'            => 'yes',
 					'layout!'           => 'layout-4',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -1081,7 +1120,6 @@ class Premium_Post_Ticker extends Widget_Base {
 			array(
 				'label'       => __( 'Title HTML Tag', 'premium-addons-for-elementor' ),
 				'type'        => Controls_Manager::SELECT,
-				'default'     => 'h4',
 				'options'     => array(
 					'h1'   => 'H1',
 					'h2'   => 'H2',
@@ -1093,6 +1131,7 @@ class Premium_Post_Ticker extends Widget_Base {
 					'span' => 'span',
 					'p'    => 'p',
 				),
+				'default'     => 'h4',
 				'label_block' => true,
 				'conditions'  => array(
 					'relation' => 'or',
@@ -1596,6 +1635,9 @@ class Premium_Post_Ticker extends Widget_Base {
 					'txt_icon_sw' => 'yes',
 					'icon_type'   => 'svg',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -1624,6 +1666,9 @@ class Premium_Post_Ticker extends Widget_Base {
 				'condition'   => array(
 					'txt_icon_sw' => 'yes',
 					'icon_type'   => 'lottie',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -1751,10 +1796,8 @@ class Premium_Post_Ticker extends Widget_Base {
 			)
 		);
 
-		$papro_activated = apply_filters( 'papro_activated', false );
-
-		if ( $papro_activated ) {
-
+		$this->papro_activated = Helper_Functions::check_papro_version();
+		if ( $this->papro_activated ) {
 			do_action( 'pa_ticker_stock_query', $this );
 
 		}
@@ -1906,6 +1949,9 @@ class Premium_Post_Ticker extends Widget_Base {
 				'default'     => get_option( 'date_format' ),
 				'condition'   => array(
 					'date_meta' => 'yes',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -2081,6 +2127,8 @@ class Premium_Post_Ticker extends Widget_Base {
 
 		}
 
+		Helper_Functions::register_element_feedback_controls( $this );
+
 		$this->end_controls_section();
 	}
 
@@ -2237,6 +2285,9 @@ class Premium_Post_Ticker extends Widget_Base {
 				),
 				'condition' => array(
 					'title_adv_radius' => 'yes',
+				),
+				'ai'        => array(
+					'active' => false,
 				),
 			)
 		);
@@ -2425,11 +2476,24 @@ class Premium_Post_Ticker extends Widget_Base {
 			)
 		);
 
+		$this->add_group_control(
+			Group_Control_Text_Stroke::get_type(),
+			array(
+				'name'      => 'element_text_stroke',
+				'separator' => 'after',
+				'selector'  => '{{WRAPPER}} .premium-post-ticker__post-title',
+				'condition' => array(
+					'post_type_filter!' => array( 'gold', 'stock' ),
+				),
+			)
+		);
+
 		$this->add_control(
 			'text_icon_color',
 			array(
 				'label'     => __( 'Icon Color', 'premium-addons-for-elementor' ),
 				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
 				'selectors' => array(
 					'{{WRAPPER}} .premium-post-ticker__icon-wrapper.premium-repeater-item i' => 'color: {{VALUE}}',
 					'{{WRAPPER}} .premium-post-ticker__icon-wrapper.premium-repeater-item .premium-drawable-icon *,
@@ -2640,9 +2704,8 @@ class Premium_Post_Ticker extends Widget_Base {
 			)
 		);
 
-		$papro_activated = apply_filters( 'papro_activated', false );
-
-		if ( $papro_activated ) {
+		$this->papro_activated = Helper_Functions::check_papro_version();
+		if ( $this->papro_activated ) {
 			do_action( 'pa_ticker_stock_style', $this );
 		}
 
@@ -3143,9 +3206,9 @@ class Premium_Post_Ticker extends Widget_Base {
 
 		$settings = $this->get_settings_for_display();
 
-		$papro_activated = apply_filters( 'papro_activated', false );
+		$this->papro_activated = Helper_Functions::check_papro_version();
 
-		if ( ! $papro_activated && ( in_array( $settings['layout'], array( 'layout-3', 'layout-4' ), true ) || ! in_array( $settings['post_type_filter'], array( 'post', 'text' ), true ) ) ) {
+		if ( ! $this->papro_activated && ( in_array( $settings['layout'], array( 'layout-3', 'layout-4' ), true ) || ! in_array( $settings['post_type_filter'], array( 'post', 'text' ), true ) ) ) {
 			?>
 			<div class="premium-error-notice">
 				<?php
@@ -3916,9 +3979,9 @@ class Premium_Post_Ticker extends Widget_Base {
 						<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'icon' . $index ) ); ?>>
 						<?php
 						if ( $is_repeater_item ) {
-							$this->print_unescaped_setting( 'custom_svg', 'text_content', $settings['index'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							echo Helper_Functions::sanitize_svg( $settings['custom_svg'] );
 						} else {
-							$this->print_unescaped_setting( 'custom_svg' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							echo Helper_Functions::sanitize_svg( $this->get_settings_for_display( 'custom_svg' ) );
 						}
 						?>
 						</div>

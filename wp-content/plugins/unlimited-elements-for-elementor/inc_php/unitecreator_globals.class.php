@@ -197,6 +197,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 		public static $showQueryDebugByUrl = false;
 		public static $isInsidePlugin = false;	//set in provider_admin
 		
+		public static $isSaveBuilderMode = false;	//set that inside the save builder
+		
+		public static $hideDebug = false;
+		
 		
 		/**
 		 * init globals
@@ -332,7 +336,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			if($showQueryDebugByUrl == true)
 				self::$showQueryDebugByUrl = true;
 			
-							
+			//legacy alias: enable query debug via "ucquerydebug_terms" too
+			$showQueryDebugTermsByUrl = HelperUC::hasPermissionsFromQuery("ucquerydebug_terms");
+			if($showQueryDebugTermsByUrl == true)
+				self::$showQueryDebugByUrl = true;
+			
+						
 			//test free version
 			
 			$isTestFree = HelperUC::hasPermissionsFromQuery("testfreeversion");

@@ -2,9 +2,9 @@
 
 Contributors:      google
 Requires at least: 5.2
-Tested up to:      6.8
+Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        1.164.0
+Stable tag:        1.177.0
 License:           Apache License 2.0
 License URI:       https://www.apache.org/licenses/LICENSE-2.0
 Tags:              google, search-console, analytics, adsense, pagespeed-insights
@@ -34,6 +34,9 @@ Site Kit shows key metrics and insights from different Google products:
 * **AdSense:** Keep track of how much your site is earning you.
 * **PageSpeed Insights:** See how your pages perform compared to other real-world sites. Improve performance with actionable tips from PageSpeed Insights.
 * **Tag Manager:** Use Site Kit to easily set up Tag Manager- no code editing required. Then, manage your tags in Tag Manager.
+* **Sign in with Google:** Allows visitors to sign up and log in to your site with their existing Google account.
+* **Reader Revenue Manager:** Helps you grow, retain, and engage your site visitors via subscription, contribution, newsletters, surveys, and custom prompts.
+* **Ads:** Get customers and sell more with targeted traffic from Google Ads.
 
 == Installation ==
 
@@ -109,41 +112,27 @@ Please create a new topic on our [WordPress.org support forum](https://wordpress
 
 == Changelog ==
 
-= 1.164.0 =
-
-**Added**
-
-* Add setting for using Sign in with Google for WordPress comments. See [#11472](https://github.com/google/site-kit-wp/issues/11472).
-* Add One-Tap to Sign in with Google setup when user registrations are open. See [#11469](https://github.com/google/site-kit-wp/issues/11469).
+= 1.177.0 =
 
 **Enhanced**
 
-* Add client side compatibility checks for Sign in with Google. See [#11505](https://github.com/google/site-kit-wp/issues/11505).
-* Add ability to load Sign in with Google compatibility checks from Site Kit. See [#11463](https://github.com/google/site-kit-wp/issues/11463).
-* Add support for detecting plugins/hosting environments incompatible with Sign in with Google. See [#11458](https://github.com/google/site-kit-wp/issues/11458).
-* Add third-party support for the Sign in with Google button via a WordPress Action: `do_action( 'googlesitekit_render_sign_in_with_google_button' )`. See [#11455](https://github.com/google/site-kit-wp/issues/11455).
-* Add the email reporting settings selection panel. See [#11424](https://github.com/google/site-kit-wp/issues/11424).
-* Add API and data store infrastructure to preserve initial settings accompanying the new setup flow. See [#11387](https://github.com/google/site-kit-wp/issues/11387).
-* Add Analytics setup success toast notice in the Key Metrics setup screen. See [#11384](https://github.com/google/site-kit-wp/issues/11384).
-* Display the progress indicator on the Analytics setup screen when it's navigated to in the new setup flow. See [#11379](https://github.com/google/site-kit-wp/issues/11379).
-* Add the progress indicator to the new version of the splash screen. See [#11378](https://github.com/google/site-kit-wp/issues/11378).
-* Add a `ProgressIndicator` component to display progressions in user flows. See [#11377](https://github.com/google/site-kit-wp/issues/11377).
-* Redirect users to the Key Metrics setup screen after successfully connecting Analytics when the `setupFlowRefresh` feature flag is enabled. See [#11375](https://github.com/google/site-kit-wp/issues/11375).
-* Add Key Metrics setup screen with site purpose questionnaire and dashboard redirection functionality. See [#11374](https://github.com/google/site-kit-wp/issues/11374).
-* Implement the foundation for the forthcoming splash screen update. See [#11333](https://github.com/google/site-kit-wp/issues/11333).
-* Add a selector to allow users to customize frequency of reports when Proactive User Engagement is enabled. See [#11155](https://github.com/google/site-kit-wp/issues/11155).
-* Add the email reporting overlay notification. See [#11147](https://github.com/google/site-kit-wp/issues/11147).
-* Add Enhanced Conversions support for Mailchimp for WordPress by capturing and sending user data. See [#11127](https://github.com/google/site-kit-wp/issues/11127).
-* Add Enhanced Conversions support for OptinMonster by capturing and sending user data. See [#11126](https://github.com/google/site-kit-wp/issues/11126).
-* Add Enhanced Conversions support for Easy Digital Downloads by capturing and sending user data. See [#11011](https://github.com/google/site-kit-wp/issues/11011).
-* Add "Learn more" link to Visitor Groups notification banner. See [#10964](https://github.com/google/site-kit-wp/issues/10964).
-* Include Reader Revenue Manager in the list of services identified by the unsatisfied scopes alert. See [#10797](https://github.com/google/site-kit-wp/issues/10797).
-* Don't show the "How to Improve" tab in the Pagespeed Insights widget when no recommendations are available. See [#7612](https://github.com/google/site-kit-wp/issues/7612).
-* Standardize font sizes for Key Metric Widget subheadings. See [#6107](https://github.com/google/site-kit-wp/issues/6107).
+* Improve translation strings for some links in Email Reports. See [#12479](https://github.com/google/site-kit-wp/issues/12479).
+* Remove the "Conversions" section in email reports. See [#12466](https://github.com/google/site-kit-wp/issues/12466).
+* Ensure Email Reporting panel is dismissed during navigation. See [#12388](https://github.com/google/site-kit-wp/issues/12388).
+* Add error handling on the Key Metrics setup screen in the new setup flow. See [#12379](https://github.com/google/site-kit-wp/issues/12379).
+* Fix bug causing PageSpeed Insights widget tab to reset on device change. See [#12358](https://github.com/google/site-kit-wp/issues/12358).
+* Add documentation links to Email Reporting feature. See [#12327](https://github.com/google/site-kit-wp/issues/12327).
+* Add date range details to the Site Kit Summary widget on the WordPress admin dashboard. Props mxbclang, github-actions. See [#5589](https://github.com/google/site-kit-wp/issues/5589).
 
 **Fixed**
 
-* Fix Reader Revenue Manager setup screen displaying empty content when API errors occur. See [#11581](https://github.com/google/site-kit-wp/issues/11581).
-* Add "pinned notifications" to the notifications API, and use it to ensure the Audience Segmentation and Enhanced Measurement setup banners continue to be shown when returning from OAuth. See [#10890](https://github.com/google/site-kit-wp/issues/10890).
+* Remove the "Connect more services" and "Got it" buttons from the gathering data notification. See [#12464](https://github.com/google/site-kit-wp/issues/12464).
+* Fixed the "Analytics is disconnected" CTA banner and tile to hide actionable connect buttons for view-only users. See [#12454](https://github.com/google/site-kit-wp/issues/12454).
+* Fix issues with multiple scheduled events for same email report frequency. See [#12419](https://github.com/google/site-kit-wp/issues/12419).
+* Fix monthly and quarterly email scheduling times. Props officialasishkumar. See [#12385](https://github.com/google/site-kit-wp/issues/12385).
+* Allow filtering users by role in email subscription invites. See [#12368](https://github.com/google/site-kit-wp/issues/12368).
+* Fix the issue with updating users for email reporting settings when dashboard sharing changed. See [#12367](https://github.com/google/site-kit-wp/issues/12367).
+* Fix bug preventing OAuth error notification when permissions are missing. See [#12281](https://github.com/google/site-kit-wp/issues/12281).
+* Fix data type inconsistency for Reader Revenue Manager content policy status settings. See [#12185](https://github.com/google/site-kit-wp/issues/12185).
 
 [See changelog for all versions](https://raw.githubusercontent.com/google/site-kit-wp/main/changelog.txt).

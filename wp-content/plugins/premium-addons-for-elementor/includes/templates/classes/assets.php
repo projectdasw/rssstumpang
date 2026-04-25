@@ -3,7 +3,7 @@
 namespace PremiumAddons\Includes\Templates\Classes;
 
 use PremiumAddons\Includes\Templates;
-
+use PremiumAddons\Includes\Helper_Functions;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // No access of directly access
 }
@@ -37,8 +37,6 @@ if ( ! class_exists( 'Premium_Templates_Assets' ) ) {
 		 */
 		public function __construct() {
 
-			add_action( 'elementor/preview/enqueue_styles', array( $this, 'enqueue_preview_styles' ) );
-
 			add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'editor_scripts' ), 0 );
 
 			add_action( 'elementor/editor/after_enqueue_styles', array( $this, 'editor_styles' ) );
@@ -55,6 +53,7 @@ if ( ! class_exists( 'Premium_Templates_Assets' ) ) {
 		 * @access public
 		 */
 		public function editor_styles() {
+			$theme = Helper_Functions::get_elementor_ui_theme();
 
 			wp_enqueue_style(
 				'premium-editor-style',
@@ -63,19 +62,38 @@ if ( ! class_exists( 'Premium_Templates_Assets' ) ) {
 				PREMIUM_ADDONS_VERSION,
 				'all'
 			);
-		}
 
-		/**
-		 * Preview Styles
-		 *
-		 * Enqueue required templates CSS file.
-		 *
-		 * @since 3.6.0
-		 * @access public
-		 */
-		public function enqueue_preview_styles() {
+			if ( 'dark' === $theme ) {
+				wp_add_inline_style(
+					'premium-editor-style',
+					'#premium-template-modal-header-logo,
+					#elementor-template-library-filter label,
+					#elementor-template-library-sort label,
+					#premium-template-modal-header-close-modal i {
+						color: #d5d8dc;
+					}
 
+					.premium-template-filter-label span {
+						color: #d5d8dcad;
+					}
 
+					#premium-template-library-content .premium-template-filter-item {
+						border-color: #6d68686b;
+					}
+
+					#premium-template-modal .dialog-widget-content {
+						background-color: #212224;
+						width: 100%;
+					}
+
+					#premium-template-modal .dialog-widget-header,
+					#premium-template-modal .dialog-header {
+						background-color: #1f2124;
+					}
+
+					background: linear-gradient(to bottom, rgba(31, 33, 36, 0) 0%, rgba(31, 33, 36, 1) 100%);'
+				);
+			}
 		}
 
 		/**
@@ -108,6 +126,7 @@ if ( ! class_exists( 'Premium_Templates_Assets' ) ) {
 				apply_filters(
 					'premium-templates-core/assets/editor/localize',
 					array(
+						'nonce'               => wp_create_nonce( 'pa-templates-nonce' ),
 						'Elementor_Version'   => ELEMENTOR_VERSION,
 						'PremiumTemplatesBtn' => $button,
 						'modalRegions'        => $this->get_modal_region(),
@@ -174,7 +193,7 @@ if ( ! class_exists( 'Premium_Templates_Assets' ) ) {
 		 */
 		public static function get_instance() {
 
-			if ( self::$instance == null ) {
+			if ( null === self::$instance ) {
 
 				self::$instance = new self();
 

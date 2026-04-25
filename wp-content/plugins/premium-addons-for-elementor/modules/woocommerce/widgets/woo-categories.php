@@ -459,12 +459,12 @@ class Woo_Categories extends Widget_Base {
 				'label'   => __( 'Title HTML Tag', 'premium-addons-for-elementor' ),
 				'type'    => Controls_Manager::SELECT,
 				'options' => array(
-					'h1' => __( 'H1', 'premium-addons-for-elementor' ),
-					'h2' => __( 'H2', 'premium-addons-for-elementor' ),
-					'h3' => __( 'H3', 'premium-addons-for-elementor' ),
-					'h4' => __( 'H4', 'premium-addons-for-elementor' ),
-					'h5' => __( 'H5', 'premium-addons-for-elementor' ),
-					'h6' => __( 'H6', 'premium-addons-for-elementor' ),
+					'h1' => 'H1',
+					'h2' => 'H2',
+					'h3' => 'H3',
+					'h4' => 'H4',
+					'h5' => 'H5',
+					'h6' => 'H6',
 				),
 				'default' => 'h3',
 			)
@@ -1026,7 +1026,7 @@ class Woo_Categories extends Widget_Base {
 
 		$settings = $this->get_settings();
 
-		$papro_activated = apply_filters( 'papro_activated', false );
+		$papro_activated = Helper_Functions::check_papro_version();
 
 		if ( ! $papro_activated || version_compare( PREMIUM_PRO_ADDONS_VERSION, '2.9.19', '<' ) ) {
 

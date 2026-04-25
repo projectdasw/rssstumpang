@@ -211,7 +211,7 @@ class Premium_Mobile_Menu extends Widget_Base {
 	 */
 	protected function register_controls() {  // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 
-		$papro_activated = apply_filters( 'papro_activated', false );
+		$papro_activated = Helper_Functions::check_papro_version();
 
 		$draw_icon = $this->check_icon_draw();
 
@@ -292,6 +292,9 @@ class Premium_Mobile_Menu extends Widget_Base {
 				'description' => 'You can use these sites to create SVGs: <a href="https://danmarshall.github.io/google-font-to-svg-path/" target="_blank">Google Fonts</a> and <a href="https://boxy-svg.com/" target="_blank">Boxy SVG</a>',
 				'condition'   => array(
 					'icon_type' => 'svg',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -963,9 +966,9 @@ class Premium_Mobile_Menu extends Widget_Base {
 		$this->add_responsive_control(
 			'menu_hpos',
 			array(
-				'label'        => __( 'Horizontal Position', 'premium-addons-for-elementor' ),
-				'type'         => Controls_Manager::CHOOSE,
-				'options'      => array(
+				'label'                => __( 'Horizontal Position', 'premium-addons-for-elementor' ),
+				'type'                 => Controls_Manager::CHOOSE,
+				'options'              => array(
 					'left'   => array(
 						'title' => __( 'Left', 'premium-addons-for-elementor' ),
 						'icon'  => 'eicon-text-align-left',
@@ -983,10 +986,18 @@ class Premium_Mobile_Menu extends Widget_Base {
 						'icon'  => 'eicon-cog',
 					),
 				),
-				'prefix_class' => 'premium-mobile-menu__',
-				'toggle'       => false,
-				'default'      => 'left',
-				'condition'    => array(
+				'selectors_dictionary' => array(
+					'left'   => 'left: 0; right: auto; transform: none;',
+					'center' => 'left: 50%; right: auto; transform: translateX(-50%);',
+					'right'  => 'right: 0; left: auto; transform: none;',
+					'custom' => '',
+				),
+				'selectors'            => array(
+					'{{WRAPPER}} .premium-mobile-menu__wrap' => '{{VALUE}}',
+				),
+				'toggle'               => false,
+				'default'              => 'left',
+				'condition'            => array(
 					'menu_display' => 'fixed',
 				),
 			)
@@ -1021,9 +1032,9 @@ class Premium_Mobile_Menu extends Widget_Base {
 		$this->add_responsive_control(
 			'menu_vpos',
 			array(
-				'label'        => __( 'Vertical Position', 'premium-addons-for-elementor' ),
-				'type'         => Controls_Manager::CHOOSE,
-				'options'      => array(
+				'label'                => __( 'Vertical Position', 'premium-addons-for-elementor' ),
+				'type'                 => Controls_Manager::CHOOSE,
+				'options'              => array(
 					'top'    => array(
 						'title' => __( 'Top', 'premium-addons-for-elementor' ),
 						'icon'  => 'eicon-arrow-up',
@@ -1037,10 +1048,17 @@ class Premium_Mobile_Menu extends Widget_Base {
 						'icon'  => 'eicon-cog',
 					),
 				),
-				'prefix_class' => 'premium-mobile-menu__',
-				'toggle'       => false,
-				'default'      => 'bottom',
-				'condition'    => array(
+				'selectors_dictionary' => array(
+					'top'    => 'top: 0; bottom: auto;',
+					'bottom' => 'bottom: 0; top: auto;',
+					'custom' => 'top: auto; bottom: auto;',
+				),
+				'selectors'            => array(
+					'{{WRAPPER}} .premium-mobile-menu__wrap' => '{{VALUE}}',
+				),
+				'toggle'               => false,
+				'default'              => 'bottom',
+				'condition'            => array(
 					'menu_display' => 'fixed',
 				),
 			)
@@ -1224,6 +1242,8 @@ class Premium_Mobile_Menu extends Widget_Base {
 			++$doc_index;
 
 		}
+
+		Helper_Functions::register_element_feedback_controls( $this );
 
 		$this->end_controls_section();
 
@@ -1685,7 +1705,7 @@ class Premium_Mobile_Menu extends Widget_Base {
 
 		$settings = $this->get_settings_for_display();
 
-		$papro_activated = apply_filters( 'papro_activated', false );
+		$papro_activated = Helper_Functions::check_papro_version();
 
 		if ( ! $papro_activated || version_compare( PREMIUM_PRO_ADDONS_VERSION, '2.9.17', '<' ) ) {
 
@@ -1897,15 +1917,7 @@ class Premium_Mobile_Menu extends Widget_Base {
 												} elseif ( 'svg' === $item['icon_type'] ) {
 													?>
 														<div <?php echo wp_kses_post( $this->get_render_attribute_string( $animation_key ) ); ?>>
-														<?php echo $this->print_unescaped_setting( 'custom_svg', 'menu_items', $index ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-														</div>
-														<?php
-												} elseif ( 'text' === $item['icon_type'] ) {
-													?>
-														<div class="premium-bullet-list-icon-text">
-															<p <?php echo wp_kses_post( $this->get_render_attribute_string( $text_icon ) ); ?>>
-															<?php echo wp_kses_post( $item['list_text_icon'] ); ?>
-															</p>
+														<?php echo Helper_Functions::sanitize_svg( $item['custom_svg'] ); ?>
 														</div>
 														<?php
 												} elseif ( 'image' === $item['icon_type'] ) {

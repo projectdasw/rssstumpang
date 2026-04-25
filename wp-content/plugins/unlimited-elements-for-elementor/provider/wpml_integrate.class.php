@@ -139,6 +139,7 @@ class UniteCreatorWpmlIntegrate{
 		return($this->activeLanguage);
 	}
 	
+	
 	/**
 	 * get translated attachment id for media translation
 	 */
@@ -148,18 +149,24 @@ class UniteCreatorWpmlIntegrate{
 			return($thumbID);
 		
 		if(empty(self::$objWpmlSingleton)){
+			
 			self::$objWpmlSingleton = new UniteCreatorWpmlIntegrate();
 			self::$objWpmlSingleton->init();
 		}
 		
 		if(empty(self::$objWpmlSingleton->activeLanguage))
 			return($thumbID);
-			
+		
+		$current_lang = apply_filters( 'wpml_current_language', null );             
+		$default_lang = apply_filters( 'wpml_default_language', null );  
+		
+		if ( $current_lang === $default_lang )
+			return($thumbID);	
+		
 		$alternateThumbID = apply_filters( 'wpml_object_id', $thumbID, 'attachment', FALSE, self::$objWpmlSingleton->activeLanguage); 		
 		
 		if(empty($alternateThumbID))
 			return($thumbID);
-		
 		
 		return($alternateThumbID);
 	}

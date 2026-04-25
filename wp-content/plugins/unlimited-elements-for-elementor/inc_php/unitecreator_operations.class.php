@@ -463,7 +463,7 @@ class UCOperations extends UniteElementsBaseUC{
 	 * put debug of post custom fields
 	 */
 	public function putPostCustomFieldsDebug($postID, $showCustomFields = false){
-		
+
 		if($postID == "current"){
 			$post = get_post();
 			$postID = $post->ID;
@@ -650,6 +650,7 @@ class UCOperations extends UniteElementsBaseUC{
 			
 		}
 		
+		
 	}
 	
 	private function a____________URL_CONTENTS____________(){
@@ -679,25 +680,54 @@ class UCOperations extends UniteElementsBaseUC{
 
 	/**
 	 * get url contents from file or url with cache
+	 *
+	 * HTTP hooks (remote URLs only): ue_http_pre_request, ue_http_response.
+	 *
+	 * @param mixed $httpContext Optional context passed to hooks (e.g. repeater / addon metadata).
 	 */
-	public function getUrlContents($url, $debug = false, $operateError = false){
+	public function getUrlContents($url, $debug = false, $operateError = false, $httpContext = null){
 		
 		if($debug === true)
 			dmp("get contents from url: $url");
-
+						
+		$url = UniteFunctionsUC::sanitize($url, UniteFunctionsUC::SANITIZE_URL_TRAVERSE);
+		
+		if(!empty($url))
+			$url = UniteFunctionsUC::sanitize($url, UniteFunctionsUC::SANITIZE_URL);
+		
+		if(empty($url) && $debug == true){
+			dmp("url don't pass the security");
+			return(null);
+		}
+		
 		$urlRelative = HelperUC::URLtoRelative($url);
-
+		
 		$isFile = $urlRelative != $url;
 
 		if($isFile === true){
+			
 			$pathFile = HelperUC::urlToPath($url);
-
+			
+			$isUnderBase = HelperUC::isFileUnderBase($pathFile);
+			
+			if($isUnderBase == false){
+				
+				if($debug === true){
+					
+					dmp("file not exists, or not pass security");
+					exit;
+				}
+				
+				return(false);
+			}
+			
+			
 			if(empty($pathFile)){
+				
 				if($debug === true){
 					$pathFile = GlobalsUC::$path_base . $urlRelative;
-
-					dmp("file not exists:  $pathFile");
-					exit;
+					
+					dmp("empty file path:  $pathFile");
 				}
 
 				return null;
@@ -715,7 +745,9 @@ class UCOperations extends UniteElementsBaseUC{
 			$request = UEHttp::make();
 			$request->debug($debug);
 			$request->cacheTime(180); // 3 minutes
-			
+
+			UniteProviderFunctionsUC::doAction("ue_http_pre_request", $request, $url, $httpContext);
+
 			$response = $request->get($url);
 			
 			//save last request
@@ -731,6 +763,8 @@ class UCOperations extends UniteElementsBaseUC{
 			}
 			
 			$data = $response->body();
+
+			$data = UniteProviderFunctionsUC::applyFilters("ue_http_response", $data, $url, $request, $response, $httpContext);
 			
 			return $data;
 		}catch(Exception $e){
@@ -1042,7 +1076,7 @@ class UCOperations extends UniteElementsBaseUC{
 	 * get last query data
 	 */
 	public function getLastQueryData(){
-		
+
 		$query = GlobalsProviderUC::$lastPostQuery;
 
 		if(empty($query)){
@@ -1066,7 +1100,7 @@ class UCOperations extends UniteElementsBaseUC{
 			$totalPosts = $query->found_posts;
 
 		$arrQuery = $query->query;
-		
+
 		$postType = UniteFunctionsUC::getVal($arrQuery, "post_type");
 
 		$orderBy = UniteFunctionsUC::getVal($arrQuery, "orderby");
@@ -1094,7 +1128,7 @@ class UCOperations extends UniteElementsBaseUC{
 		$output["total_posts"] = $totalPosts;
 		$output["page"] = UniteFunctionsUC::getVal($data, "current");
 		$output["num_pages"] = $totalPages;
-		
+
 		if(!empty($orderBy)){
 
 			if($orderBy == "meta_value"){

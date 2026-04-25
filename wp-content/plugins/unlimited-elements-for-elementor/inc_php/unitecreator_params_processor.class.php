@@ -92,6 +92,7 @@ class UniteCreatorParamsProcessorWork{
 			switch($type){
 				case "uc_image":
 				case "uc_mp3":
+				case UniteCreatorDialogParam::PARAM_FILE:
 					$value = HelperUC::URLtoFull($value);
 					break;
 			}
@@ -334,7 +335,7 @@ class UniteCreatorParamsProcessorWork{
 		//dmp($arrFont);exit();
 
 		//on production don't return empty span
-		if($this->processType == self::PROCESS_TYPE_OUTPUT && empty($arrFont) && $isReturnCss == false)
+		if(($this->processType == self::PROCESS_TYPE_OUTPUT) && empty($arrFont) && $isReturnCss == false)
 			return($value);
 
 		//generate id
@@ -760,7 +761,6 @@ class UniteCreatorParamsProcessorWork{
 			break;
 			case self::PROCESS_TYPE_OUTPUT:
 			case self::PROCESS_TYPE_OUTPUT_BACK:
-
 				$data[$name] = $this->getPostData($postID, $arrPostAdditions);
 			break;
 		}
@@ -1013,7 +1013,7 @@ class UniteCreatorParamsProcessorWork{
 		//sanitize the url
 		if(!empty($imageUrl))
 			$imageUrl = UniteFunctionsUC::sanitize($imageUrl, UniteFunctionsUC::SANITIZE_URL);
-					
+		
 		$data[$name] = $imageUrl;
 
 		$sizeFilters = UniteFunctionsUC::getVal($param, "size_filters");
@@ -1037,6 +1037,45 @@ class UniteCreatorParamsProcessorWork{
 		if(empty($urlThumb) === true)
 			$data[$keyThumb] = $imageUrl;
 		
+		return $data;
+	}
+
+	/**
+	 * process file param value, add to data
+	 */
+	protected function getProcessedParamsValue_file($data, $value, $param){
+
+		$name = UniteFunctionsUC::getVal($param, "name");
+
+		$fileId = null;
+		$fileUrl = null;
+
+		if(is_array($value) === true){
+			$fileId = UniteFunctionsUC::getVal($value, "id");
+			$fileUrl = UniteFunctionsUC::getVal($value, "url");
+		}else{
+			if(is_numeric($value) === true)
+				$fileId = $value;
+			else
+				$fileUrl = $value;
+		}
+
+		if(empty($fileId) === true && empty($fileUrl) === true) {
+			$data[$name] = "";
+			return $data;
+		}
+
+		if(empty($fileId) === false)
+			$fileUrl = wp_get_attachment_url($fileId);
+		else
+			$fileUrl = HelperUC::URLtoFull($fileUrl);
+
+		//sanitize the url
+		if(!empty($fileUrl))
+			$fileUrl = UniteFunctionsUC::sanitize($fileUrl, UniteFunctionsUC::SANITIZE_URL);
+
+		$data[$name] = $fileUrl;
+
 		return $data;
 	}
 
@@ -1082,7 +1121,6 @@ class UniteCreatorParamsProcessorWork{
 
 				if($putAs == "svg")
 					$svgContent = HelperUC::getFileContentByUrl($value, "svg");
-				
 			}
 
 		}
@@ -1231,6 +1269,95 @@ class UniteCreatorParamsProcessorWork{
 	}
 
 	private function z___________PARAMS_OUTPUT____________(){}
+
+	
+	/**
+	 * modify params by special addon behavior
+	 * for the post filters, modify the run of some requests of terms or authors
+	 */
+	protected function modifyParamsBySpecialAddonBehaviour($arrParams){
+		
+		if(is_array($arrParams) == false || empty($arrParams))
+			return($arrParams);
+		
+		$special = $this->addon->getOption("special");
+		
+		if(empty($special))
+			return($arrParams);
+		
+		
+		//do some operations for the filter special behaviour
+			
+		if($special != "post_filter")
+			return($arrParams);
+		
+		$filterSource = "";
+		foreach($arrParams as $param){
+			$name = UniteFunctionsUC::getVal($param, "name");
+			if($name !== "filter_source")
+				continue;
+			
+			$filterSource = UniteFunctionsUC::getVal($param, "value");
+			if($filterSource === "")
+				$filterSource = UniteFunctionsUC::getVal($param, "default_value");
+			
+			break;
+		}
+		
+		switch($filterSource){
+			case "terms":
+			case "authors":
+			break;
+			default:
+				return($arrParams);
+			break;
+		}
+		
+		if($filterSource === "")
+			return($arrParams);
+		
+		$isAuthors = ($filterSource == "authors");
+		$arrParamsNew = array();
+		
+		foreach($arrParams as $param){
+			$type = UniteFunctionsUC::getVal($param, "type");
+			$name = UniteFunctionsUC::getVal($param, "name");
+			
+			if($isAuthors == true){
+				if($type == UniteCreatorDialogParam::PARAM_POST_TERMS || $name == "taxonomy")
+					continue;
+			}else{
+				if($type == UniteCreatorDialogParam::PARAM_USERS || $name == "authors")
+					continue;
+			}
+			
+			$arrParamsNew[] = $param;
+		}
+		
+		return($arrParamsNew);
+	}
+	
+	
+	/**
+	 * modify addon special behaviour
+	 */
+    protected function modifyDataBySpecialAddonBehaviour($data){
+
+        if (!is_array($data)) {
+            return $data;
+        }
+
+        $cssId = UniteFunctionsUC::getVal($data, 'advanced_css_id', '');
+        if ($cssId !== '') {
+            $cssId = preg_replace('/[^A-Za-z0-9\-_]/', '-', $cssId);
+
+            if ($cssId !== '') {
+                $data['_rootId'] = $cssId;
+            }
+        }
+
+        return $data;
+    }
 
 	/**
 	 * process params - add params by type (like image base)
@@ -1808,7 +1935,8 @@ class UniteCreatorParamsProcessorWork{
 			break;
 			case "currency_api":
 			case "weather_api":
-				$data = UniteCreatorAPIIntegrations::getInstance()->addDataToParams($data, $name);
+			case "reviews":
+				$data = UniteCreatorAPIIntegrations::getInstance()->addDataToParams($data, $name, $type);
             break;
             case "rss_feed":
                 
@@ -1840,26 +1968,29 @@ class UniteCreatorParamsProcessorWork{
             	$data[$name."_settings"] = $arrValues;
             	
             break;
+            
 		}
 		return($data);
 	}
 
 	private function z__________VALUES_OUTPUT__________(){}
-
-
+	
+	
 	/**
 	 * get processe param data, function with override
 	 */
 	protected function getProcessedParamData($data, $value, $param, $processType){
 
-		
 		$type = UniteFunctionsUC::getVal($param, "type");
 		$name = UniteFunctionsUC::getVal($param, "name");
 
 		$isOutputProcessType = $this->isOutputProcessType($processType);
-
+		
 		//special params - all types
 		switch($type){
+			case UniteCreatorDialogParam::PARAM_TEXTFIELD:
+				$data = $this->maybeSanitizeLink($data, $name, $value);
+			break;
 			case UniteCreatorDialogParam::PARAM_DROPDOWN:
 			case UniteCreatorDialogParam::PARAM_NUMBER:
 				$data = $this->getProcessedParamsValue_responsive($data, $param);
@@ -1869,6 +2000,9 @@ class UniteCreatorParamsProcessorWork{
 			break;
 			case UniteCreatorDialogParam::PARAM_IMAGE:
 				$data = $this->getProcessedParamsValue_image($data, $value, $param);
+			break;
+			case UniteCreatorDialogParam::PARAM_FILE:
+				$data = $this->getProcessedParamsValue_file($data, $value, $param);
 			break;
 			case UniteCreatorDialogParam::PARAM_POST:
 				$data = $this->getProcessedParamsValue_post($data, $value, $param, $processType);
@@ -1918,6 +2052,25 @@ class UniteCreatorParamsProcessorWork{
 		return($data);
 	}
 
+	/**
+	 * maybe sanitize link in text field
+	 */
+	protected function maybeSanitizeLink($data, $name, $value){
+		
+		if(strpos($name,"link_") === false && strpos($name,"_link") === false)
+			return($data);
+		$valueLow = strtolower($value);
+		if(strpos($valueLow,"javascript") === false)
+			return($data);
+		
+		//if it's a link
+		$value = UniteFunctionsUC::sanitize($value, UniteFunctionsUC::SANITIZE_URL);
+		
+		$data[$name] = $value;
+		
+		return($data);
+	}
+	
 
 	/**
 	 * sort params. special attributes first, for dynamic popup processing for example
@@ -1952,6 +2105,10 @@ class UniteCreatorParamsProcessorWork{
 
 		$data = array();
 
+		//modify some params, like in filter, if the source is authors - remove the terms param
+		//and if the source is terms, remove the users param
+		$arrParams = $this->modifyParamsBySpecialAddonBehaviour($arrParams);
+
 		foreach($arrParams as $param){
 			$type = UniteFunctionsUC::getVal($param, "type");
 
@@ -1969,15 +2126,15 @@ class UniteCreatorParamsProcessorWork{
 			$defaultValue = UniteFunctionsUC::getVal($param, "default_value");
 			$value = UniteFunctionsUC::getVal($param, "value", $defaultValue);
 			$value = $this->convertValueByType($value, $type, $param);
-
+            
 			if($type !== "imagebase_fields")
 				$data[$name] = $value;
 
-			$data = $this->getProcessedParamData($data, $value, $param, $processType);
-		}
+			$data = $this->getProcessedParamData($data, $value, $param, $processType); 
+		}   
 
 		$data = $this->modifyDataBySpecialAddonBehaviour($data);
-
+		
 		return $data;
 	}
 
@@ -2035,6 +2192,15 @@ class UniteCreatorParamsProcessorWork{
 		}
 
 		$arrParams = array_merge($arrParams, $arrVars);
+
+        $orig = $this->addon->getOriginalValues();
+        if (is_array($orig) && !empty($orig)) {
+            foreach ($orig as $k => $v) {
+                if (!array_key_exists($k, $arrParams)) {
+                    $arrParams[$k] = $v; 
+                }
+            }
+        }
 
 		return($arrParams);
 	}

@@ -1,20 +1,20 @@
 <?php
 /**
- * Plugin Name: Ultimate Addons for Elementor Lite
+ * Plugin Name: Ultimate Addons for Elementor (UAE)
  * Plugin URI:  https://wordpress.org/plugins/header-footer-elementor/
- * Description: Formerly known as "Elementor Header & Footer Builder", this powerful plugin allows you to create custom headers and footers with Elementor and display them in selected locations. You can also create custom Elementor blocks and place them anywhere on your website using a shortcode.
+ * Description: Ultimate Addons is a powerful plugin allows you to create custom headers and footers with Elementor and display them in selected locations. You can also create custom Elementor blocks and place them anywhere on your website using a shortcode.
  * Author:      Brainstorm Force
  * Author URI:  https://www.brainstormforce.com/
  * Text Domain: header-footer-elementor
  * Domain Path: /languages
- * Version: 2.6.1
- * Elementor tested up to: 3.32
- * Elementor Pro tested up to: 3.32
+ * Version: 2.8.7
+ * Elementor tested up to: 4.0
+ * Elementor Pro tested up to: 4.0
  *
  * @package         header-footer-elementor
  */
 
-define( 'HFE_VER', '2.6.1' );
+define( 'HFE_VER', '2.8.7' );
 define( 'HFE_FILE', __FILE__ );
 define( 'HFE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'HFE_URL', plugins_url( '/', __FILE__ ) );
@@ -35,9 +35,30 @@ require_once HFE_DIR . '/inc/class-header-footer-elementor.php';
 function hfe_plugin_activation() {
 	update_option( 'uae_lite_is_activated', 'yes' );
 	update_option( 'hfe_start_onboarding', true );
+
+	// Track plugin activation event.
+	require_once HFE_DIR . 'inc/class-hfe-analytics-events.php';
+	$bsf_referrers = get_option( 'bsf_product_referers', [] );
+	$source        = ! empty( $bsf_referrers['header-footer-elementor'] ) ? $bsf_referrers['header-footer-elementor'] : 'self';
+	HFE_Analytics_Events::track( 'plugin_activated', HFE_VER, [ 'source' => $source ] );
 }
 
 register_activation_hook( HFE_FILE, 'hfe_plugin_activation' );
+
+/**
+ * Remove the Data not required.
+ *
+ * @return void
+ */
+function hfe_plugin_deactivation() {
+	$timestamp = wp_next_scheduled( 'hfe_widgets_usage_cron' );
+	if ( $timestamp ) {
+		wp_unschedule_event( $timestamp, 'hfe_widgets_usage_cron' );
+	}
+}
+
+// deActivation hook.
+register_deactivation_hook( HFE_FILE, 'hfe_plugin_deactivation' );
 
 /**
  * Load the Plugin Class.

@@ -55,13 +55,9 @@ if ( ! class_exists( 'PA_Core' ) ) {
 			// Load plugin necessary files.
 			\PremiumAddons\Admin\Includes\Admin_Helper::get_instance();
 
-			$check_dynamic_assets = \PremiumAddons\Admin\Includes\Admin_Helper::check_element_by_key( 'premium-assets-generator' );
-
-			if ( $check_dynamic_assets ) {
-				\PremiumAddons\Includes\Assets_Manager::get_instance();
-			}
-
 			Addons_Integration::get_instance();
+
+			include_once PREMIUM_ADDONS_PATH . 'includes/promotion-pointer.php';
 		}
 
 		/**
@@ -108,10 +104,18 @@ if ( ! class_exists( 'PA_Core' ) ) {
 					)
 				);
 
-                set_transient( 'pa_activation_redirect', true, 30 );
+				set_transient( 'pa_activation_redirect', true, 30 );
 			}
 		}
 
+		/**
+		 * Plugin Uninstall Hook.
+		 *
+		 * @since 3.1.7
+		 * @access public
+		 *
+		 * @return void
+		 */
 		public static function uninstall() {
 
 			delete_option( 'pa_complete_wizard' );
@@ -138,6 +142,10 @@ if ( ! class_exists( 'PA_Core' ) ) {
 					'httpversion' => '1.1',
 				)
 			);
+
+			if ( is_wp_error( $response ) ) {
+				return;
+			}
 		}
 
 		/**

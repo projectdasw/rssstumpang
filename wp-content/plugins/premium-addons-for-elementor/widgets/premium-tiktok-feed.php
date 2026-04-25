@@ -33,6 +33,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Premium_Tiktok_Feed extends Widget_Base {
 
 	/**
+	 * Check Premium Addons Pro Version.
+	 *
+	 * @var bool $papro_activated
+	 */
+	private $papro_activated;
+
+	/**
 	 * Retrieve Widget Name.
 	 *
 	 * @since 1.0.0
@@ -171,7 +178,7 @@ class Premium_Tiktok_Feed extends Widget_Base {
 	 */
 	protected function register_controls() {
 
-		$papro_activated = apply_filters( 'papro_activated', false );
+		$this->papro_activated = Helper_Functions::check_papro_version();
 
 		$this->add_login_controls();
 
@@ -196,13 +203,13 @@ class Premium_Tiktok_Feed extends Widget_Base {
 
 		$this->add_feed_box_style_controls();
 
-		if ( $papro_activated ) {
+		if ( $this->papro_activated ) {
 			do_action( 'pa_tiktok_profile_style', $this );
 		}
 
 		$this->add_carousel_style();
 
-		if ( $papro_activated ) {
+		if ( $this->papro_activated ) {
 			do_action( 'pa_tiktok_loadmore_style', $this );
 		}
 
@@ -238,6 +245,9 @@ class Premium_Tiktok_Feed extends Widget_Base {
 				'label'   => __( 'Access Token', 'premium-addons-for-elementor' ),
 				'type'    => Controls_Manager::TEXTAREA,
 				'dynamic' => array( 'active' => true ),
+				'ai'      => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -261,8 +271,6 @@ class Premium_Tiktok_Feed extends Widget_Base {
 
 	/** Content Controls. */
 	private function add_query_controls() {
-
-		$papro_activated = apply_filters( 'papro_activated', false );
 
 		$this->start_controls_section(
 			'pa_tiktok_query_sec',
@@ -327,6 +335,9 @@ class Premium_Tiktok_Feed extends Widget_Base {
 				'condition'   => array(
 					'show_feed' => 'yes',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
@@ -343,10 +354,13 @@ class Premium_Tiktok_Feed extends Widget_Base {
 					'match_id'  => '',
 					'show_feed' => 'yes',
 				),
+				'ai'          => array(
+					'active' => false,
+				),
 			)
 		);
 
-		if ( ! $papro_activated ) {
+		if ( ! $this->papro_activated ) {
 			$get_pro = Helper_Functions::get_campaign_link( 'https://premiumaddons.com/pro', 'tiktok-widget', 'wp-editor', 'get-pro' );
 
 			$this->add_control(
@@ -380,8 +394,6 @@ class Premium_Tiktok_Feed extends Widget_Base {
 
 	private function add_profile_controls() {
 
-		$papro_activated = apply_filters( 'papro_activated', false );
-
 		$this->start_controls_section(
 			'pa_tiktok_profile_sec',
 			array(
@@ -399,7 +411,7 @@ class Premium_Tiktok_Feed extends Widget_Base {
 			)
 		);
 
-		if ( ! $papro_activated ) {
+		if ( ! $this->papro_activated ) {
 			$get_pro = Helper_Functions::get_campaign_link( 'https://premiumaddons.com/pro', 'tiktok-widget', 'wp-editor', 'get-pro' );
 
 			$this->add_control(
@@ -607,6 +619,9 @@ class Premium_Tiktok_Feed extends Widget_Base {
 				'default'     => 'F j, Y',
 				'condition'   => array(
 					'create_time' => 'yes',
+				),
+				'ai'          => array(
+					'active' => false,
 				),
 			)
 		);
@@ -881,8 +896,6 @@ class Premium_Tiktok_Feed extends Widget_Base {
 
 	private function add_general_controls() {
 
-		$papro_activated = apply_filters( 'papro_activated', false );
-
 		$this->start_controls_section(
 			'pa_gen_section',
 			array(
@@ -994,7 +1007,7 @@ class Premium_Tiktok_Feed extends Widget_Base {
 			)
 		);
 
-		if ( $papro_activated ) {
+		if ( $this->papro_activated ) {
 			do_action( 'pa_tiktok_load_more_options', $this );
 		}
 
@@ -1196,6 +1209,8 @@ class Premium_Tiktok_Feed extends Widget_Base {
 			++$doc_index;
 
 		}
+
+		Helper_Functions::register_element_feedback_controls( $this );
 
 		$this->end_controls_section();
 	}
@@ -2510,9 +2525,9 @@ class Premium_Tiktok_Feed extends Widget_Base {
 
 		$settings = $this->get_settings_for_display();
 
-		$papro_activated = apply_filters( 'papro_activated', false );
+		$this->papro_activated = Helper_Functions::check_papro_version();
 
-		if ( ! $papro_activated || version_compare( PREMIUM_PRO_ADDONS_VERSION, '2.9.4', '<' ) ) {
+		if ( ! $this->papro_activated || version_compare( PREMIUM_PRO_ADDONS_VERSION, '2.9.4', '<' ) ) {
 
 			if ( 'layout-1' !== $settings['vid_layout'] || 'yes' === $settings['load_more_btn'] || 'yes' === $settings['profile_header'] || 'yes' === $settings['autoplay_hover'] || 'yes' === $settings['autoplay_first'] || ! empty( $settings['match_id'] || ! empty( $settings['exclude_id'] ) ) ) {
 

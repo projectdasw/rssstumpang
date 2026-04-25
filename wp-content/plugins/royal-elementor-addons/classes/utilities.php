@@ -72,7 +72,13 @@ class Utilities {
 			'Twitter Feed' => ['twitter-feed', 'https://royal-elementor-addons.com/elementor-twitter-feed-widget/', '', ''],
 			'Image Scroll' => ['image-scroll', 'https://royal-elementor-addons.com/elementor-image-scroll-widget/', '', ''],
 			'Date' => ['date', 'https://royal-elementor-addons.com/elementor-date-widget/', '', ''],
-			// 'Video Playlist' => ['video-playlist', 'https://royal-elementor-addons.com/elementor-video-playlist-widget/', '', ''],
+			'Video Playlist' => ['video-playlist', '', '', 'new'],
+			'Password Protected Content' => ['password-protected-content', '', '', 'new'],
+			'Icon Box' => ['icon-box', '', '', 'new'],
+			'Separator' => ['separator', '', '', 'new'],
+			// 'Random Image' => ['random-image', '', '', 'new'],
+			'Circle Menu' => ['circle-menu', '', '', 'new'],
+			'Unfold' => ['unfold', '', '', 'new'],
 		];
 	}
 
@@ -526,6 +532,35 @@ class Utilities {
 
 
 	/**
+	** Enqueue a nested/inner Elementor template's widget assets and CSS.
+	** Ensures icon fonts and widget-specific styles are loaded when a
+	** template is rendered inside another widget (Offcanvas, Tabs, etc.).
+	*/
+	public static function enqueue_inner_template_assets( $template_id ) {
+		if ( empty( $template_id ) || ! class_exists( '\Elementor\Plugin' ) ) {
+			return;
+		}
+
+		$elementor = \Elementor\Plugin::instance();
+
+		// Enable widget-level asset dependencies (icon fonts, widget CSS files)
+		// stored in the template's post meta by Elementor's asset system.
+		if ( class_exists( '\Elementor\Core\Base\Elements_Iteration_Actions\Assets' ) ) {
+			$page_assets = get_post_meta( $template_id, \Elementor\Core\Base\Elements_Iteration_Actions\Assets::ASSETS_META_KEY, true );
+			if ( ! empty( $page_assets ) && isset( $elementor->assets_loader ) ) {
+				$elementor->assets_loader->enable_assets( $page_assets );
+			}
+		}
+
+		// Enqueue the template's own Post CSS file.
+		if ( class_exists( '\Elementor\Core\Files\CSS\Post' ) ) {
+			$css_file = new \Elementor\Core\Files\CSS\Post( $template_id );
+			$css_file->enqueue();
+		}
+	}
+
+
+	/**
 	** Theme Builder Template Check
 	*/
 	public static function is_theme_builder_template() {
@@ -949,6 +984,95 @@ class Utilities {
 	}
 
 	/**
+	** Password Protected Content - Verify Password
+	*/
+	public static function ajax_ppc_verify_password() {
+		check_ajax_referer( 'wpr_ppc_verify', 'nonce' );
+
+		$widget_id = isset( $_POST['widget_id'] ) ? sanitize_text_field( wp_unslash( $_POST['widget_id'] ) ) : '';
+		$password = isset( $_POST['password'] ) ? sanitize_text_field( wp_unslash( $_POST['password'] ) ) : '';
+		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+
+		if ( empty( $widget_id ) || empty( $password ) || empty( $post_id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid request.', 'wpr-addons' ) ] );
+		}
+
+		// Get Elementor data for the post
+		$elementor_data = get_post_meta( $post_id, '_elementor_data', true );
+		if ( empty( $elementor_data ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid request.', 'wpr-addons' ) ] );
+		}
+
+		$elements = json_decode( $elementor_data, true );
+		if ( ! is_array( $elements ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid request.', 'wpr-addons' ) ] );
+		}
+
+		// Find widget in Elementor elements tree
+		$widget_data = self::find_widget_in_elements( $elements, $widget_id );
+		if ( ! $widget_data || empty( $widget_data['settings']['set_password'] ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid request.', 'wpr-addons' ) ] );
+		}
+
+		$stored_password = $widget_data['settings']['set_password'];
+
+		if ( $password !== $stored_password ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Incorrect password. Please try again.', 'wpr-addons' ) ] );
+		}
+
+		// Set cookie
+		$cookie_name = 'wpr_ppc_' . md5( $stored_password . $widget_id );
+		$secure = is_ssl();
+		setcookie( $cookie_name, md5( $stored_password ), time() + DAY_IN_SECONDS, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
+
+		// Render protected content
+		$settings = $widget_data['settings'];
+		$content_html = '';
+
+		if ( isset( $settings['content_type'] ) && 'template' === $settings['content_type'] && ! empty( $settings['protected_template'] ) ) {
+			$template_id = $settings['protected_template'];
+
+			if ( defined( 'ICL_LANGUAGE_CODE' ) ) {
+				$default_language_code = apply_filters( 'wpml_default_language', null );
+				if ( ICL_LANGUAGE_CODE !== $default_language_code ) {
+					$template_id = icl_object_id( $template_id, 'elementor_library', false, ICL_LANGUAGE_CODE );
+				}
+			}
+
+			$type = get_post_meta( $post_id, '_wpr_template_type', true ) || get_post_meta( $template_id, '_elementor_template_type', true );
+			$has_css = 'internal' === get_option( 'elementor_css_print_method' ) || '' !== $type;
+			$content_html = \Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $template_id, $has_css );
+		} else {
+			$content_html = isset( $settings['protected_content'] ) ? $settings['protected_content'] : '';
+		}
+
+		wp_send_json_success( [
+			'message' => esc_html__( 'Password verified.', 'wpr-addons' ),
+			'content' => $content_html,
+		] );
+	}
+
+	/**
+	** Password Protected Content - Find Widget in Elements Tree
+	*/
+	public static function find_widget_in_elements( $elements, $widget_id ) {
+		foreach ( $elements as $element ) {
+			if ( isset( $element['id'] ) && $element['id'] === $widget_id ) {
+				return $element;
+			}
+
+			if ( ! empty( $element['elements'] ) ) {
+				$found = self::find_widget_in_elements( $element['elements'], $widget_id );
+				if ( $found ) {
+					return $found;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	** Mailchimp - Get Lists
 	*/
 	public static function get_mailchimp_lists() {
@@ -1266,11 +1390,78 @@ class Utilities {
 	public static function validate_html_tags_wl( $setting, $default, $tags_whitelist ) {
 		$value = $setting;
 
-		if ( ! in_array($value, $tags_whitelist) ) {
+		if ( ! in_array(strtolower($value), $tags_whitelist) ) {
 			$value = $default;
 		}
 
 		return $value;
 	}
 
+	public static function get_all_breakpoints( $type = 'assoc' ) {
+		$devices = array(
+			'desktop' => __( 'Desktop', 'elementor' ),
+		);
+	
+		if (
+			class_exists( '\Elementor\Plugin' ) &&
+			isset( \Elementor\Plugin::$instance->breakpoints ) &&
+			method_exists( \Elementor\Plugin::$instance->breakpoints, 'get_active_breakpoints' )
+		) {
+			$active_breakpoints = \Elementor\Plugin::$instance->breakpoints->get_active_breakpoints();
+	
+			if ( is_array( $active_breakpoints ) ) {
+				foreach ( $active_breakpoints as $key => $breakpoint ) {
+					if ( 'desktop' === $key ) {
+						continue;
+					}
+	
+					$label = '';
+	
+					if ( is_object( $breakpoint ) && method_exists( $breakpoint, 'get_label' ) ) {
+						$label = $breakpoint->get_label();
+					}
+	
+					if ( '' === $label ) {
+						$label = ucwords( str_replace( '_', ' ', $key ) );
+					}
+	
+					$devices[ $key ] = $label;
+				}
+			}
+		}
+	
+		if ( ! isset( $devices['tablet'] ) ) {
+			$devices['tablet'] = __( 'Tablet', 'elementor' );
+		}
+	
+		if ( ! isset( $devices['mobile'] ) ) {
+			$devices['mobile'] = __( 'Mobile', 'elementor' );
+		}
+	
+		$order = array(
+			'widescreen',
+			'desktop',
+			'laptop',
+			'tablet_extra',
+			'tablet',
+			'mobile_extra',
+			'mobile',
+		);
+	
+		$ordered_devices = array();
+	
+		foreach ( $order as $breakpoint_key ) {
+			if ( isset( $devices[ $breakpoint_key ] ) ) {
+				$ordered_devices[ $breakpoint_key ] = $devices[ $breakpoint_key ];
+			}
+		}
+	
+		foreach ( $devices as $breakpoint_key => $label ) {
+			if ( ! isset( $ordered_devices[ $breakpoint_key ] ) ) {
+				$ordered_devices[ $breakpoint_key ] = $label;
+			}
+		}
+	
+		return ( 'keys' === $type ) ? array_keys( $ordered_devices ) : $ordered_devices;
+	}
 }

@@ -201,6 +201,7 @@ class UEHttpRequest{
 	 */
 	public function request($method, $url){
 		
+		
 		$headers = $this->headers;
 		$query = $this->query;
 		$body = $this->prepareBody($method);
@@ -211,10 +212,10 @@ class UEHttpRequest{
 			dmp($url);
 			dmp($headers);
 		}
-				
+		
 		$cacheKey = $this->prepareCacheKey($url, $body);
 		$cacheTime = $this->prepareCacheTime($method);
-		
+				
 		if($cacheTime > 0){
 			
 			$requestResponse = UniteProviderFunctionsUC::getTransient($cacheKey);
@@ -259,6 +260,9 @@ class UEHttpRequest{
 			"body" => $body,
 		);
 		
+		// Save request to changelog (only actual requests, not from cache)
+		$this->saveRequestToChangelog($url);
+		
 		//validation
 		
 		if(is_callable($this->validateResponse) === true){
@@ -287,7 +291,7 @@ class UEHttpRequest{
 			
 			$cacheTime = 10;
 		}
-
+		
 		if($cacheTime > 0)
 			UniteProviderFunctionsUC::setTransient($cacheKey, $requestResponse, $cacheTime);
 		
@@ -393,6 +397,12 @@ class UEHttpRequest{
 		if(!empty($body)){
 			$text .= UniteFunctionsUC::encodeContent($body);
 		}
+		
+		// Include cache time in the key so when cache time setting changes, 
+		// the transient key changes and fresh data is fetched
+		if($this->cacheTime > 0){
+			$text .= ":cache_time:" . $this->cacheTime;
+		}
 			
 		$key = self::CACHE_KEY . ":" . md5($text);
 		
@@ -409,6 +419,29 @@ class UEHttpRequest{
 	private function prepareCacheTime($method){
 
 		return ($method === self::METHOD_GET) ? $this->cacheTime : 0;
+	}
+
+	/**
+	 * Save request to changelog.
+	 * Only saves actual requests, not requests served from cache.
+	 *
+	 * @param string $url
+	 *
+	 * @return void
+	 */
+	private function saveRequestToChangelog($url){
+
+		try{
+
+			$isChangelogEnabled = HelperProviderUC::isAddonChangelogEnabled();
+			if($isChangelogEnabled === false)
+				return;
+
+			$changelog = new UniteCreatorAddonChangelog();
+			$changelog->saveRequest($url);
+		}catch(Exception $exception){
+			// Silently fail - don't interrupt the request if logging fails
+		}
 	}
 
 }

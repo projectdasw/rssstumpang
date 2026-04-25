@@ -174,30 +174,17 @@ class Pa_Weather_Handler {
 	 */
 	public static function get_current_location() {
 
-		if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+		$ip_address = \PremiumAddons\Includes\Helper_Functions::get_user_ip_address();
 
-			$x_forward = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) );
+		$location_data = \PremiumAddons\Includes\Helper_Functions::get_ip_location_data( $ip_address );
 
-			if ( is_array( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-
-				$http_x_headers         = explode( ',', filter_var_array( $x_forward ) );
-				$_SERVER['REMOTE_ADDR'] = $http_x_headers[0];
-			} else {
-				$_SERVER['REMOTE_ADDR'] = $x_forward;
-			}
-		}
-
-		$ip_address = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
-
-		$location_data = json_decode( rplg_urlopen( 'http://www.geoplugin.net/json.gp?ip=' . $ip_address )['data'] );
-
-		if ( 404 === $location_data->geoplugin_status ) {
-			return false; // localhost.
+		if ( ! $location_data ) {
+			return;
 		}
 
 		return array(
-			'lat'  => $location_data->geoplugin_latitude,
-			'long' => $location_data->geoplugin_longitude,
+			'lat'  => $location_data['location']['latitude'],
+			'long' => $location_data['location']['longitude'],
 		);
 	}
 
