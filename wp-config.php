@@ -100,6 +100,8 @@ define( 'WP_DEBUG', false );
 // define( 'WP_HOME', 'http://localhost/rssstumpang' );
 // define( 'WP_SITEURL', 'http://localhost/rssstumpang' );
 
+define('FS_METHOD', 'direct');
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */

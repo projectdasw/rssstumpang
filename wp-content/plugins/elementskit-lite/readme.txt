@@ -4,7 +4,7 @@ Tags: Elementor addons, mega menu builder,  header footer builder, elementor add
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.9.2
+Stable tag: 3.9.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -14,7 +14,7 @@ Join millions who empower their websites with ElementsKit Elementor Addons. Get 
 
 **[ELEMENTSKIT, ALL-IN-ONE ELEMENTOR ADDON](https://wpmet.com/plugin/elementskit/?utm_source=org&utm_medium=readme), EMPOWERING 2 MILLION+ ELEMENTOR USERS WITH 110+ POWERFUL ELEMENTS & 1000+ TEMPLATES.**
 
-The ultimate addons for Elementor, ElementsKit is a nice, comprehensive page builder solution with **90+** Elementor Widgets, **20+** modules, & ever-growing Elementor template library.
+The ultimate addons for Elementor, ElementsKit is a nice, comprehensive page builder solution with **100+** Elementor Widgets, **20+** modules, & ever-growing Elementor template library.
 
 This popular Elementor addons expands your capabilities with an easy drag-and-drop interface, featuring a **header-footer builder, mega menu builder**, and **custom widget builder**.
 
@@ -37,7 +37,7 @@ https://www.youtube.com/watch?v=VhBl3dHT5SY
 
 🔥 All time downloads of ElementsKit : **46 million+**
 
-⭐ **90+** Free and Premium Elementor Widgets
+⭐ **100+** Free and Premium Elementor Widgets
 
 ⭐ **20+ Exclusive Modules** for advanced design solution
 
@@ -51,7 +51,7 @@ https://www.youtube.com/watch?v=VhBl3dHT5SY
 
 ⭐ Drag & Drop Elementor **Mega Menu** Builder
 
-⭐ Beneficial WooCommerce Elementor Templates & Widgets
+⭐ WooCommerce Elementor Templates & Widgets
 
 ⭐ Cross-domain copy-paste compatibility
 
@@ -61,7 +61,7 @@ https://www.youtube.com/watch?v=VhBl3dHT5SY
 
 ⭐ Expert support team available **24/7**
 
-⭐ Build with Elementor & has the same interface
+⭐ Build with  the same Elementor interface
 
 ⭐ Packed with **attractive animation** effects
 
@@ -72,7 +72,7 @@ ElementsKit is a popular Elementor addon among millions of users that eliminates
 
 **### Build Fast & Stylish Elementor Sites:**
 
-**Modular-Based & Lightweight:**  To ensure no additional bloat on website performance, enable only needed widgets or modules with this modular-based page builder plugin.
+**Modular-Based & Lightweight:** To ensure no additional bloat on website performance, enable only needed widgets or modules with this modular-based page builder plugin.
 
 **Completely Customizable:** Widgets & modules come with powerful styling controls to customize every pixel of Elementor sites.
 
@@ -81,9 +81,9 @@ ElementsKit is a popular Elementor addon among millions of users that eliminates
 
 ### 50+ FREE ELEMENTOR WIDGETS
 
-If you’re looking for a free Elementor addon, ElementsKit offers a complete package in town, with **50+** widgets, **5+** modules, and professionally designed Elementor templates.
+If you’re looking for a free Elementor addon, ElementsKit offers a complete package in town, with **50+** widgets, **5+** modules, & professionally designed Elementor templates.
 
-✅[ **Heading** ](https://wpmet.com/plugin/elementskit/heading/?utm_source=org&utm_medium=readme)  - Design headings with multiple fancy, & custom styles. (Free WordPress Header Footer Builder)
+✅[ **Heading** ](https://wpmet.com/plugin/elementskit/heading/?utm_source=org&utm_medium=readme)  - Design custom style headings. (Free WordPress Header Footer Builder)
 
 ✅[ **Button** ](https://wpmet.com/plugin/elementskit/button/?utm_source=org&utm_medium=readme) - Add amazing buttons with text, color, icons.
 
@@ -93,25 +93,25 @@ If you’re looking for a free Elementor addon, ElementsKit offers a complete pa
 
 ✅[ **Tab** ](https://wpmet.com/plugin/elementskit/tab/?utm_source=org&utm_medium=readme) - Show texts divided into horizontal or vertical tabs with titles.
 
-✅[ **Social Icons** ](https://wpmet.com/plugin/elementskit/social-media/?utm_source=org&utm_medium=readme) - Displaying social media icons is easy now.
+✅[ **Social Icons** ](https://wpmet.com/plugin/elementskit/social-media/?utm_source=org&utm_medium=readme) - Display & link to any social media icons.
 
 ✅[ **Client Logo** ](https://wpmet.com/plugin/elementskit/client-logo/?utm_source=org&utm_medium=readme) - Showcase your client & sponsor logos with different styles.
 
 ✅ [**Comparison Table**](https://wpmet.com/plugin/elementskit/comparison-table/?utm_source=org&utm_medium=readme): Compare & contrast different products, services, or options.
 
-✅[ **Countdown Timer** ](https://wpmet.com/plugin/elementskit/countdown-timer/?utm_source=org&utm_medium=readme) - Comes with various effects, styles, and formats.
+✅[ **Countdown Timer** ](https://wpmet.com/plugin/elementskit/countdown-timer/?utm_source=org&utm_medium=readme) - Get various effects, styles, and formats.
 
-✅[ **FAQ** ](https://wpmet.com/plugin/elementskit/faq/?utm_source=org&utm_medium=readme) - Present all Q&As with different designs and unique styles.
+✅[ **FAQ** ](https://wpmet.com/plugin/elementskit/faq/?utm_source=org&utm_medium=readme) - Present all Q&As in different & unique styles.
 
 ✅[ **Funfact** ](https://wpmet.com/plugin/elementskit/funfact/?utm_source=org&utm_medium=readme) - Show statistics, achievements, & fun facts.
 
-✅[ **Icon Box** ](https://wpmet.com/plugin/elementskit/icon-box/?utm_source=org&utm_medium=readme) - Write short brief about services or products within boxes.
+✅[ **Icon Box** ](https://wpmet.com/plugin/elementskit/icon-box/?utm_source=org&utm_medium=readme) - Uniqely show services or products within boxes.
 
-✅[ **Image Accordion** ](https://wpmet.com/plugin/elementskit/image-accordion/?utm_source=org&utm_medium=readme) - Display multiple images in a shortened format easily.
+✅[ **Image Accordion** ](https://wpmet.com/plugin/elementskit/image-accordion/?utm_source=org&utm_medium=readme) - Display multiple images in a shortened format.
 
 ✅[ **Image Box** ](https://wpmet.com/plugin/elementskit/image-box/?utm_source=org&utm_medium=readme) - Combine images with headlines, texts, and call-to-action buttons.
 
-✅[ **Pie Chart** ](https://wpmet.com/plugin/elementskit/piechart/?utm_source=org&utm_medium=readme) - Create and style data pie charts on your web page within a short time.
+✅[ **Pie Chart** ](https://wpmet.com/plugin/elementskit/piechart/?utm_source=org&utm_medium=readme) - Create stylish data pie charts on your web page.
 
 ✅[ **Pricing Table** ](https://wpmet.com/plugin/elementskit/pricing-new/?utm_source=org&utm_medium=readme) - Describe your clear product/service value beautifully.
 
@@ -119,31 +119,31 @@ If you’re looking for a free Elementor addon, ElementsKit offers a complete pa
 
 ✅[ **Testimonial** ](https://wpmet.com/plugin/elementskit/testimonial/?utm_source=org&utm_medium=readme) - Show clients feedback, & recommendations on your sites.
 
-✅[ **MailChimp** ](https://wpmet.com/plugin/elementskit/mail-chimp/?utm_source=org&utm_medium=readme) - Create and manage a mailing list, automated mailing, newsletter, etc.
+✅[ **MailChimp** ](https://wpmet.com/plugin/elementskit/mail-chimp/?utm_source=org&utm_medium=readme) - Create, automate, & manage a mailing list, newsletter, etc.
 
-✅[ **Image Comparison** ](https://wpmet.com/plugin/elementskit/image-comparision/?utm_source=org&utm_medium=readme) - Design and compare two images, with before after slider.
+✅[ **Image Comparison** ](https://wpmet.com/plugin/elementskit/image-comparision/?utm_source=org&utm_medium=readme) - Design & compare two images, with before-after-slider.
 
-✅[ **Call To Action** ](https://wpmet.com/plugin/elementskit/call-to-action/?utm_source=org&utm_medium=readme) - Bring an image, content, and other features under one box.
+✅[ **Call To Action** ](https://wpmet.com/plugin/elementskit/call-to-action/?utm_source=org&utm_medium=readme) - Bring an image, content under one box.
 
-✅[ **Video** ](https://wpmet.com/plugin/elementskit/video/?utm_source=org&utm_medium=readme) -  Add playable videos to your page and style them nicely.
+✅[ **Video** ](https://wpmet.com/plugin/elementskit/video/?utm_source=org&utm_medium=readme) -  Add stylish playable videos to your page.
 
-✅[ **Category List** ](https://wpmet.com/plugin/elementskit/category-list/?utm_source=org&utm_medium=readme) - Organize and customize every section of each category in a list.
+✅[ **Category List** ](https://wpmet.com/plugin/elementskit/category-list/?utm_source=org&utm_medium=readme) - Organize & customize every section of each category in a list.
 
 ✅[ **Page List** ](https://wpmet.com/plugin/elementskit/page-list/?utm_source=org&utm_medium=readme) - Arrange & customize your list of pages in horizontal or vertical layout.
 
-✅[ **Drop Caps** ](https://wpmet.com/plugin/elementskit/drop-caps/?utm_source=org&utm_medium=readme) - Design content's starting letter in a stylish, large, &	 capitalized format.
+✅[ **Drop Caps** ](https://wpmet.com/plugin/elementskit/drop-caps/?utm_source=org&utm_medium=readme) - Design content's starting letter in a stylish, large, & capitalized format.
 
-✅[ **Dual Button** ](https://wpmet.com/plugin/elementskit/dual-button-2/?utm_source=org&utm_medium=readme) - Display two buttons side by side with the Elementor dual button widget.
+✅[ **Dual Button** ](https://wpmet.com/plugin/elementskit/dual-button-2/?utm_source=org&utm_medium=readme) - Display two buttons side by side in Elementor.
 
-✅[ **Business Hours** ](https://wpmet.com/plugin/elementskit/business-hours/?utm_source=org&utm_medium=readme) - Inform opening hours to users clearly and attractively.
+✅[ **Business Hours** ](https://wpmet.com/plugin/elementskit/business-hours/?utm_source=org&utm_medium=readme) - Inform opening hours to users clearly.
 
 ✅[ **Social Share** ](https://wpmet.com/plugin/elementskit/social-share/?utm_source=org&utm_medium=readme) - Share content on social media accounts easily.
 
 ✅[ **Lottie** ](https://wpmet.com/plugin/elementskit/lottie/?utm_source=org&utm_medium=readme) - Export a JSON file or provide a URL to use amazing animations.
 
-✅[ **TablePress** ](https://wpmet.com/plugin/elementskit/tablepress/?utm_source=org&utm_medium=readme) - Allows to create and style nice responsive data tables.
+✅[ **TablePress** ](https://wpmet.com/plugin/elementskit/tablepress/?utm_source=org&utm_medium=readme) - Create and style nice responsive data tables.
 
-✅[ **Back to Top** ](https://wpmet.com/plugin/elementskit/back-to-top/?utm_source=org&utm_medium=readme)- Add & style the back-to-top button easily.
+✅[ **Back to Top** ](https://wpmet.com/plugin/elementskit/back-to-top/?utm_source=org&utm_medium=readme)- Style the back-to-top button easily.
 
 ### ElementsKit Elementor Addon Featuring Free Header Widgets
 Experience a no-cost WordPress site header navigation functions like dropdown menu, hamburger menu, offcanvas menu. Also, customize header info items like logos, text, address, social icons and display a functional search bar.
@@ -157,7 +157,7 @@ Display and organize your blog posts in flexible blog layout options like grid, 
 
 ### Free Elementor Addon for Third-Party Form Styling
 
-Name any popular form builder plugin, and there's a dedicated  **form styler widget**  in the ElementsKit Elementor addon. A flexible Elementor-like interface allows you to easily customize a variety of forms, including contact forms, suggestion forms, newsletters.
+Name any popular form builder plugin, and there's a dedicated  **form styler widget** in ElementsKit Elementor addon. A flexible Elementor-like interface allows you to easily customize a variety of forms, including contact forms, suggestion forms, newsletters.
 
 Whether using templates or building from scratch, ElementsKit provides extensive customization options to match your form design needs effortlessly.
 
@@ -178,33 +178,37 @@ Design multi-level WordPress mega menus with Elementor widgets, content, and vis
 ElementsKit gives web designers ultimate creative freedom to build custom widgets without coding. Just drag and drop controls to **create fully responsive Elementor widgets**.
 
 **🟢** [**Onepage Scroll**](https://wpmet.com/plugin/elementskit/onepage-scroll/?utm_source=org&utm_medium=readme)
-ElementsKit’s Onepage Scroll lets you create sleek, scrollable onepage scroll websites with interactive navigation. This [ **Elementor onepage scroll feature**](https://wpmet.com/doc/one-page-scroll/?utm_source=org&utm_medium=readme) also supports pre-designed onepage scroll layouts.
+ElementsKit lets you create sleek, scrollable onepage scroll websites with interactive navigation. This [ **Elementor onepage scroll feature**](https://wpmet.com/doc/one-page-scroll/?utm_source=org&utm_medium=readme) also supports pre-designed onepage scroll layouts.
 
 **🟢[ElementsKit Icon Pack Module](https://wpmet.com/plugin/elementskit/icon-pack/?utm_source=org&utm_medium=readme)**
-ElementsKit ships with a collection of meticulously designed, high-quality custom icons **(3000+)** for WordPress.
+ElementsKit ships with a collection of meticulously designed, trendy custom icons **(3000+)** for WordPress.
 
 ### Exclusive PRO Elementor Addons Widgets
 Let's look at advanced Elementor widgets in ElementsKit Pro version:
 
+✅ [ **Custom Login Forms** ](https://wpmet.com/plugin/elementskit/elementor-login-form/?utm_source=org&utm_medium=readme) - Stylish sign-in forms with multi-authentication types: social, browser.
+
+✅ [ **Custom Registration Forms** ](https://wpmet.com/plugin/elementskit/elementor-registration-form/?utm_source=org&utm_medium=readme) - Create custom sign-up forms with email & Social accounts.
+
 ✅ [ **Gallery** ](https://wpmet.com/plugin/elementskit/gallery/?utm_source=org&utm_medium=readme) - Showcase your recent photos, company environment, events, etc.
 
-✅ [ **Advanced Accordion)** ](https://wpmet.com/plugin/elementskit/advanced-accordion/?utm_source=org&utm_medium=readme) - Helps to arrange images, social feed, progress bar, MailChimp subscription form, etc. within the accordion in a nested format.
+✅ [ **Advanced Accordion)** ](https://wpmet.com/plugin/elementskit/advanced-accordion/?utm_source=org&utm_medium=readme) - Add any widget or template within accordion in a nested format.
 
 ✅[ **Vertical Menu** ](https://wpmet.com/plugin/elementskit/vertical-menu/?utm_source=org&utm_medium=readme) - Easily design & add vertical navigation menus on your site.
 
-✅[ **Circle Menu** ](https://wpmet.com/plugin/elementskit/circle-menu/?utm_source=org&utm_medium=readme) - A creative solution for showing your menu items in a circle.
+✅[ **Circle Menu** ](https://wpmet.com/plugin/elementskit/circle-menu/?utm_source=org&utm_medium=readme) - A creative solution to show menu items in circles.
 
-✅ [ **Advanced Tab** ](https://wpmet.com/plugin/elementskit/advanced-tab-one/?utm_source=org&utm_medium=readme) - Style the tabs and display various nested elements.
+✅ [ **Advanced Tab** ](https://wpmet.com/plugin/elementskit/advanced-tab-one/?utm_source=org&utm_medium=readme) - Style tabs and display various nested elements.
 
 ✅ [ **Timeline** ](https://wpmet.com/plugin/elementskit/time-line/?utm_source=org&utm_medium=readme) - Create timeline chart, design and showcase it.
 
 ✅ [ **Chart** ](https://wpmet.com/plugin/elementskit/chart/?utm_source=org&utm_medium=readme) -  Show a graphical representation of data and create charts.
 
-✅ [ **Data Table** ](https://wpmet.com/plugin/elementskit/table/?utm_source=org&utm_medium=readme) - Let you create data tables with advanced styling options and features.
+✅ [ **Data Table** ](https://wpmet.com/plugin/elementskit/table/?utm_source=org&utm_medium=readme) - Create data tables with advanced styling options and features.
 
-✅ [ **Creative Button** ](https://wpmet.com/plugin/elementskit/creative-buttons/?utm_source=org&utm_medium=readme) - Customize buttons with hover effects, content, borders, shadows, and more.
+✅ [ **Creative Button** ](https://wpmet.com/plugin/elementskit/creative-buttons/?utm_source=org&utm_medium=readme) - Customize buttons with hover effects, content, borders, shadows, etc.
 
-✅ [ **Motion Text** ](https://wpmet.com/plugin/elementskit/motion-text/?utm_source=org&utm_medium=readme) - Helps to display your text with various motion animations, with styles.
+✅ [ **Motion Text** ](https://wpmet.com/plugin/elementskit/motion-text/?utm_source=org&utm_medium=readme) - Display your text with various motion animations, with styles.
 
 ✅ [ **Advanced Toggle** ](https://wpmet.com/plugin/elementskit/advanced-toggle/?utm_source=org&utm_medium=readme) - Create amazing pricing tables, icon boxes, and packages and decorate them nicely.
 
@@ -214,19 +218,19 @@ Let's look at advanced Elementor widgets in ElementsKit Pro version:
 
 ✅[ **Zoom** ](https://wpmet.com/plugin/elementskit/zoom/?utm_source=org&utm_medium=readme) - Set the meeting hosts, start time and date, time zone, duration, etc.
 
-✅ [ **Breadcrumb** ](https://wpmet.com/plugin/elementskit/breadcrumb/?utm_source=org&utm_medium=readme) - Customize the breadcrumb of your website by setting the max title word length and showing/hiding the category trail.
+✅ [ **Breadcrumb** ](https://wpmet.com/plugin/elementskit/breadcrumb/?utm_source=org&utm_medium=readme) - Customize the website's breadcrumb by setting the max title word length and show hide the category trail.
 
 ✅[ **Video Gallery** ](https://wpmet.com/plugin/elementskit/video-gallery/?utm_source=org&utm_medium=readme) - Add as many videos as you want to your website and design an attractive video gallery.
 
 ✅[ **Popup Modal** ](https://wpmet.com/plugin/elementskit/popup-modal/?utm_source=org&utm_medium=readme) - Design amazing popups and place them wherever you want them on your website.
 
-✅[ **Google Map** ](https://wpmet.com/plugin/elementskit/google-map/?utm_source=org&utm_medium=readme) - Show address to visitors with a Google Map effortlessly.
+✅[ **Google Map** ](https://wpmet.com/plugin/elementskit/google-map/?utm_source=org&utm_medium=readme) - Show your address to visitors with a Google Map.
 
 ✅[ **Unfold** ](https://wpmet.com/plugin/elementskit/unfold/?utm_source=org&utm_medium=readme) - Easily fold up certain sections (texts/images).
 
 ✅ [**Image Swap**](https://wpmet.com/plugin/elementskit/image-swap/?utm_source=org&utm_medium=readme) - Interactively swap or switch between different images displayed on a screen.
 
-✅ [**Advanced Slider**](https://wpmet.com/plugin/elementskit/advanced-slider/?utm_source=org&utm_medium=readme) - Mesmerizing sliders will assist you to boost engagement, conversion, and sales.
+✅ [**Advanced Slider**](https://wpmet.com/plugin/elementskit/advanced-slider/?utm_source=org&utm_medium=readme) - Mesmerizing sliders boosts engagement, conversion, and sales.
 
 ✅ [**Image Hover Effect**](https://wpmet.com/plugin/elementskit/image-hover-effect/?utm_source=org&utm_medium=readme) - Customize interesting hover effects in no time to make catchy images.
 
@@ -246,13 +250,15 @@ Let's look at advanced Elementor widgets in ElementsKit Pro version:
 
 ✅ [**Content Ticker**](https://wpmet.com/plugin/elementskit/content-ticker/?utm_source=org&utm_medium=readme) - Showcase recent posts, latest and trending news, etc. stylishly.
 
-✅ [**Coupon Code**](https://wpmet.com/plugin/elementskit/coupon-code/?utm_source=org&utm_medium=readme) - Allows to make a small and customizable pop-up to display special offers.
+✅ [**Coupon Code**](https://wpmet.com/plugin/elementskit/coupon-code/?utm_source=org&utm_medium=readme) - Show small and customizable pop-up to display special offers.
 
 ✅ [**Protected content**](https://wpmet.com/plugin/elementskit/protected-content/?utm_source=org&utm_medium=readme) - Protect your valuable or premium content with passwords or user roles.
 
 ✅ [**Interactive Links**](https://wpmet.com/plugin/elementskit/interactive-links/?utm_source=org&utm_medium=readme) - Clickable and animated links boosts user interactions.
 
 ✅ [**Advanced Search**](https://wpmet.com/plugin/elementskit/advanced-search/?utm_source=org&utm_medium=readme) - Design powerful live search panel to provide relevant search results.
+
+✅ [**Footer Copyright**](https://wpmet.com/plugin/elementskit/elementor-copyright/?utm_source=org&utm_medium=readme) - Add or change copyright text anywhere in Elementor.
 
 ## WooCommerce Elementor Addon
 Display and design e-commerce products in a list and intuitive sliders, along with their categories and mini cart option, anywhere you want.
@@ -269,7 +275,7 @@ You can enable chat-head or a click to chat option on your Elementor website to 
 Also, creative professionals can use this Elementor addon for building their professional-level portfolio website. It has Elementor widgets:
 **<strong></strong><br />🔶 [Behance Feed](https://wpmet.com/plugin/elementskit/behance-feed/?utm_source=org&utm_medium=readme) 🔶 [Dribbble Feed](https://wpmet.com/plugin/elementskit/dribbble-feed/?utm_source=org&utm_medium=readme) 🔶**
 
-ElementsKit allows to showcase authentic user feedback from trusted platforms while offering detailed layout custoization to match your website’s design.
+ElementsKit allows to showcase authentic user feedback from trusted platforms while offering detailed layout customization to match your website’s design.
 **<strong></strong><br />🔶 [Yelp](https://wpmet.com/plugin/elementskit/yelp-review/?utm_source=org&utm_medium=readme) 🔶 [Facebook Review](https://wpmet.com/plugin/elementskit/facebook-review/?utm_source=org&utm_medium=readme) 🔶**
 
 ### PRO Modules in Premium Elementor Addon version
@@ -301,7 +307,7 @@ To empower [Elementor page builder](https://wpmet.com/plugin/elementskit/?utm_so
 
 ### This Elementor Addon supports [Elementor](https://wordpress.org/plugins/elementor/) Form Plugin:
 
-**🟢** [**Reset Button for Elementor Form**](https://wpmet.com/plugin/elementskit/reset-button-for-elementor-pro-form/?utm_source=org&utm_medium=readme): Add a reset button to Elementor Form and customize it to match your brand.
+**🟢** [**Reset Button for Elementor Form**](https://wpmet.com/plugin/elementskit/reset-button-for-elementor-pro-form/?utm_source=org&utm_medium=readme): Add & customize a reset button to Elementor Form.
 
 **🟢** [**Google Sheet Integration for Elementor Form**](https://wpmet.com/plugin/elementskit/google-sheets-integration-for-elementor-pro-form/?utm_source=org&utm_medium=readme): Automate the data collection of Elementor Form and store form submission data directly in Google Sheets.
 
@@ -311,7 +317,7 @@ To empower [Elementor page builder](https://wpmet.com/plugin/elementskit/?utm_so
 ###  🤝 BACKED BY A TRUSTED TEAM
 ElementsKit is brought to you by Wpmet, a name **trusted by 10,00,000 satisfied users worldwide!**
 
-### » DOCUMENTATION AND SUPPORT
+### » DOCUMENTATION & SUPPORT
 
  - 📞 [Contact Our Support](https://wpmet.com/support-ticket-form/)
  - 🙋🏼‍♂️ [Join Our Facebook Community](https://www.facebook.com/groups/wpmet/)
@@ -331,15 +337,16 @@ ElementsKit is brought to you by Wpmet, a name **trusted by 10,00,000 satisfied 
 👉 **[EmailKit](https://wpmet.com/plugin/emailkit/?utm_source=org&utm_medium=readme)** – Effortless way to change your email-building experience.
 👉 **[GetGenie Ai](https://getgenie.ai/?utm_source=org&utm_medium=readme)** - An advanced Ai assistant for SEO-friendly content.
 👉 **[Wp Social](https://wpmet.com/plugin/wp-social/?utm_source=org&utm_medium=readme)** – Leverage Wp Social to add Social Login, Social Counter, and Social Login to your website.
-👉 **[Wp Fundraising](https://products.wpmet.com/crowdfunding/?utm_source=org&utm_medium=readme)** – Employ the power of Wp Fundraising to create a crowdfunding & donation sites.
 👉 **[Wp Ultimate Review](https://products.wpmet.com/review/)** – Manage customer reviews with the Wp Ultimate Review plugin.
 👉 **[PopupKit](https://wordpress.org/plugins/popup-builder-block/?utm_source=org&utm_medium=readme)** – Build exceptional popup for diverse needs within the WordPress block editor.
 👉 **[TableKit](https://wordpress.org/plugins/table-builder-block/?utm_source=org&utm_medium=readme)** – Make fully-customizable multipurpose table & generate data table within Gutenberg block editor.
 👉 [**Genie Image**](https://wordpress.org/plugins/genie-image-ai/?utm_source=org&utm_medium=readme) - Generate images directly on your WordPress website with the magic of AI.
 
-Visit  [wpmet](https://wpmet.com/?utm_source=org&utm_medium=readme)  for essential WordPress [Tutorials, Tips & Tricks](https://wpmet.com/blog)!
+Visit  [wpmet](https://wpmet.com/?utm_source=org&utm_medium=readme) for essential WordPress [Tutorials, Tips & Tricks](https://wpmet.com/blog)!
 
 == Changelog ==
+= ElementsKit Elementor Addons Version: 3.9.3 (2026-04-28) =
+* Fixed: Google's excluded by ‘noindex’ tag issue for elementskit custom post types
 
 = ElementsKit Elementor Addons Version: 3.9.2 (2026-04-15) =
 * Fixed: Video widget error if icon pack not enabled
@@ -1067,21 +1074,20 @@ For further queries, contact our [support team.](https://wpmet.com/support-ticke
 == Frequently Asked Questions ==
 
 = How do the ElementsKit Elementor addons reduce the extra loading time of your WordPress website? =
-This well-coded Elementor addons caches API-related widget data to avoid calling directly to the API each time. Also, you can deactivate unused widgets and modules.
+This well-coded Elementor addons caches API-related widget data to avoid calling directly to the API each time. Also, you can deactivate unused widgets & modules.
 
 = Does ElementsKit cause conflicts with other plugins or themes? =
-No, you can work seamlessly with this Elementor addons.
+No, this Elementor addons works seamlessly with any themes.
 
 = Does ElementsKit require the Elementor pro version? =
-No, you don't need to have the pro version of Elementor to run the ElementsKit Elementor addon.
+No, no need to have Elementor pro version to run the ElementsKit Elementor addon.
 
-= Do I need to know professional level coding & design knoledge to build websites with ElementsKit? =
-No, ElementsKit has pre-built template kits that launch websites in minutes, no coding and design knowledge required.
+= Do I need to know coding & design knowledge to build websites with ElementsKit? =
+No, ElementsKit has pre-built template kits that launch websites in minutes, no coding or complex design.
 
 = Elementor editor fails to load or not working? =
-It's due to your servers' PHP settings. Increase your server PHP memory limit from the wp-config.php file or php.ini file. For help, please contact your hosting provider and ask to increase
-* PHP memory_limit = 512M
-* max_execution_time = 300
+It's due to your servers' PHP settings. Increase server PHP memory_limit = 512M and max_execution_time - 300, from the wp-config.php file or php.ini file. For help, please contact your hosting provider.
+
 
 = How can I report security bugs for this Elementor addon? =
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/elementskit-lite)

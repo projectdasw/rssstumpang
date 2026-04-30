@@ -59,7 +59,7 @@ class Plugin {
 		// register plugin activation actions
 		( new Core\Activation_Actions() )->init();
 
-		add_action( 'wp_head', array( $this, 'add_meta_for_search_excluded' ) );
+		add_action( 'send_headers', array( $this, 'add_meta_for_search_excluded' ) );
 
 		// Register ElementsKit supported widgets to Elementor from 3rd party plugins.
 		add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ), 1050 );
@@ -446,12 +446,16 @@ class Plugin {
 	 * @access public
 	 */
 	public function add_meta_for_search_excluded() {
-		if ( in_array(
-			get_post_type(),
-			array( 'elementskit_widget', 'elementskit_template', 'elementskit_content' )
-		)
-			) {
-			echo '<meta name="robots" content="noindex,nofollow" />', "\n";
+		if (
+			! is_admin() &&
+			is_singular() &&
+			in_array(
+				get_post_type(),
+				array( 'elementskit_widget', 'elementskit_template', 'elementskit_content' ),
+				true
+			)
+		) {
+			header( 'X-Robots-Tag: noindex', true );
 		}
 	}
 

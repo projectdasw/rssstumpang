@@ -601,6 +601,27 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'widget-category' => 'header-footer', // header footer
 					'icon'    => 'ekit ekit-search',
 				),
+				'login-form' => [
+					'slug'    => 'login-form',
+					'title'   => 'Login Form',
+					'package' => 'pro-disabled',
+					'widget-category' => 'general', // general
+					'icon'    => 'ekit ekit-login',
+				],
+				'register-form' => [
+					'slug'    => 'register-form',
+					'title'   => 'Register Form',
+					'package' => 'pro-disabled',
+					'widget-category' => 'general', // general
+					'icon'    => 'ekit ekit-register',
+				],
+				'copyright' => [
+					'slug'    => 'copyright',
+					'title'   => 'Copyright',
+					'package' => 'pro-disabled',
+					'widget-category' => 'header-footer', // header footer
+					'icon'    => 'ekit ekit-copyright',
+				],
 			)
 		);
 	}
