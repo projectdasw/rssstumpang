@@ -7,27 +7,24 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Deploy to Ubuntu Server
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Deploy Website
+        run: |
+          cd /var/www/html/rssstumpang
 
+<<<<<<< HEAD
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 2222
+=======
+          git reset --hard
+          git clean -fd
+>>>>>>> e1ee0a54 (update automation setup)
 
-          script: |
-            export GIT_SSH_COMMAND="ssh -i /home/rsss-webserver/.ssh/id_ed25519 -o StrictHostKeyChecking=no"
+          git pull origin main
 
-            cd /var/www/html/rssstumpang
-
-            sudo git reset --hard
-
-            sudo git clean -fd
-
-            sudo git pull origin main
-
-            sudo systemctl restart apache2
+          sudo systemctl restart apache2
