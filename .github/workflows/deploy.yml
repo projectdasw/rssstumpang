@@ -1,4 +1,4 @@
-name: Deploy RSS Stumpang
+﻿name: Deploy RSS Stumpang
 
 on:
   push:
