@@ -1,4 +1,4 @@
-﻿name: Deploy RSS Stumpang
+﻿name: Deploy RSSS tumpang
 
 on:
   push:
@@ -19,7 +19,8 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 2222
-          git reset --hard
-          git clean -fd
-          git pull origin main
+
+          sudo git reset --hard
+          sudo git clean -fd
+          sudo git pull origin main
           sudo systemctl restart apache2
