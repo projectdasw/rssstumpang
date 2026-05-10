@@ -24,10 +24,10 @@ jobs:
 
             cd /var/www/html/rssstumpang
 
-            git reset --hard
+            sudo git reset --hard
 
-            git clean -fd
+            sudo git clean -fd
 
-            git pull origin main
+            sudo git pull origin main
 
             sudo systemctl restart apache2
