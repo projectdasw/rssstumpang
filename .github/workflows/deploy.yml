@@ -22,7 +22,7 @@ jobs:
           script: |
             cd /var/www/rssstumpang
 
-            git push origin main
+            git pull origin main
 
             sudo chown -R www-data:www-data /var/www/rssstumpang
 
