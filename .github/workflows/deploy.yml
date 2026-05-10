@@ -14,17 +14,12 @@ jobs:
         run: |
           cd /var/www/html/rssstumpang
 
-<<<<<<< HEAD
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 2222
-=======
           git reset --hard
           git clean -fd
->>>>>>> e1ee0a54 (update automation setup)
-
           git pull origin main
-
           sudo systemctl restart apache2
