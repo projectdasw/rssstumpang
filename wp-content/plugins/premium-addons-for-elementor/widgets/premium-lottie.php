@@ -784,8 +784,8 @@ class Premium_Lottie extends Widget_Base {
 				'lottie',
 				array(
 					'data-lottie-viewport' => 'true',
-					'data-scroll-start'    => $settings['animate_view']['sizes']['start'],
-					'data-scroll-end'      => $settings['animate_view']['sizes']['end'],
+					'data-scroll-start'    => isset( $settings['animate_view']['sizes']['start'] ) ? $settings['animate_view']['sizes']['start'] : '0',
+					'data-scroll-end'      => isset( $settings['animate_view']['sizes']['end'] ) ? $settings['animate_view']['sizes']['end'] : '100',
 				)
 			);
 		} elseif ( 'click' === $settings['trigger'] ) {
@@ -815,9 +815,9 @@ class Premium_Lottie extends Widget_Base {
 
 		?>
 
-		<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'lottie' ) ); ?>>
+		<div <?php $this->print_render_attribute_string( 'lottie' ); ?>>
 			<?php if ( 'yes' === $settings['link_switcher'] ) : ?>
-				<a <?php echo wp_kses_post( $this->get_render_attribute_string( 'link' ) ); ?>></a>
+				<a <?php $this->print_render_attribute_string( 'link' ); ?>></a>
 			<?php endif; ?>
 		</div>
 
