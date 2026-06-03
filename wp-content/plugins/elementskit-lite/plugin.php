@@ -35,6 +35,9 @@ class Plugin {
 		// check on-boarding status
 		Libs\Framework\Classes\Onboard_Status::instance()->onboard();
 
+		// Initialize deactivation feedback
+		Core\Plugin_Unsubscribe::instance();
+
 		// migrate old settings db to new format.
 		new Compatibility\Data_Migration\Settings_Db();
 

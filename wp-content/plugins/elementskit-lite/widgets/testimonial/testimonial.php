@@ -10,7 +10,7 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
 	use \ElementsKit_Lite\Widgets\Widget_Notice;
 
 	public $base;
-    
+
     public function __construct( $data = [], $args = null ) {
 		parent::__construct( $data, $args );
 	}
@@ -445,6 +445,93 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
 				'default' => '',
             ]
         );
+		$repeater->add_control(
+			'ekit_testimonial_item_text_colors_popover',
+			[
+				'label' => esc_html__( 'Item Text Colors', 'elementskit-lite' ),
+				'type' => \Elementor\Controls_Manager::POPOVER_TOGGLE,
+				'label_off' => esc_html__( 'Default', 'elementskit-lite' ),
+				'label_on' => esc_html__( 'Custom', 'elementskit-lite' ),
+				'return_value' => 'yes',
+				'default' => 'yes',
+			]
+		);
+		$repeater->start_popover();
+
+		$repeater->add_control(
+			'ekit_testimonial_item_description_color',
+			[
+				'label' => esc_html__( 'Description Color', 'elementskit-lite' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .elementskit-commentor-content > p' => 'color: {{VALUE}}',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .elementskit-commentor-coment' => 'color: {{VALUE}}',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .elementskit-single-testimonial-slider > p' => 'color: {{VALUE}}',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .elementskit-commentor-content' => 'color: {{VALUE}}',
+				],
+				'condition' => [
+					'ekit_testimonial_item_text_colors_popover' => 'yes',
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'ekit_testimonial_item_client_name_color',
+			[
+				'label' => esc_html__( 'Name Color', 'elementskit-lite' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .elementskit-author-name' => 'color: {{VALUE}}',
+				],
+				'condition' => [
+					'ekit_testimonial_item_text_colors_popover' => 'yes',
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'ekit_testimonial_item_client_designation_color',
+			[
+				'label' => esc_html__( 'Designation Color', 'elementskit-lite' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .elementskit-author-des' => 'color: {{VALUE}}',
+				],
+				'condition' => [
+					'ekit_testimonial_item_text_colors_popover' => 'yes',
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'ekit_testimonial_item_rating_color',
+			[
+				'label' => esc_html__( 'Rating Color', 'elementskit-lite' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .elementskit-stars > li > a, {{WRAPPER}} {{CURRENT_ITEM}} .elementskit-stars > li > span' => 'color: {{VALUE}}; fill: {{VALUE}};',
+				],
+				'condition' => [
+					'ekit_testimonial_item_text_colors_popover' => 'yes',
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'ekit_testimonial_item_title_separator_color',
+			[
+				'label' => esc_html__( 'Title Separator Color', 'elementskit-lite' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} {{CURRENT_ITEM}} .elementskit-border-hr' => 'background-color: {{VALUE}}',
+				],
+				'condition' => [
+					'ekit_testimonial_item_text_colors_popover' => 'yes',
+				],
+			]
+		);
+
+		$repeater->end_popover();
 
 		$repeater->add_group_control(
             Group_Control_Background::get_type(),
@@ -452,7 +539,7 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
                 'name' => 'ekit_testimonial_background_group',
                 'label' => esc_html__( 'Background', 'elementskit-lite' ),
                 'types' => [ 'classic'],
-                'selector' => '{{WRAPPER}} {{CURRENT_ITEM}}',
+                'selector' => '{{WRAPPER}} {{CURRENT_ITEM}} ',
             ]
         );
 
@@ -763,7 +850,7 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
 						]
 					);
 				$this->end_controls_tab();
-				
+
 				$this->start_controls_tab(
 					'ekit_testimonial_wrapper_tab_hover',
 					[
@@ -851,7 +938,7 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
 				'tab'	 => Controls_Manager::TAB_STYLE,
 		    ]
 		);
-		
+
 
 		$this->add_responsive_control(
 			'ekit_testimonial_section_wraper_vertical_alignment',
@@ -1055,9 +1142,9 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
 				'label'		=> esc_html__( 'Hover & Active Color', 'elementskit-lite' ),
 				'type'		=> Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .elementskit-single-testimonial-slider:hover .elementskit-stars > li > a, 
-					{{WRAPPER}} .elementskit-single-testimonial-slider:hover .elementskit-stars > li > span, 
-					{{WRAPPER}} .elementskit-single-testimonial-slider.testimonial-active .elementskit-stars > li > a, 
+					'{{WRAPPER}} .elementskit-single-testimonial-slider:hover .elementskit-stars > li > a,
+					{{WRAPPER}} .elementskit-single-testimonial-slider:hover .elementskit-stars > li > span,
+					{{WRAPPER}} .elementskit-single-testimonial-slider.testimonial-active .elementskit-stars > li > a,
 					{{WRAPPER}} .elementskit-single-testimonial-slider.testimonial-active .elementskit-stars > li > span' => 'color: {{VALUE}}; fill: {{VALUE}};',
 				],
 			]
@@ -1209,7 +1296,7 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
 				'label' => esc_html__( 'Background', 'elementskit-lite' ),
 				'types' => [ 'classic', 'gradient' ],
 				'selector' => '{{WRAPPER}}.elementskit-single-testimonial-slider:hover .elementskit-commentor-content > i, {{WRAPPER}} .elementskit-single-testimonial-slider:hover .elementskit-icon-content > i,{{WRAPPER}} .elementskit-single-testimonial-slider:hover .elementskit-watermark-icon > i, {{WRAPPER}} .elementskit-single-testimonial-slider:hover .elementskit-watermark-icon svg,
-				
+
 				{{WRAPPER}}.elementskit-single-testimonial-slider.testimonial-active:hover .elementskit-commentor-content > i, {{WRAPPER}} .elementskit-single-testimonial-slider.testimonial-active:hover .elementskit-icon-content > i,{{WRAPPER}} .elementskit-single-testimonial-slider.testimonial-active:hover .elementskit-watermark-icon > i, {{WRAPPER}} .elementskit-single-testimonial-slider.testimonial-active:hover .elementskit-watermark-icon svg
 				',
 				'condition' => [
@@ -1541,11 +1628,12 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
 				'label'		 =>esc_html__( 'Color', 'elementskit-lite' ),
 				'type'		 => Controls_Manager::COLOR,
 				'selectors'	 => [
-					'{{WRAPPER}} .elementskit-profile-info .elementskit-author-name' => 'color: {{VALUE}};'
+					'{{WRAPPER}} .elementskit-profile-info .elementskit-author-name' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .elementskit-author-name' => 'color: {{VALUE}};'
 				],
 			]
 		);
-		
+
 		// Client Name Color
 		$this->add_control(
 			'ekit_testimonial_client_name_active_color', [
@@ -1557,7 +1645,7 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
 				],
 			]
 		);
-		
+
 		$this->add_group_control(
 		    Group_Control_Typography::get_type(), [
 			    'name'		 => 'ekit_testimonial_client_name_typography',
@@ -1681,7 +1769,7 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
 				]
 			]
 		);
-		
+
 		/**
 		 * Heading: Client Image
 		 */
@@ -2435,7 +2523,7 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
 					'spaceBetween'		=> !empty( $ekit_testimonial_left_right_spacing['size'] ) ? $ekit_testimonial_left_right_spacing['size'] : 15,
 				]
 			],
-			
+
 		];
 
 		// HTML Attribute
@@ -2453,7 +2541,7 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
 				'class'	=> \ElementsKit_Lite\Utils::swiper_class(),
 			]
 		);
-		
+
 		$dir_common = Handler::get_dir() . 'common/';
 
 		$testimonials = isset($ekit_testimonial_data) ? $ekit_testimonial_data : [];

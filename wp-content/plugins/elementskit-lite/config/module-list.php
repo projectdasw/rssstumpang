@@ -140,7 +140,7 @@ class Module_List extends \ElementsKit_Lite\Core\Config_List {
 					'slug'              => 'scroll-reveal',
 					'package'           => 'pro-disabled',
 					'title'             => 'Scroll Reveal',
-					'attributes'        => array( 'upcoming' ),
+					'attributes'        => array( 'new' ),
 				],
 			)
 		);

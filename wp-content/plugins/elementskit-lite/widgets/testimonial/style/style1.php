@@ -13,7 +13,7 @@
 				?>
 				<div class="swiper-slide">
 					<div class="swiper-slide-inner">
-						<<?php echo esc_attr( $wrapTag ); ?> class="elemntskit-testimonial-item" <?php echo $this->get_render_attribute_string( 'link-' . $testimonial['_id'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped by elementor ?>>
+						<<?php echo esc_attr( $wrapTag ); ?> class="elemntskit-testimonial-item elementor-repeater-item-<?php echo esc_attr( $testimonial[ '_id' ] ); ?>" <?php echo $this->get_render_attribute_string( 'link-' . $testimonial['_id'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped by elementor ?>>
 							<div class="elementskit-single-testimonial-slider <?php echo esc_attr(!empty($testimonial['ekit_testimonial_active']) ? 'testimonial-active' : ''); ?>">
 								<div class="row">
 									<div class="col-lg-6 elementkit-testimonial-col">
@@ -23,7 +23,7 @@
 													<?php if (isset($testimonial['client_logo_active']) && sizeof($testimonial['client_logo_active']) > 0 && $testimonial['use_hover_logo'] == 'yes') : ?>
 														<?php echo wp_kses( \Elementskit_Lite\Utils::get_attachment_image_html($testimonial, 'client_logo_active', 'full', [
 															'class'	=> 'elementskit-testimonial-client-active-logo'
-														]), \ElementsKit_Lite\Utils::get_kses_array()); ?>	
+														]), \ElementsKit_Lite\Utils::get_kses_array()); ?>
 													<?php endif; ?>
 													<?php echo wp_kses( \Elementskit_Lite\Utils::get_attachment_image_html($testimonial, 'client_logo', 'full', [
 														'class'	=> 'elementskit-testimonial-client-logo'

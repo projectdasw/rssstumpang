@@ -1,81 +1,76 @@
 <?php
-if($ekit_video_popup_button_style == 'icon' || $ekit_video_inline_button_style == 'icon') {
-	$this->add_render_attribute('button', ['class' => [ 'ekit_icon_button' ]]);
+// Base button class if style is icon
+if ( $ekit_video_popup_button_style === 'icon' ) {
+    $this->add_render_attribute( 'button', 'class', 'ekit_icon_button' );
 }
 
-$glow_animation_class = '';
-if ($ekit_video_popup_video_glow == 'yes' && !empty($ekit_video_popup_glow_animation_type)) {
-    $glow_animation_class = 'glow-' . esc_attr($ekit_video_popup_glow_animation_type);
-}elseif ($ekit_video_inline_video_glow == 'yes' && !empty($ekit_video_inline_glow_animation_type)) {
-    $glow_animation_class = 'glow-' . esc_attr($ekit_video_inline_glow_animation_type);
+// Glow animation handling
+if ( $ekit_video_popup_video_glow === 'yes' ) {
+    $glow_type = ! empty( $ekit_video_popup_glow_animation_type )
+        ? $ekit_video_popup_glow_animation_type
+        : $ekit_video_inline_glow_animation_type;
 
+    if ( ! empty( $glow_type ) ) {
+        $this->add_render_attribute( 'button', 'class', 'glow-' . esc_attr( $glow_type ) );
+    }
 }
 
-$this->add_render_attribute('button', [
-    'class' => [$glow_animation_class]
-]);
+// Radio wave scaling (popup first, fallback to inline)
+$radio_wave_size = $ekit_video_popup_radio_wave_scale['size']
+    ?? $ekit_video_inline_radio_wave_scale['size']
+    ?? null;
 
-if (isset($ekit_video_popup_radio_wave_scale['size'])) {
-	$this->add_render_attribute(
-		'button',
-		'glow-radio_wave',
-		'--ekit-radio-wave-scale: '. $ekit_video_popup_radio_wave_scale['size'].';'
-	);
+if ( $radio_wave_size ) {
+    $this->add_render_attribute(
+        'button',
+        'glow-radio_wave',
+        '--ekit-radio-wave-scale: ' . $radio_wave_size . ';'
+    );
 }
 
-if (isset($ekit_video_inline_radio_wave_scale['size'])) {
-	$this->add_render_attribute(
-		'button',
-		'glow-radio_wave',
-		'--ekit-radio-wave-scale: '. $ekit_video_inline_radio_wave_scale['size'].';'
-	);
+// Video type + style handling
+if ( $ekit_video_style === 'popup' ) {
+    $href = ( $ekit_video_popup_video_type === 'self' )
+        ? '#' . $generate_id
+        : $ekit_video_popup_url;
+
+    $this->add_render_attribute( 'button', [
+        'class'      => [ 'ekit-video-popup', 'ekit-video-popup-btn' ],
+        'href'       => $href,
+        'aria-label' => 'video-popup'
+    ] );
 }
 
-if($ekit_video_popup_video_type == 'self' && $ekit_video_style === 'popup') {
-	$this->add_render_attribute('button', ['class' => ['ekit-video-popup'], 'href' => '#'.$generate_id]);
-}elseif($ekit_video_style === 'popup'){
-	$this->add_render_attribute('button', ['class' => ['ekit-video-popup'], 'href' => $ekit_video_popup_url]);
+if ( $ekit_video_style === 'inline' && !empty($ekit_video_inline_overlay_image['url'])) {
+    $this->add_render_attribute( 'button', [
+        'class'      => [ 'ekit-video-inline-btn' ],
+        'href'       => $ekit_video_popup_url,
+        'aria-label' => 'video-inline'
+    ] );
 }
-
-if ($ekit_video_style === 'popup') {
-	$this->add_render_attribute('button', ['class' => ['ekit-video-popup-btn'], 'aria-label' => "video-popup"]);
-}
-if ($ekit_video_style === 'inline' && isset($ekit_video_inline_button_icons__switch_overlay) && $ekit_video_inline_button_icons__switch_overlay === 'yes') {
-	$this->add_render_attribute('button', ['class' => ['ekit-video-inline-btn'], 'aria-label' => "video-inline"]);
-}
-
 ?>
 
-<a <?php $this->print_render_attribute_string('button'); ?>>
-	<?php if ($ekit_video_popup_button_style == 'text') : ?>
-		<span class="ekit-video-popup-title"><?php echo esc_html($ekit_video_popup_button_title); ?></span>
-	<?php endif; ?>
-	<?php if ($ekit_video_popup_button_style == 'icon' && $ekit_video_popup_button_icons != '') : ?>
-		<?php $this->video_icon(); ?>
-	<?php endif; ?>
-	<?php if ($ekit_video_popup_button_style == 'both') : ?>
-		<?php if ($ekit_video_popup_icon_align == 'before' && $ekit_video_popup_button_icons != '') : ?>
-			<?php  $this->video_icon(); ?>
-		<?php endif; ?>
-		<span class="ekit-video-popup-title"><?php echo esc_html($ekit_video_popup_button_title); ?></span>
-		<?php if ($ekit_video_popup_icon_align == 'after' && $ekit_video_popup_button_icons != '') : ?>
-			<?php $this->video_icon(); ?>
-		<?php endif; ?>
-	<?php endif; ?>
+<a <?php $this->print_render_attribute_string( 'button' ); ?>>
+    <?php
+    $show_text = in_array( $ekit_video_popup_button_style, [ 'text', 'both' ], true );
+    $show_icon = in_array( $ekit_video_popup_button_style, [ 'icon', 'both' ], true ) && ! empty( $ekit_video_popup_button_icons );
 
-	<?php if ($ekit_video_inline_button_style == 'text') : ?>
-		<span><?php echo esc_html($ekit_video_inline_button_title); ?></span>
-	<?php endif; ?>
-	<?php if ($ekit_video_inline_button_style == 'icon' && $ekit_video_inline_button_icons != '') : ?>
-		<?php $this->video_icon(); ?>
-	<?php endif; ?>
-	<?php if ($ekit_video_inline_button_style == 'both') : ?>
-		<?php if ($ekit_video_inline_icon_align == 'before' && $ekit_video_inline_button_icons != '') : ?>
-			<?php  $this->video_icon(); ?>
-		<?php endif; ?>
-		<span><?php echo esc_html($ekit_video_inline_button_title); ?></span>
-		<?php if ($ekit_video_inline_icon_align == 'after' && $ekit_video_inline_button_icons != '') : ?>
-			<?php $this->video_icon(); ?>
-		<?php endif; ?>
-	<?php endif; ?>
+    // Icon before text
+    if ( $show_icon && $ekit_video_popup_button_style === 'both' && $ekit_video_popup_icon_align === 'before' ) {
+        $this->video_icon();
+    }
+
+    // Text
+    if ( $show_text ) {
+        echo '<span class="ekit-video-popup-title">' . esc_html( $ekit_video_popup_button_title ) . '</span>';
+    }
+
+    // Icon after text or icon-only
+    if ( $show_icon && (
+        ( $ekit_video_popup_button_style === 'both' && $ekit_video_popup_icon_align === 'after' ) ||
+        $ekit_video_popup_button_style === 'icon'
+    ) ) {
+        $this->video_icon();
+    }
+    ?>
 </a>

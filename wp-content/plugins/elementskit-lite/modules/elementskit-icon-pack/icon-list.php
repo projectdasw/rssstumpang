@@ -948,6 +948,7 @@ return array(
 	'icon icon-scrollable-video'					  => 'icon icon-scrollable-video',
 	'icon icon-register'					   	  	  => 'icon icon-register',
 	'icon icon-marquee-anything'					  => 'icon icon-marquee-anything',
+	'icon icon-event-calendar'					      => 'icon icon-event-calendar',
 	'icon icon-copyright'					  		  => 'icon icon-copyright',
 	
 	'fa fa-500px'                                     => 'fa fa-500px',

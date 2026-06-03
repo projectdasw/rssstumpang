@@ -262,7 +262,6 @@ class Controls_Ajax_Select2_Api extends Core\Handler_Api {
 			'post_status'    => 'publish',
 			'posts_per_page' => 15,
 		);
-
 		if ( isset( $this->request['ids'] ) ) {
 			$ids                    = explode( ',', $this->request['ids'] );
 			$query_args['post__in'] = $ids;
@@ -283,7 +282,6 @@ class Controls_Ajax_Select2_Api extends Core\Handler_Api {
 				);
 			}
 		endif;
-
 		return array( 'results' => $options );
 		wp_reset_postdata();
 	}

@@ -93,9 +93,6 @@ $pro_active = ( in_array( 'elementskit/elementskit.php', apply_filters( 'active_
 							)
 						);
 
-						$dbg    = '&app=105697909488869&sec=f64837dd6a129c23ab47bdfdc61cfe19'; //ElementsKit Plugin Review
-						$dbg    = '&app=2577123062406162&sec=a4656a1cae5e33ff0c18ee38efaa47ac'; //ElementsKit Plugin page feed
-						$scopes = '&scope=pages_show_list,pages_read_engagement,pages_manage_engagement,pages_read_user_content';
 						?>
 
 						<div class="ekit-admin-accordion-btn-group">
@@ -107,8 +104,8 @@ $pro_active = ( in_array( 'elementskit/elementskit.php', apply_filters( 'active_
 							<?php endif; ?>
 
 							<a class="ekit-admin-access-token ekit-admin-accordion-btn"
-							   href="<?php echo esc_url('https://token.wpmet.com/social_token.php?provider=facebook&_for=page' . $dbg . $scopes); ?>"
-							   target="_blank"> <?php echo esc_html__( 'Get access token', 'elementskit-lite' ); ?>
+							   href="<?php echo esc_url('https://wpmet.com/doc/facebook-feed-api/'); ?>"
+							   target="_blank" rel="noopener noreferrer"> <?php echo esc_html__( 'Check Token Generation Guide', 'elementskit-lite' ); ?>
 							</a>
 						</div>
 					</div>
@@ -152,7 +149,7 @@ $pro_active = ( in_array( 'elementskit/elementskit.php', apply_filters( 'active_
 
 
 						$val = ( empty( $user_data['fbp_review']['pg_token'] ) ) ? '' : ( $user_data['fbp_review']['pg_token'] );
-						$btn = ( empty( $user_data['fbp_review']['pg_token'] ) ) ? esc_html__( 'Get access token', 'elementskit-lite' ) : esc_html__( 'Refresh access token', 'elementskit-lite' ); // escaped at line: 186
+						$btn = esc_html__( 'Check Token Generation Guide', 'elementskit-lite' );
 
 						$this->utils->input(
 							array(
@@ -164,15 +161,6 @@ $pro_active = ( in_array( 'elementskit/elementskit.php', apply_filters( 'active_
 							)
 						);
 
-						/**
-						 * App name : ElementsKit Plugin page feed
-						 * App id : 2577123062406162
-						 *
-						 * Just empty the string when done debugging :D
-						 *
-						 */
-						$dbg = '&app=944119176079880&sec=03b20cdd9cf6f1d4d6e03522dc9caa2a';
-						$dbg = '';
 						?>
 
 						<div class="ekit-admin-accordion-btn-group">
@@ -184,8 +172,8 @@ $pro_active = ( in_array( 'elementskit/elementskit.php', apply_filters( 'active_
 							<?php endif; ?>
 
 							<a class="ekit-admin-access-token ekit-admin-accordion-btn"
-							   href="<?php echo esc_url('https://token.wpmet.com/social_token.php?provider=facebook&_for=page' . $dbg); ?>"
-							   target="_blank">
+							   href="<?php echo esc_url('https://wpmet.com/doc/facebook-review/'); ?>"
+							   target="_blank" rel="noopener noreferrer">
 								<?php echo esc_html( $btn ); ?>
 							</a>
 						</div>
@@ -531,9 +519,8 @@ $pro_active = ( in_array( 'elementskit/elementskit.php', apply_filters( 'active_
 								</a>
 							<?php endif; ?>
 
-							<a href="https://token.wpmet.com/social_token.php?provider=instagram"
-							   class="ekit-admin-access-token ekit-admin-accordion-btn" target="_blank">
-								<?php echo esc_html__( 'Get access token', 'elementskit-lite' ); ?>
+							<a href="https://wpmet.com/doc/instagram-feed-api/" class="ekit-admin-access-token ekit-admin-accordion-btn" target="_blank" rel="noopener noreferrer">
+								<?php echo esc_html__( 'Check Token Generation Guide', 'elementskit-lite' ); ?>
 							</a>
 						</div>
 					</div>

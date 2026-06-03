@@ -311,6 +311,13 @@ class Utils {
 	public static function render_elementor_content( $content_id, $has_css = false ) {
 		$elementor_instance = \Elementor\Plugin::instance();
 
+		if (
+			\Elementor\Plugin::$instance->editor->is_edit_mode()
+			&& ! wp_style_is( 'elementor-frontend', 'registered' )
+		) {
+			wp_register_style( 'elementor-frontend', false );
+		}
+
 		/**
 		 * CSS Print Method Internal and Exteral option support for Header and Footer Builder.
 		 */
@@ -449,4 +456,31 @@ class Utils {
 
 		return in_array( $plugin_file, $active_plugins, true );
 	}
+
+	/**
+	 * Get the ElementsKit promo icon SVG markup.
+	 *
+	 * @since 3.8.1
+	 * @access public
+	 *
+	 * @param string $fill  Fill color for the SVG paths. Default '#13151D'.
+	 * @param int    $width  Width of the SVG. Default 16.
+	 * @param int    $height Height of the SVG. Default 14.
+	 *
+	 * @return string SVG markup.
+	 */
+	public static function get_promo_icon( string $fill = 'var(--e-a-color-txt-accent)', int $width = 16, int $height = 14 ): string {
+		return sprintf(
+			'<svg xmlns="http://www.w3.org/2000/svg" width="%1$d" height="%2$d" viewBox="0 0 16 14" fill="currentColor" style="margin-bottom:-2px;margin-right:5px;">
+				<path d="M0.51183 8.49042H4.93761C5.14836 8.49042 5.2989 8.36999 5.38922 8.21945C5.41933 8.15924 5.44944 8.06892 5.44944 7.97859V6.11192C5.44944 5.81085 5.20858 5.6001 4.93761 5.6001H2.37848H0.51183C0.210756 5.6001 0 5.84096 0 6.11192V7.97859C0 8.27967 0.240863 8.49042 0.51183 8.49042Z" fill="%3$s"/>
+				<path d="M11.3201 6.98495C11.3201 6.74409 11.4104 6.50322 11.5609 6.29247L14.8426 2.37849C14.9631 2.22796 15.0233 2.04731 14.9932 1.89677C14.9932 1.74623 14.933 1.62581 14.8125 1.50538L13.548 0.210752C13.4577 0.120429 13.3373 0.0602123 13.2168 0.0301048C13.1566 0.0301048 13.1265 0 13.0663 0C12.8857 0 12.705 0.0903189 12.5846 0.240857L11.4706 1.5957L10.4771 2.76989L8.24911 5.44946C7.97814 5.78064 7.82761 6.14193 7.7674 6.53333C7.67707 7.16559 7.8276 7.82795 8.24911 8.36989L9.30287 9.63441L9.99535 10.4774L11.4706 12.2538L12.2835 13.2473L12.705 13.7591C12.8255 13.9097 13.0061 13.9699 13.1867 14C13.2771 14 13.3674 13.9699 13.4577 13.9398C13.548 13.9097 13.6082 13.8495 13.6684 13.7892L13.7287 13.729L14.9029 12.5849C15.1437 12.3441 15.1738 11.9527 14.933 11.7118L14.5717 11.2602L13.3072 9.72473L11.5308 7.6172C11.4104 7.46666 11.3201 7.22581 11.3201 6.98495ZM10.4771 2.86022C10.4771 2.89032 10.4771 2.89032 10.4771 2.86022V2.86022Z" fill="%3$s"/>
+				<path d="M1.65511 13.6989H7.85723C8.15831 13.6989 8.36906 13.4581 8.36906 13.1871V13.0968V11.3204C8.36906 11.0193 8.1282 10.8086 7.85723 10.8086H7.46584H4.18412H0.571227C0.511012 10.8086 0.450805 10.8086 0.39059 10.8387C0.179838 10.8989 0.0292969 11.1097 0.0292969 11.3204V12.2538V13.1871C0.0292969 13.4882 0.27016 13.6989 0.541127 13.6989H0.571227H1.65511Z" fill="%3$s"/>
+				<path d="M6.71396 0.391602H0.51183C0.210756 0.391602 0 0.632465 0 0.903433V0.993752V2.7701C0 3.07117 0.240863 3.28193 0.51183 3.28193H0.903223H4.18492H7.79782C7.85803 3.28193 7.91826 3.28192 7.97847 3.25182C8.18923 3.1916 8.33977 2.98085 8.33977 2.7701V1.83676V0.903433C8.33977 0.602358 8.0989 0.391602 7.82794 0.391602H7.79782H6.71396Z" fill="%3$s"/>
+			</svg>',
+			$width,
+			$height,
+			esc_attr( $fill )
+		);
+	}
+
 }

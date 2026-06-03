@@ -866,5 +866,16 @@
               <field type="Register Form: Field Placeholder" editor_type="LINE">ekit_register_form_field_placeholder</field>
           </fields-in-item>
       </widget>
+	  	<widget name="elementskit-stacked-cards">
+			<conditions>
+				<condition key="widgetType">elementskit-stacked-cards</condition>
+			</conditions>
+			<fields-in-item items_of="ekit_stacked_card_list">
+				<field type="Stacked Cards: Title" editor_type="LINE">title</field>
+				<field type="Stacked Cards: Description" editor_type="AREA">content</field>
+				<field type="Stacked Cards: Button Text" editor_type="LINE">button_text</field>
+				<field type="Stacked Cards: Button Link" key_of="link" editor_type="LINE">button_link</field>
+			</fields-in-item>
+		</widget>	
 	</elementor-widgets>
 </wpml-config>

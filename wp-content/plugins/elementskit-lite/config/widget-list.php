@@ -622,6 +622,13 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'widget-category' => 'header-footer', // header footer
 					'icon'    => 'ekit ekit-copyright',
 				],
+				'stacked-cards' => [
+					'slug'    => 'stacked-cards',
+					'title'   => 'Stacked Cards',
+					'package' => 'pro-disabled',
+					'widget-category' => 'creative', // creative
+					'icon'    => 'ekit ekit-stacked-cards',
+				],
 			)
 		);
 	}

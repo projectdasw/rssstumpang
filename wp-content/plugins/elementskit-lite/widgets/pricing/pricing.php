@@ -1315,12 +1315,12 @@ class ElementsKit_Widget_Pricing extends Widget_Base {
                         'max' => 100,
                     ],
                 ],
-                'default' => [
-                    'size' => 15,
-                    'unit' => 'px',
-                ],
+                // 'default' => [
+                //     'size' => 15,
+                //     'unit' => 'px',
+                // ],
                 'selectors' => [
-                    '{{WRAPPER}} .elementkit-pricing-icon, {{WRAPPER}} .elementskit-pricing-header svg' => 'padding: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .elementkit-pricing-icon' => 'padding: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -2060,6 +2060,9 @@ class ElementsKit_Widget_Pricing extends Widget_Base {
 				'label'		=> esc_html__( 'Icon', 'elementskit-lite' ),
 				'type'		=> Controls_Manager::HEADING,
 				'separator'	=> 'before',
+				'condition' => [
+					'ekit_pricing_content_style!' => 'paragraph',
+				]
 			]
 		);
 
@@ -2068,6 +2071,9 @@ class ElementsKit_Widget_Pricing extends Widget_Base {
 			[
 				'label'		=> esc_html__( 'Spacing', 'elementskit-lite' ),
 				'type'		=> Controls_Manager::SLIDER,
+				'condition' => [
+					'ekit_pricing_content_style!' => 'paragraph',
+				],
                 'default' => [
                     'size' => 10,
                     'unit' => 'px',
@@ -2084,6 +2090,9 @@ class ElementsKit_Widget_Pricing extends Widget_Base {
 			[
 				'label'		=> esc_html__( 'Vertical Align', 'elementskit-lite' ),
 				'type'		=> Controls_Manager::NUMBER,
+				'condition' => [
+					'ekit_pricing_content_style!' => 'paragraph',
+				],
 				'selectors'	=> [
 					'{{WRAPPER}} .elementskit-pricing-lists > li > i, {{WRAPPER}} .elementskit-pricing-lists > li > svg' => 'vertical-align: {{SIZE}}px;',
 				]

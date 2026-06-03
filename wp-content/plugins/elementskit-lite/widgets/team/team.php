@@ -858,11 +858,7 @@ class ElementsKit_Widget_Team extends Widget_Base {
                     'ekit_team_style' => [
                         'overlay', 'overlay_details', 'long_height_hover', 'overlay_circle', 'overlay_circle_hover'
                     ]
-                ],
-				'default' => [
-					'unit' => '%',
-                    'size' => 0,
-				]
+                ]
             ]
         );
 
