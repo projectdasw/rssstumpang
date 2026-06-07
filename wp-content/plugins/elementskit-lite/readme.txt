@@ -4,7 +4,7 @@ Tags: Elementor addons, mega menu builder,  header footer builder, elementor add
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.9.6
+Stable tag: 3.9.7
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,7 +70,7 @@ https://www.youtube.com/watch?v=VhBl3dHT5SY
 
 ElementsKit is a popular Elementor addon among millions of users that eliminates the need to design from scratch. It ships with over **1000+** pre-made section blocks and **40+** [ready-made Elementor templates](https://wpmet.com/plugin/elementskit/templates/) for designing a full website, including Elementor header-footer templates & Elementor mega menu templates. Whatever niche or industry, you’re working with, ElementsKit page builder addon layout library includes unique Elementor templates designed with royalty-free images.
 
-**### Build Fast & Stylish Elementor Sites:**
+### Build Fast & Stylish Elementor Sites:
 
 **Modular-Based & Lightweight:** To ensure no additional bloat on website performance, enable only needed widgets or modules with this modular-based page builder plugin.
 
@@ -353,6 +353,10 @@ ElementsKit is brought to you by Wpmet, a name **trusted by 10,00,000 satisfied 
 Visit  [wpmet](https://wpmet.com/?utm_source=org&utm_medium=readme) for essential WordPress [Tutorials, Tips & Tricks](https://wpmet.com/blog)!
 
 == Changelog ==
+= ElementsKit Elementor Addons Version: 3.9.7 (2026-06-4) =
+Fixed: Resolved a Broken Access Control vulnerability in the Dynamic Content Editor REST API.
+Fixed: Layout library data can access without authentication
+Fixed: Admin deactivation modal assets loaded only on relevant screens
 
 = ElementsKit Elementor Addons Version: 3.9.6 (2026-05-19) =
 * Improved: Deactivation modal UI and unsubscribe logic

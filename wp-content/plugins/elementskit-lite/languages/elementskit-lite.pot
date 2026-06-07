@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: ElementsKit Lite 3.9.6\n"
+"Project-Id-Version: ElementsKit Lite 3.9.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/elementskit-lite\n"
-"POT-Creation-Date: 2026-05-19 11:55:02+00:00\n"
+"POT-Creation-Date: 2026-06-04 06:10:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -67,98 +67,98 @@ msgstr ""
 msgid "Invalid action"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:101
+#: core/plugin-unsubscribe.php:111
 msgid "Before you go, what made you deactivate ElementsKit?"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:182
+#: core/plugin-unsubscribe.php:192
 msgid "Failed to submit feedback."
 msgstr ""
 
-#: core/plugin-unsubscribe.php:189
+#: core/plugin-unsubscribe.php:199
 msgid "Thank you for your feedback!"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:213
+#: core/plugin-unsubscribe.php:223
 msgid "Quick Feedback"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:216 modules/controls/widget-area-modal.php:17
+#: core/plugin-unsubscribe.php:226 modules/controls/widget-area-modal.php:17
 #: modules/controls/widget-area-modal.php:18
 #: widgets/business-hours/business-hours.php:148
 #: widgets/header-offcanvas/header-offcanvas.php:228
 msgid "Close"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:281
+#: core/plugin-unsubscribe.php:291
 msgid "Skip & Deactivate"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:284
+#: core/plugin-unsubscribe.php:294
 msgid "Submit & Deactivate"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:307
+#: core/plugin-unsubscribe.php:317
 msgid "Security check failed"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:313
+#: core/plugin-unsubscribe.php:323
 msgid "Insufficient permissions"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:462
+#: core/plugin-unsubscribe.php:472
 msgid "I no longer need the plugin"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:465
+#: core/plugin-unsubscribe.php:475
 msgid "Tell us more..."
 msgstr ""
 
-#: core/plugin-unsubscribe.php:468
+#: core/plugin-unsubscribe.php:478
 msgid "I found a better plugin"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:471
+#: core/plugin-unsubscribe.php:481
 msgid "Which plugin are you using instead?"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:474
+#: core/plugin-unsubscribe.php:484
 msgid "I couldn't get the plugin to work"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:477
+#: core/plugin-unsubscribe.php:487
 msgid "What specific issue did you face?"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:480
+#: core/plugin-unsubscribe.php:490
 msgid "It's missing a specific feature"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:483
+#: core/plugin-unsubscribe.php:493
 msgid "What feature do you need?"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:486
+#: core/plugin-unsubscribe.php:496
 msgid "The plugin affects site performance"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:489
+#: core/plugin-unsubscribe.php:499
 msgid "Please share details about the performance issues you experienced."
 msgstr ""
 
-#: core/plugin-unsubscribe.php:492
+#: core/plugin-unsubscribe.php:502
 msgid "It's a temporary deactivation"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:495
+#: core/plugin-unsubscribe.php:505
 msgid "When will you reactivate it?"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:498
+#: core/plugin-unsubscribe.php:508
 msgid "Other"
 msgstr ""
 
-#: core/plugin-unsubscribe.php:501
+#: core/plugin-unsubscribe.php:511
 msgid "Please tell us why..."
 msgstr ""
 
@@ -1323,8 +1323,16 @@ msgstr ""
 msgid "Edit Content"
 msgstr ""
 
-#: modules/dynamic-content/cpt-api.php:35
+#: modules/dynamic-content/cpt-api.php:17
+msgid "You must be logged in."
+msgstr ""
+
+#: modules/dynamic-content/cpt-api.php:24
 msgid "You are not allowed to access this page."
+msgstr ""
+
+#: modules/dynamic-content/cpt-api.php:72
+msgid "You are not allowed to edit this content."
 msgstr ""
 
 #: modules/dynamic-content/cpt.php:19 modules/dynamic-content/cpt.php:20
@@ -1585,6 +1593,10 @@ msgstr ""
 
 #: modules/layout-manager/layout-import-api.php:32
 msgid "Template id missing"
+msgstr ""
+
+#: modules/layout-manager/layout-list-api.php:14
+msgid "You do not have permission to access this resource"
 msgstr ""
 
 #: modules/layout-manager/library-source.php:16

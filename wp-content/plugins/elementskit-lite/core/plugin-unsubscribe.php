@@ -48,7 +48,11 @@ class Plugin_Unsubscribe {
 	 *
 	 * @return void
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts( $hook_suffix ) {
+		if ( 'plugins.php' !== $hook_suffix ) {
+			return;
+		}
+
 		$plugin_url = \ElementsKit_Lite::plugin_url();
 		$version    = \ElementsKit_Lite::version();
 
@@ -87,6 +91,12 @@ class Plugin_Unsubscribe {
 	 * @return void
 	 */
 	public function render_modal() {
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+
+		if ( ! $screen || 'plugins' !== $screen->id ) {
+			return;
+		}
+
 		$reasons = $this->get_deactivation_reasons();
 		?>
 		<div id="elementskit-deactivation-modal" class="elementskit-modal">
@@ -277,10 +287,10 @@ class Plugin_Unsubscribe {
 	private function render_modal_footer() {
 		?>
 		<div class="elementskit-modal-footer">
-			<button type="button" class="btn btn-secondary elementskit-modal-skip" data-deactivate-link="">
+			<button type="button" class="btn btn-secondary elementskit-modal-skip ekit-modal-btn" data-deactivate-link="">
 				<?php esc_html_e( 'Skip & Deactivate', 'elementskit-lite' ); ?>
 			</button>
-			<button type="submit" class="btn btn-primary elementskit-modal-submit">
+			<button type="submit" class="btn btn-primary elementskit-modal-submit ekit-modal-btn">
 				<?php esc_html_e( 'Submit & Deactivate', 'elementskit-lite' ); ?>
 			</button>
 		</div><!-- .elementskit-modal-footer -->
