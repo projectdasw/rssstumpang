@@ -18,31 +18,6 @@
     }
 
     #--------------------------------------------------------------------------------
-    #region SDK Version Override (Modified)
-    #--------------------------------------------------------------------------------
-
-    /**
-     * The SDK version in start.php has been set to 999.99.99 to ensure this modified
-     * Freemius SDK is always loaded first when multiple plugins with Freemius are active.
-     * WordPress always loads the newest SDK version from all active plugins.
-     */
-
-    #endregion
-
-    #--------------------------------------------------------------------------------
-    #region Mock Plan Configuration (Modified)
-    #--------------------------------------------------------------------------------
-
-    if ( ! defined( 'WP_FS__MOCK_PLAN_NAME' ) ) {
-        define( 'WP_FS__MOCK_PLAN_NAME', 'professional' );
-    }
-    if ( ! defined( 'WP_FS__MOCK_PLAN_TITLE' ) ) {
-        define( 'WP_FS__MOCK_PLAN_TITLE', 'Professional Plan' );
-    }
-
-    #endregion
-
-    #--------------------------------------------------------------------------------
     #region API Connectivity Issues Simulation
     #--------------------------------------------------------------------------------
 
@@ -299,6 +274,23 @@
     define( 'WP_FS__PLAN_DEFAULT_PAID', false );
     define( 'WP_FS__PLAN_FREE', 'free' );
     define( 'WP_FS__PLAN_TRIAL', 'trial' );
+
+    // Modified
+    // Default mock plan name and title (auto-detected from plugin at runtime)
+    if ( ! defined( 'WP_FS__MOCK_PLAN_NAME' ) ) {
+        define( 'WP_FS__MOCK_PLAN_NAME', 'professional' );
+    }
+    if ( ! defined( 'WP_FS__MOCK_PLAN_TITLE' ) ) {
+        define( 'WP_FS__MOCK_PLAN_TITLE', 'Professional' );
+    }
+
+    // Modified
+    // Enable/disable automatic Freemius accounts reset migration.
+    // true  = run reset once per detected Freemius plugin install/change.
+    // false = disable automatic reset logic.
+    if ( ! defined( 'WP_FS__GPLTIMES_ENABLE_AUTO_ACCOUNTS_RESET' ) ) {
+        define( 'WP_FS__GPLTIMES_ENABLE_AUTO_ACCOUNTS_RESET', true );
+    }
 
     /**
      * Times in seconds

@@ -96,6 +96,19 @@ class Wpr_Compare_Button_Pro extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'compare_icon',
+			[
+				'label' => esc_html__( 'Compare Icon', 'wpr-addons' ),
+				'type' => Controls_Manager::ICONS,
+				'skin' => 'inline',
+				'label_block' => false,
+				'condition' => [
+					'show_icon' => 'yes',
+				],
+			]
+		);
+
 		$this->end_controls_section();
 
 		// Tab: Style ==============
@@ -137,7 +150,8 @@ class Wpr_Compare_Button_Pro extends Widget_Base {
 				'default' => '#FFF',
 				'selectors' => [
 					'{{WRAPPER}} .wpr-compare-add i' => 'color: {{VALUE}}',
-					'{{WRAPPER}} .wpr-compare-add svg' => 'fill: {{VALUE}}'
+					'{{WRAPPER}} .wpr-compare-add svg' => 'fill: {{VALUE}}',
+					'{{WRAPPER}} .wpr-compare-add svg path' => 'fill: {{VALUE}}'
 				]
 			]
 		);
@@ -178,7 +192,7 @@ class Wpr_Compare_Button_Pro extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'btn_typography',
-				'selector' => '{{WRAPPER}} .wpr-compare-add span, {{WRAPPER}} .wpr-compare-add i, {{WRAPPER}} .wpr-compare-remove span, {{WRAPPER}} .wpr-compare-remove i',
+				'selector' => '{{WRAPPER}} .wpr-compare-add span, {{WRAPPER}} .wpr-compare-add i, {{WRAPPER}} .wpr-compare-add svg, {{WRAPPER}} .wpr-compare-remove span, {{WRAPPER}} .wpr-compare-remove i, {{WRAPPER}} .wpr-compare-remove svg',
 				'fields_options' => [
 					'typography' => [
 						'default' => 'custom',
@@ -206,9 +220,11 @@ class Wpr_Compare_Button_Pro extends Widget_Base {
 					'{{WRAPPER}} .wpr-compare-add' => 'transition-duration: {{VALUE}}s',
 					'{{WRAPPER}} .wpr-compare-add span' => 'transition-duration: {{VALUE}}s',
 					'{{WRAPPER}} .wpr-compare-add i' => 'transition-duration: {{VALUE}}s',
+					'{{WRAPPER}} .wpr-compare-add svg' => 'transition-duration: {{VALUE}}s',
 					'{{WRAPPER}} .wpr-compare-remove' => 'transition-duration: {{VALUE}}s',
 					'{{WRAPPER}} .wpr-compare-remove span' => 'transition-duration: {{VALUE}}s',
-					'{{WRAPPER}} .wpr-compare-remove i' => 'transition-duration: {{VALUE}}s'
+					'{{WRAPPER}} .wpr-compare-remove i' => 'transition-duration: {{VALUE}}s',
+					'{{WRAPPER}} .wpr-compare-remove svg' => 'transition-duration: {{VALUE}}s'
 				],
 			]
 		);
@@ -231,6 +247,7 @@ class Wpr_Compare_Button_Pro extends Widget_Base {
 				'selectors' => [
 					'{{WRAPPER}} .wpr-compare-add:hover i' => 'color: {{VALUE}}',
 					'{{WRAPPER}} .wpr-compare-add:hover svg' => 'fill: {{VALUE}}',
+					'{{WRAPPER}} .wpr-compare-add:hover svg path' => 'fill: {{VALUE}}',
 					'{{WRAPPER}} .wpr-compare-add:hover span' => 'color: {{VALUE}}'
 				]
 			]
@@ -297,7 +314,8 @@ class Wpr_Compare_Button_Pro extends Widget_Base {
 				'default' => '#FFF',
 				'selectors' => [
 					'{{WRAPPER}} .wpr-compare-remove i' => 'color: {{VALUE}}',
-					'{{WRAPPER}} .wpr-compare-remove svg' => 'fill: {{VALUE}}'
+					'{{WRAPPER}} .wpr-compare-remove svg' => 'fill: {{VALUE}}',
+					'{{WRAPPER}} .wpr-compare-remove svg path' => 'fill: {{VALUE}}'
 				]
 			]
 		);
@@ -461,8 +479,16 @@ class Wpr_Compare_Button_Pro extends Widget_Base {
 		$remove_from_compare_content = '';
 
 		if ( 'yes' === $settings['show_icon'] ) {
-			$add_to_compare_content .= '<i class="fas fa-exchange-alt"></i>';
-			$remove_from_compare_content .= '<i class="fas fa-exchange-alt"></i>';
+			if ( ! empty( $settings['compare_icon']['value'] ) ) {
+				ob_start();
+				\Elementor\Icons_Manager::render_icon( $settings['compare_icon'], [ 'aria-hidden' => 'true' ] );
+				$compare_icon_html = ob_get_clean();
+			} else {
+				$compare_icon_html = '<i class="fas fa-exchange-alt"></i>';
+			}
+
+			$add_to_compare_content .= $compare_icon_html;
+			$remove_from_compare_content .= $compare_icon_html;
 		}
 
 		if ( 'yes' === $settings['show_text'] ) {

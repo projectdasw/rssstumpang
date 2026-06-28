@@ -12,6 +12,10 @@ class ElementsKit_Widget_Post_Tab extends Widget_Base {
 
 	public $base;
 
+	public function get_script_depends() {
+		return ['ekit-post-tab'];
+	}
+
 	public function get_name() {
         return Handler::get_name();
     }

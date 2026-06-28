@@ -17,7 +17,7 @@ class ElementsKit_Widget_Countdown_Timer extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return ['final-countdown'];
+		return ['ekit-countdown-timer', 'final-countdown'];
 	}
 
     public function get_name() {
@@ -199,13 +199,13 @@ class ElementsKit_Widget_Countdown_Timer extends Widget_Base {
 
         $this->end_controls_section();
 
+        // Expire action settings
 		$this->start_controls_section(
 			'ekit_countdown_timer_on_expire_settings',
 			[
 				'label' => esc_html__( 'Expire Action' , 'elementskit-lite' )
 			]
 		);
-
 		$this->add_control(
 			'ekit_countdown_timer_title',
 			[
@@ -218,17 +218,17 @@ class ElementsKit_Widget_Countdown_Timer extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'ekit_countdown_timer_expiry_content',
-			[
-				'label'			=> esc_html__('On Expiry Content', 'elementskit-lite'),
-				'type'			=> Controls_Manager::TEXTAREA,
-				'dynamic' => [
-					'active' => true,
-				],
+        $this->add_control(
+            'ekit_countdown_timer_expiry_content',
+            [
+                'label' => esc_html__('On Expiry Content', 'elementskit-lite'),
+                'type' => Controls_Manager::TEXTAREA,
                 'default'		=> esc_html__('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s','elementskit-lite'),
-			]
-		);
+                'dynamic' => [
+                    'active' => true,
+                ],
+            ]
+        );
 
         $this->end_controls_section();
 
@@ -1578,7 +1578,7 @@ class ElementsKit_Widget_Countdown_Timer extends Widget_Base {
             ]
         );
 
-// start genaral styles
+        // start genaral styles
         $this->add_control(
             'ekit_countdown_timer_seconds_heading_general',
             [
@@ -1649,8 +1649,117 @@ class ElementsKit_Widget_Countdown_Timer extends Widget_Base {
         $this->end_controls_section();
 		// end seconds style section
 
-        //Section Background
+        // Expire Actions Style Section
+        $this->start_controls_section(
+            'ekit_countdown_timer_expired_style', [
+                'label'	 =>esc_html__( 'Expire Actions', 'elementskit-lite' ),
+                'tab'	 => Controls_Manager::TAB_STYLE,
+            ]
+        );
 
+        // start Title styles
+        $this->add_control(
+            'ekit_countdown_timer_expire_actions_heading_title',
+            [
+                'label' => esc_html__( 'Title', 'elementskit-lite' ),
+                'type' => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(), [
+                'name'		 => 'ekit_countdown_timer_expire_actions_title_typography_group',
+                'selector'	 => '{{WRAPPER}} .ekit-countdown-finish-title',
+            ]
+        );
+        $this->add_control(
+            'ekit_countdown_timer_expire_actions_title_color', [
+                'label'		 =>esc_html__( 'Color', 'elementskit-lite' ),
+                'type'		 => Controls_Manager::COLOR,
+                'selectors'	 => [
+                    '{{WRAPPER}} .ekit-countdown-finish-title' => 'color: {{VALUE}};'
+                ],
+            ]
+        );
+
+        // start Content styles
+        $this->add_control(
+            'ekit_countdown_timer_expire_actions_heading_content',
+            [
+                'label' => esc_html__( 'Content', 'elementskit-lite' ),
+                'type' => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+        $this->add_group_control(
+            Group_Control_Typography::get_type(), [
+                'name'		 => 'ekit_countdown_timer_expire_actions_content_typography_group',
+                'selector'	 => '{{WRAPPER}} .ekit-countdown-finish-content',
+            ]
+        );
+        $this->add_control(
+            'ekit_countdown_timer_expire_actions_content_color', [
+                'label'		 =>esc_html__( 'Color', 'elementskit-lite' ),
+                'type'		 => Controls_Manager::COLOR,
+                'selectors'	 => [
+                    '{{WRAPPER}} .ekit-countdown-finish-content' => 'color: {{VALUE}};'
+                ],
+            ]
+        );
+
+        // start genaral styles
+        $this->add_control(
+            'ekit_countdown_timer_expire_actions_heading_general',
+            [
+                'label' => esc_html__( 'General', 'elementskit-lite' ),
+                'type' => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+        $this->add_control(
+            'ekit_countdown_timer_expire_actions_background_color', [
+                'label'		 =>esc_html__('Background Color', 'elementskit-lite' ),
+                'type'		 => Controls_Manager::COLOR,
+                'selectors'	 => [
+                    '{{WRAPPER}}' => 'background-color: {{VALUE}};'
+                ],
+            ]
+        );
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name' => 'ekit_countdown_timer_expire_actions_border_color',
+                'label' => esc_html__( 'Border', 'elementskit-lite' ),
+                'selector' => '{{WRAPPER}}'
+            ]
+        );
+        $this->add_responsive_control(
+            'ekit_countdown_timer_expire_actions_border_radious_open',
+            [
+                'label' => esc_html__( 'Border Radius', 'elementskit-lite' ),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%', 'em' ],
+                'selectors' => [
+					'{{WRAPPER}}' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_responsive_control(
+            'ekit_countdown_timer_expire_actions_padding',
+            [
+                'label' => esc_html__( 'Padding', 'elementskit-lite' ),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%', 'em' ],
+                'selectors' => [
+                    '{{WRAPPER}}' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->end_controls_section();
+		// end Expire Actions style section
+
+        //Section Background
         $this->start_controls_section(
             'ekit_countdown_timer_bg_style', [
                 'label'	 =>esc_html__( 'Background', 'elementskit-lite' ),
@@ -1793,11 +1902,6 @@ class ElementsKit_Widget_Countdown_Timer extends Widget_Base {
 			$this->add_render_attribute('ekit_countdown_timer', 'data-ekit-countdown', esc_attr($ekit_countdown_timer_due_time));
 		}
 
-		$this->add_render_attribute('ekit_countdown_timer', [
-			'data-finish-title' => esc_attr(wp_strip_all_tags($ekit_countdown_timer_title)),
-			'data-finish-content' => esc_attr(wp_strip_all_tags($ekit_countdown_timer_expiry_content)),
-		]);
-
 		switch ( $ekit_countdown_timer_style ) {
 			case 'style1' :
 				$this->add_render_attribute('ekit_countdown_timer', 'class', 'elementskit-countdown-timer ekit-countdown text-center');
@@ -1819,13 +1923,29 @@ class ElementsKit_Widget_Countdown_Timer extends Widget_Base {
 				break;
 		}
 
-		if($ekit_countdown_timer_style != 'style6' ) {
-			$markup = sprintf('<div %s></div>', $this->get_render_attribute_string('ekit_countdown_timer'));
-		} else {
-			$markup = sprintf('<div class="elementskit-countdown-container text-center"><div %s></div></div>', $this->get_render_attribute_string('ekit_countdown_timer'));
-		}
+        $finish_content = '';
+        if ( ! empty( $ekit_countdown_timer_title ) || ! empty( $ekit_countdown_timer_expiry_content ) ) {
+            $finish_content = '<div class="ekit-countdown-finish-content" style="display: none;">
+                <h3 class="ekit-countdown-finish-title" style="text-align: center;">' . esc_html( $ekit_countdown_timer_title ) . '</h3>
+                <p class="ekit-countdown-timer-expiry-content" style="text-align: center;">' . esc_html( $ekit_countdown_timer_expiry_content ) . '</p>
+            </div>';
+        }
 
-		// PHPCS - the variable $markup holds safe data.
-		echo $markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        // Style 6 must wrap the finish content INSIDE the container
+        if ( $ekit_countdown_timer_style != 'style6' ) {
+            $markup = sprintf(
+                '<div %s></div>', 
+                $this->get_render_attribute_string('ekit_countdown_timer'),
+            );
+            echo $finish_content;
+        } else {
+            $markup = sprintf(
+                '<div class="elementskit-countdown-container text-center"><div %s></div>%s</div>',
+                $this->get_render_attribute_string('ekit_countdown_timer'),
+                $finish_content
+            );
+        }
+        // PHPCS - the variable $markup holds safe data.
+        echo $markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

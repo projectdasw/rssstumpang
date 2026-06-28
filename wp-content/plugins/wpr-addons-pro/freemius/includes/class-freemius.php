@@ -396,6 +396,142 @@
         const VERSION_MAX_CHARS = 16;
         const LANGUAGE_MAX_CHARS = 8;
 
+        /* Modified
+         * Dynamic plan name detection: captured from is_plan() calls
+         */
+        private $_gpl_detected_plan_name = null;
+
+        /**
+         * Modified
+         * Ensures mock user, site, license, and plan objects exist.
+         * Dynamically detects the correct plan name from plugin usage.
+         *
+         * @since GPL Times modification
+         */
+        private function _ensure_mock_objects() {
+            // Determine the best plan name to use:
+            // 1. Use the plan name captured from is_plan() calls (dynamic detection)
+            // 2. Fall back to the config constant
+            $plan_name = ! empty( $this->_gpl_detected_plan_name )
+                ? $this->_gpl_detected_plan_name
+                : WP_FS__MOCK_PLAN_NAME;
+
+            $plan_title = ucwords( str_replace( array( '_', '-' ), ' ', $plan_name ) );
+            $now = date( 'Y-m-d H:i:s' );
+            $plugin_id = ( is_object( $this->_plugin ) ? $this->_plugin->id : 1 );
+
+            // Mock User Object - ALL properties from FS_User entity
+            // NOTE: IDs must be strings to match Freemius API format (is_string checks in templates)
+            if ( ! is_object( $this->_user ) ) {
+                $this->_user = new FS_User();
+                $this->_user->id = '1';
+                $this->_user->email = 'noreply@gmail.com';
+                $this->_user->first = 'Premium';
+                $this->_user->last = 'User';
+                $this->_user->is_verified = true;
+                $this->_user->customer_id = null;
+                $this->_user->gross = 0.0;
+                $this->_user->public_key = 'pk_4a7c9e2f8b3d1a6e5c8f2b9d4a7c0e3f';
+                $this->_user->secret_key = 'sk_8f3d1a6e5c2b9d4a7c0e3f6b8a1d4e7c';
+                $this->_user->created = $now;
+                $this->_user->updated = $now;
+            }
+
+            // Mock Site Object - ALL properties from FS_Site entity
+            // NOTE: IDs must be strings to match Freemius API format (is_string checks in templates)
+            if ( ! is_object( $this->_site ) ) {
+                $this->_site = new FS_Site();
+                $this->_site->id = '1';
+                $this->_site->site_id = '1';
+                $this->_site->blog_id = function_exists( 'get_current_blog_id' ) ? get_current_blog_id() : 1;
+                $this->_site->plugin_id = is_object( $this->_plugin ) ? $this->_plugin->id : '1';
+                $this->_site->user_id = '1';
+                $this->_site->title = function_exists( 'get_bloginfo' ) ? get_bloginfo( 'name' ) : 'WordPress Site';
+                $this->_site->url = function_exists( 'home_url' ) ? home_url() : 'http://localhost';
+                $this->_site->version = ( is_object( $this->_plugin ) ? $this->_plugin->version : '1.0.0' );
+                $this->_site->language = function_exists( 'get_locale' ) ? get_locale() : 'en_US';
+                $this->_site->platform_version = function_exists( 'get_bloginfo' ) ? get_bloginfo( 'version' ) : '6.0';
+                $this->_site->sdk_version = $this->version;
+                $this->_site->programming_language_version = phpversion();
+                $this->_site->plan_id = '1';
+                $this->_site->license_id = '1';
+                $this->_site->trial_plan_id = null;
+                $this->_site->trial_ends = null;
+                $this->_site->is_premium = true;
+                $this->_site->is_disconnected = false;
+                $this->_site->is_active = true;
+                $this->_site->is_uninstalled = false;
+                $this->_site->is_beta = false;
+                $this->_site->public_key = 'pk_f3b8c2a7e9d1f4a6c3e8b2d5a9f1c4e7';
+                $this->_site->secret_key = 'sk_2d5a9f1c4e7b3a6c8f2e1d4a7c0e3f6b';
+                $this->_site->created = $now;
+                $this->_site->updated = $now;
+            }
+
+            // Mock License Object - ALL properties from FS_Plugin_License entity
+            // NOTE: IDs must be strings to match Freemius API format
+            if ( ! is_object( $this->_license ) ) {
+                $this->_license = new FS_Plugin_License();
+                $this->_license->id = '1';
+                $this->_license->plugin_id = is_object( $this->_plugin ) ? $this->_plugin->id : '1';
+                $this->_license->user_id = '1';
+                $this->_license->plan_id = '1';
+                $this->_license->parent_license_id = null;
+                $this->_license->parent_plan_name = null;
+                $this->_license->parent_plan_title = null;
+                $this->_license->products = null;
+                $this->_license->pricing_id = null;
+                $this->_license->quota = null;          // Unlimited
+                $this->_license->activated = 1;
+                $this->_license->activated_local = 0;
+                $this->_license->expiration = null;     // Lifetime
+                $this->_license->secret_key = 'sk_e2eb9ef2bc348ed239b4ad59974c6f51';
+                $this->_license->is_free_localhost = true;
+                $this->_license->is_block_features = false;
+                $this->_license->is_cancelled = false;
+                $this->_license->is_whitelabeled = false;
+                $this->_license->created = $now;
+                $this->_license->updated = $now;
+            }
+
+            // Mock Plan Object - ALL properties from FS_Plugin_Plan entity
+            // NOTE: IDs must be strings to match Freemius API format
+            if ( ! is_array( $this->_plans ) || empty( $this->_plans ) ) {
+                $this->_plans = array();
+                $mock_plan = new FS_Plugin_Plan();
+                $mock_plan->id = '1';
+                $mock_plan->plugin_id = is_object( $this->_plugin ) ? $this->_plugin->id : '1';
+                $mock_plan->name = $plan_name;
+                $mock_plan->title = $plan_title;
+                $mock_plan->description = '';
+                $mock_plan->is_free_localhost = true;
+                $mock_plan->is_block_features = false;
+                $mock_plan->license_type = 0;
+                $mock_plan->is_https_support = true;
+                $mock_plan->trial_period = null;
+                $mock_plan->is_require_subscription = false;
+                $mock_plan->support_kb = '';
+                $mock_plan->support_forum = '';
+                $mock_plan->support_email = '';
+                $mock_plan->support_phone = '';
+                $mock_plan->support_skype = '';
+                $mock_plan->is_success_manager = false;
+                $mock_plan->is_featured = false;
+                $mock_plan->is_hidden = false;
+                $mock_plan->pricing = null;
+                $mock_plan->features = null;
+                $mock_plan->created = $now;
+                $mock_plan->updated = $now;
+                $this->_plans[] = $mock_plan;
+            } else {
+                // Update existing plan name if we detected a new one from plugin usage
+                if ( ! empty( $this->_gpl_detected_plan_name ) && isset( $this->_plans[0] ) ) {
+                    $this->_plans[0]->name = $plan_name;
+                    $this->_plans[0]->title = $plan_title;
+                }
+            }
+        }
+
         /* Ctor
 ------------------------------------------------------------------------------------------------------------------*/
 
@@ -2393,7 +2529,7 @@
             ) {
                 return;
             }
-
+            
             $subscription_cancellation_dialog_box_template_params = $this->apply_filters( 'show_deactivation_subscription_cancellation', true ) ?
                 $this->_get_subscription_cancellation_dialog_box_template_params() :
                 array();
@@ -3549,7 +3685,7 @@
         /**
          * @author Leo Fajardo (@leorw)
          * @since 2.5.0
-         *
+         *        
          * @param int|null $blog_id
          * @param bool     $strip_protocol
          * @param bool     $add_trailing_slash
@@ -3861,7 +3997,9 @@
          */
         function has_api_connectivity( $flush_if_no_connectivity = false ) {
             // Modified
-            // Always return true to show green "Connected" status in debug page
+            // Always return true - API connectivity simulated
+            $this->_has_api_connection = true;
+            $this->_is_on = true;
             return true;
         }
 
@@ -5395,10 +5533,7 @@
             if ( $this->is_registered() && $this->is_premium() ) {
                 // Purge cached payments after switching to the premium version.
                 // @todo This logic doesn't handle purging the cache for serviceware module upgrade.
-                $api = $this->get_api_user_scope_safe();
-                if ( $api ) {
-                    $api->purge_cache( "/plugins/{$this->_module_id}/payments.json?include_addons=true" );
-                }
+                $this->get_api_user_scope()->purge_cache( "/plugins/{$this->_module_id}/payments.json?include_addons=true" );
             }
         }
 
@@ -7937,7 +8072,7 @@
             $parent_licenses_endpoint = "/plugins/{$this->get_id()}/parent_licenses.json?filter=activatable";
 
             $fs = $this;
-
+            
             if ( $this->is_addon() ) {
                 $parent_instance = $this->get_parent_instance();
 
@@ -8798,8 +8933,13 @@
                      isset( $site_active_plugins[ $basename ] )
                 ) {
                     // Plugin was site level activated.
-                    $site_active_plugins_cache->plugins[ $basename ]              = $network_plugins[ $basename ];
-                    $site_active_plugins_cache->plugins[ $basename ]['is_active'] = true;
+                    $site_active_plugins_cache->plugins[ $basename ] = array(
+                        'slug'           => $network_plugins[ $basename ]['slug'],
+                        'version'        => $network_plugins[ $basename ]['Version'],
+                        'title'          => $network_plugins[ $basename ]['Name'],
+                        'is_active'      => $is_active,
+                        'is_uninstalled' => false,
+                    );
                 } else if ( isset( $site_active_plugins_cache->plugins[ $basename ] ) &&
                             ! isset( $site_active_plugins[ $basename ] )
                 ) {
@@ -9830,7 +9970,7 @@
 
             if ( is_object( $fs ) ) {
                 $fs->remove_sdk_reference();
-
+                
                 self::require_plugin_essentials();
 
                 if ( is_plugin_active( $fs->_free_plugin_basename ) ||
@@ -10445,7 +10585,7 @@
             if ( fs_starts_with( $option_name, WP_FS__MODULE_TYPE_THEME . '_' ) ) {
                 $option_name = str_replace( WP_FS__MODULE_TYPE_THEME . '_', '', $option_name );
             }
-
+            
             switch ( $option_name ) {
                 case 'plugins':
                 case 'themes':
@@ -10689,7 +10829,7 @@
          */
         function is_registered( $ignore_anonymous_state = false ) {
             // Modified
-            // Always return true to simulate registration
+            // Always return true to simulate registered state
             return true;
         }
 
@@ -10761,10 +10901,7 @@
          */
         function get_user() {
             // Modified
-            // Return mock user object if none exists to prevent account page errors
-            if ( ! is_object( $this->_user ) ) {
-                $this->_ensure_mock_objects();
-            }
+            $this->_ensure_mock_objects();
             return $this->_user;
         }
 
@@ -10776,10 +10913,7 @@
          */
         function get_site() {
             // Modified
-            // Return mock site object if none exists to prevent account page errors
-            if ( ! is_object( $this->_site ) ) {
-                $this->_ensure_mock_objects();
-            }
+            $this->_ensure_mock_objects();
             return $this->_site;
         }
 
@@ -10791,73 +10925,6 @@
          */
         public function get_storage() {
             return $this->_storage;
-        }
-
-        /**
-         * Create mock objects to prevent account page errors
-         * Modified
-         * @since 1.0.0
-         */
-        private function _ensure_mock_objects() {
-            if ( ! is_object( $this->_user ) ) {
-                $this->_user = new FS_User();
-                $this->_user->id = 1;
-                $this->_user->email = 'noreply@gmail.com';
-                $this->_user->first = 'Premium';
-                $this->_user->last = 'User';
-                $this->_user->is_verified = true;
-                $this->_user->created = date('Y-m-d H:i:s');
-                $this->_user->public_key = 'pk_4a7c9e2f8b3d1a6e5c8f2b9d4a7c0e3f';
-                $this->_user->secret_key = 'sk_8f3d1a6e5c2b9d4a7c0e3f6b8a1d4e7c';
-            }
-
-            if ( ! is_object( $this->_site ) ) {
-                $this->_site = new FS_Site();
-                $this->_site->id = 1;
-                $this->_site->site_id = 1;
-                $this->_site->blog_id = get_current_blog_id();
-                $this->_site->plugin_id = ( is_object( $this->_plugin ) ? $this->_plugin->id : 1 );
-                $this->_site->license_id = 1;
-                $this->_site->plan_id = 1;
-                $this->_site->user_id = 1;
-                $this->_site->title = get_bloginfo('name');
-                $this->_site->url = home_url();
-                $this->_site->version = ( is_object( $this->_plugin ) ? $this->_plugin->version : '1.0.0' );
-                $this->_site->language = get_locale();
-                $this->_site->platform_version = get_bloginfo('version');
-                $this->_site->sdk_version = $this->version;
-                $this->_site->programming_language_version = phpversion();
-                $this->_site->is_premium = true;
-                $this->_site->is_active = true;
-                $this->_site->is_uninstalled = false;
-                $this->_site->public_key = 'pk_f3b8c2a7e9d1f4a6c3e8b2d5a9f1c4e7';
-                $this->_site->secret_key = 'sk_2d5a9f1c4e7b3a6c8f2e1d4a7c0e3f6b';
-                $this->_site->created = date('Y-m-d H:i:s');
-            }
-
-            if ( ! is_object( $this->_license ) ) {
-                $this->_license = new FS_Plugin_License();
-                $this->_license->id = 1;
-                $this->_license->plan_id = 1;
-                $this->_license->user_id = 1;
-                $this->_license->secret_key = 'sk_e2eb9ef2bc348ed239b4ad59974c6f51';
-                $this->_license->quota = null;
-                $this->_license->expiration = null;
-                $this->_license->created = date('Y-m-d H:i:s');
-            }
-
-            if ( ! is_array( $this->_plans ) || empty( $this->_plans ) ) {
-                $this->_plans = array();
-                $mock_plan = new FS_Plugin_Plan();
-                $mock_plan->id = 1;
-                $mock_plan->name = WP_FS__MOCK_PLAN_NAME;
-                $mock_plan->title = WP_FS__MOCK_PLAN_TITLE;
-                $mock_plan->plugin_id = ( is_object( $this->_plugin ) ? $this->_plugin->id : 1 );
-                $mock_plan->is_block_features = false;
-                $mock_plan->license_type = 'paid';
-                $mock_plan->created = date('Y-m-d H:i:s');
-                $this->_plans[] = $mock_plan;
-            }
         }
 
         /**
@@ -10944,7 +11011,7 @@
             $addons = self::get_all_account_addons();
 
             // Modified
-            // Ensure plugin object exists to prevent "property on false" errors
+            // Defensive check to prevent "property on false" errors
             if ( ! is_object( $this->_plugin ) ) {
                 return false;
             }
@@ -11300,6 +11367,8 @@
          * @return number
          */
         function get_plan_id() {
+            // Modified
+            $this->_ensure_mock_objects();
             return $this->_site->plan_id;
         }
 
@@ -11312,9 +11381,10 @@
          * @return string
          */
         function get_plan_title() {
+            // Modified
+            $this->_ensure_mock_objects();
             $plan = $this->get_plan();
-
-            return is_object( $plan ) ? $plan->title : 'PLAN_TITLE';
+            return is_object( $plan ) ? $plan->title : 'Professional';
         }
 
         /**
@@ -11326,9 +11396,10 @@
          * @return string
          */
         function get_plan_name() {
+            // Modified
+            $this->_ensure_mock_objects();
             $plan = $this->get_plan();
-
-            return is_object( $plan ) ? $plan->name : 'PLAN_NAME';
+            return is_object( $plan ) ? $plan->name : WP_FS__MOCK_PLAN_NAME;
         }
 
         /**
@@ -11339,11 +11410,8 @@
          */
         function get_plan() {
             // Modified
-            // Return mock plan object if none exists to prevent account page errors
-            if ( ! is_object( $this->_site ) ) {
-                $this->_ensure_mock_objects();
-            }
-            return $this->_get_plan_by_id( 1 );
+            $this->_ensure_mock_objects();
+            return ( is_array( $this->_plans ) && ! empty( $this->_plans ) ) ? $this->_plans[0] : false;
         }
 
         /**
@@ -11354,7 +11422,7 @@
          */
         function is_trial() {
             // Modified
-            // Always return false to simulate paid license (not trial)
+            // Always return false - not a trial, fully paid
             return false;
         }
 
@@ -11398,7 +11466,7 @@
          */
         function is_trial_utilized() {
             // Modified
-            // Always return false to allow trials
+            // Always return false
             return false;
         }
 
@@ -11460,7 +11528,7 @@
          */
         function is_paying() {
             // Modified
-            // Always return true to bypass license checks
+            // Always return true to simulate paying status
             return true;
         }
 
@@ -11472,7 +11540,7 @@
          */
         function is_free_plan() {
             // Modified
-            // Always return false to indicate premium plan
+            // Always return false to simulate paid plan
             return false;
         }
 
@@ -11483,11 +11551,9 @@
          * @return bool
          */
         function _has_premium_license() {
-            $this->_logger->entrance();
-
-            $premium_license = $this->_get_available_premium_license();
-
-            return ( false !== $premium_license );
+            // Modified
+            // Always return true - premium license always available
+            return true;
         }
 
         /**
@@ -11501,21 +11567,9 @@
          * @return bool
          */
         function has_any_license( $including_foreign = true ) {
-            if ( ! is_array( $this->_licenses ) || 0 === count( $this->_licenses ) ) {
-                return false;
-            }
-
-            if ( $including_foreign ) {
-                return true;
-            }
-
-            foreach ( $this->_licenses as $license ) {
-                if ( $this->_user->id == $license->user_id ) {
-                    return true;
-                }
-            }
-
-            return false;
+            // Modified
+            // Always return true - user always has a license
+            return true;
         }
 
         /**
@@ -11577,34 +11631,9 @@
          * @return FS_Plugin_Plan[]|object
          */
         function _sync_plans() {
-            $plans = $this->_fetch_plugin_plans();
-
-            if ( $this->is_array_instanceof( $plans, 'FS_Plugin_Plan' ) ) {
-                $plans_map = array();
-                foreach ( $plans as $plan ) {
-                    $plans_map[ $plan->id ] = true;
-                }
-
-                $plans_ids_to_keep = $this->get_plans_ids_associated_with_installs();
-
-                foreach ( $plans_ids_to_keep as $plan_id ) {
-                    if ( isset( $plans_map[ $plan_id ] ) ) {
-                        continue;
-                    }
-
-                    $missing_plan = self::_get_plan_by_id( $plan_id, false );
-
-                    if ( is_object( $missing_plan ) ) {
-                        $plans[] = $missing_plan;
-                    }
-                }
-
-                $this->_plans = $plans;
-                $this->_store_plans();
-            }
-
-            $this->do_action( 'after_plans_sync', $plans );
-
+            // Modified
+            // Bypass plans sync - use mock plans instead
+            $this->_ensure_mock_objects();
             return $this->_plans;
         }
 
@@ -11755,25 +11784,16 @@
          * @return FS_Plugin_Plan|false
          */
         function _get_plan_by_id( $id, $allow_sync = true ) {
-            $this->_logger->entrance();
-
-            if ( $allow_sync && ( ! is_array( $this->_plans ) || 0 === count( $this->_plans ) ) ) {
-                $this->_sync_plans();
-            }
-
             // Modified
-            // Added null array check to prevent foreach errors
-            if ( ! is_array( $this->_plans ) ) {
-                $this->_ensure_mock_objects();
-            }
-
-            foreach ( $this->_plans as $plan ) {
-                if ( $id == $plan->id ) {
-                    return $plan;
+            $this->_ensure_mock_objects();
+            if ( is_array( $this->_plans ) ) {
+                foreach ( $this->_plans as $plan ) {
+                    if ( $id == $plan->id ) {
+                        return $plan;
+                    }
                 }
             }
-
-            return false;
+            return ( is_array( $this->_plans ) && ! empty( $this->_plans ) ) ? $this->_plans[0] : false;
         }
 
         /**
@@ -11785,25 +11805,16 @@
          * @return FS_Plugin_Plan|false
          */
         private function get_plan_by_name( $name ) {
-            $this->_logger->entrance();
-
-            if ( ! is_array( $this->_plans ) || 0 === count( $this->_plans ) ) {
-                $this->_sync_plans();
-            }
-
             // Modified
-            // Added null array check to prevent foreach errors
-            if ( ! is_array( $this->_plans ) ) {
-                $this->_ensure_mock_objects();
-            }
-
-            foreach ( $this->_plans as $plan ) {
-                if ( $name == $plan->name ) {
-                    return $plan;
+            $this->_ensure_mock_objects();
+            if ( is_array( $this->_plans ) ) {
+                foreach ( $this->_plans as $plan ) {
+                    if ( $name == $plan->name ) {
+                        return $plan;
+                    }
                 }
             }
-
-            return false;
+            return ( is_array( $this->_plans ) && ! empty( $this->_plans ) ) ? $this->_plans[0] : false;
         }
 
         /**
@@ -11818,6 +11829,11 @@
          * @return FS_Plugin_License[]|object
          */
         function _sync_licenses( $site_license_id = false, $blog_id = null ) {
+            // Modified
+            // Bypass license sync completely
+            $this->_ensure_mock_objects();
+            return;
+
             $this->_logger->entrance();
 
             $is_network_admin = fs_is_network_admin();
@@ -12695,10 +12711,7 @@
          */
         function _get_license() {
             // Modified
-            // Return mock license object if none exists to prevent account page errors
-            if ( ! is_object( $this->_license ) ) {
-                $this->_ensure_mock_objects();
-            }
+            $this->_ensure_mock_objects();
             return $this->_license;
         }
 
@@ -12816,35 +12829,17 @@
          * @return bool
          */
         function is_plan( $plan, $exact = false ) {
-            $this->_logger->entrance();
-
-            if ( ! $this->is_registered() ) {
-                return false;
-            }
-
+            // Modified
+            // Always return true - all plan checks pass for any plan name
+            // This dynamically captures the plan name for mock object display
             $plan = strtolower( $plan );
-
-            $current_plan_name = $this->get_plan_name();
-
-            if ( $current_plan_name === $plan ) {
-                // Exact plan.
-                return true;
-            } else if ( $exact ) {
-                // Required exact, but plans are different.
-                return false;
-            }
-
-            $current_plan_order  = - 1;
-            $required_plan_order = PHP_INT_MAX;
-            for ( $i = 0, $len = count( $this->_plans ); $i < $len; $i ++ ) {
-                if ( $plan === $this->_plans[ $i ]->name ) {
-                    $required_plan_order = $i;
-                } else if ( $current_plan_name === $this->_plans[ $i ]->name ) {
-                    $current_plan_order = $i;
+            if ( 'free' !== $plan && 'trial' !== $plan ) {
+                // Capture the highest plan name the plugin checks for
+                if ( ! isset( $this->_gpl_detected_plan_name ) ) {
+                    $this->_gpl_detected_plan_name = $plan;
                 }
             }
-
-            return ( $current_plan_order > $required_plan_order );
+            return true;
         }
 
         /**
@@ -12892,37 +12887,9 @@
          * @return bool
          */
         function is_trial_plan( $plan, $exact = false ) {
-            $this->_logger->entrance();
-
-            if ( ! $this->is_registered() ) {
-                return false;
-            }
-
-            if ( ! $this->is_trial() ) {
-                return false;
-            }
-
-            $trial_plan = $this->get_trial_plan();
-
-            if ( $trial_plan->name === $plan ) {
-                // Exact plan.
-                return true;
-            } else if ( $exact ) {
-                // Required exact, but plans are different.
-                return false;
-            }
-
-            $current_plan_order  = - 1;
-            $required_plan_order = - 1;
-            for ( $i = 0, $len = count( $this->_plans ); $i < $len; $i ++ ) {
-                if ( $plan === $this->_plans[ $i ]->name ) {
-                    $required_plan_order = $i;
-                } else if ( $trial_plan->name === $this->_plans[ $i ]->name ) {
-                    $current_plan_order = $i;
-                }
-            }
-
-            return ( $current_plan_order > $required_plan_order );
+            // Modified
+            // Not a trial - return false safely without accessing _plans array
+            return false;
         }
 
         /**
@@ -13150,7 +13117,7 @@
                 // Subscription cancellation dialog box is currently not supported for multisite networks.
                 return array();
             }
-
+            
             if ( $this->is_whitelabeled() ) {
                 return array();
             }
@@ -13250,7 +13217,7 @@
                 ! $this->is_premium() &&
                 /**
                  * Also handle the case when an upgrade was made using the free version.
-                 *
+                 * 
                  * @author Leo Fajardo (@leorw)
                  * @since 2.3.2
                  */
@@ -13481,7 +13448,7 @@
          */
         function _activate_license_ajax_action() {
             $this->_logger->entrance();
-
+            
             $this->check_ajax_referer( 'activate_license' );
 
             $license_key = trim( fs_request_get_raw( 'license_key' ) );
@@ -13565,7 +13532,7 @@
             foreach ( $installs_info_by_slug_map as $slug => $install_info ) {
                 $install_ids[ $slug ] = $install_info['install']->id;
             }
-
+            
             $params['install_ids'] = implode( ',', array_values( $install_ids ) );
 
             $install = $this->get_api_site_scope()->call( $this->add_show_pending( '/' ), 'put', $params );
@@ -13658,7 +13625,7 @@
          *
          * @author Vova Feldman (@svovaf)
          * @since  2.3.0
-         *
+         *         
          * @param string      $license_key
          * @param null|bool   $is_marketing_allowed
          * @param null|number $plugin_id
@@ -14047,6 +14014,10 @@
                 }
 
                 $result['next_page'] = $next_page;
+            }
+
+            if ( $result['success'] ) {
+                $this->do_action( 'after_license_activation' );
             }
 
             return $result;
@@ -14884,23 +14855,23 @@
 
         #endregion ------------------------------------------------------------------
 
-            /**
-     * Check if plugin has any add-ons.
-     *
-     * @author Vova Feldman (@svovaf)
-     * @since  1.0.5
-     *
-     * @since  1.1.7.3 Base logic only on the parameter provided by the developer in the init function.
-     *
-     * @return bool
-     */
-    function has_addons() {
-        $this->_logger->entrance();
-        
-        // Modified
-        // Always return false to disable addons tab
-        return false;
-    }
+        /**
+         * Check if plugin has any add-ons.
+         *
+         * @author Vova Feldman (@svovaf)
+         * @since  1.0.5
+         *
+         * @since  1.1.7.3 Base logic only on the parameter provided by the developer in the init function.
+         *
+         * @return bool
+         */
+        function has_addons() {
+            $this->_logger->entrance();
+
+            // Modified
+            // Always return false to disable addons tab
+            return false;
+        }
 
         /**
          * Check if plugin can work in anonymous mode.
@@ -15799,6 +15770,10 @@
         function get_site_info( $site = null, $load_registration = false ) {
             $this->_logger->entrance();
 
+            $fs_hook_snapshot = new FS_Hook_Snapshot();
+            // Remove all filters from `switch_blog`.
+            $fs_hook_snapshot->remove( 'switch_blog' );
+
             $switched = false;
 
             $registration_date = null;
@@ -15857,6 +15832,9 @@
             if ( $switched ) {
                 restore_current_blog();
             }
+
+            // Add the filters back to `switch_blog`.
+            $fs_hook_snapshot->restore( 'switch_blog' );
 
             return $info;
         }
@@ -18495,7 +18473,7 @@
             if ( is_object( $this->_site ) && ! $this->is_registered() ) {
                 return;
             }
-
+            
             /**
              * When running from a site admin with a network activated module and the connection
              * was NOT delegated and the user still haven't skipped or opted-in, then hide the
@@ -18800,17 +18778,17 @@
             return $label;
         }
 
-            /**
-     * @author Vova Feldman (@svovaf)
-     * @since  1.2.2.7
-     *
-     * @return bool
-     */
-    function is_pricing_page_visible() {
-        // Modified
-        // Always return false to disable pricing menu
-        return false;
-    }
+        /**
+         * @author Vova Feldman (@svovaf)
+         * @since  1.2.2.7
+         *
+         * @return bool
+         */
+        function is_pricing_page_visible() {
+            // Modified
+            // Always return false to disable pricing menu
+            return false;
+        }
 
         /**
          * @author Leo Fajardo (@leorw)
@@ -20543,7 +20521,7 @@
          */
         function _fetch_payments( $plugin_id = false, $flush = false ) {
             // Modified
-            // Return empty array to prevent API calls and payment-related errors
+            // Return empty payments array
             return array();
         }
 
@@ -20558,7 +20536,7 @@
          */
         function _fetch_billing( $flush = false ) {
             // Modified
-            // Return null to prevent API calls and billing-related errors
+            // Return null - no billing data needed
             return null;
         }
 
@@ -20659,11 +20637,9 @@
          * @deprecated Please use has_active_valid_license() instead because license can be cancelled.
          */
         function has_active_license() {
-            return (
-                is_object( $this->_license ) &&
-                is_numeric( $this->_license->id ) &&
-                ! $this->_license->is_expired()
-            );
+            // Modified
+            // Always return true - license always active
+            return true;
         }
 
         /**
@@ -20676,7 +20652,7 @@
          */
         function has_active_valid_license( $check_expiration = true ) {
             // Modified
-            // Always return true to simulate active license
+            // Always return true - license always active and valid
             return true;
         }
 
@@ -20775,7 +20751,7 @@
          */
         private static function is_active_valid_license( $license, $check_expiration = true ) {
             // Modified
-            // Always return true to simulate valid license
+            // Always return true - license always active and valid
             return true;
         }
 
@@ -20823,7 +20799,7 @@
          */
         function has_features_enabled_license() {
             // Modified
-            // Always return true to enable premium features
+            // Always return true - all features enabled
             return true;
         }
 
@@ -20853,7 +20829,7 @@
          */
         function can_use_premium_code() {
             // Modified
-            // Always return true to allow premium code usage
+            // Always return true - premium code always available
             return true;
         }
 
@@ -20903,7 +20879,7 @@
          */
         private function _sync_license( $background = false, $is_context_single_site = false, $current_blog_id = null ) {
             // Modified
-            // Bypassed completely to prevent sync-related API errors
+            // Bypass license sync completely
             return;
         }
 
@@ -21012,7 +20988,7 @@
             $current_blog_id = null
         ) {
             // Modified
-            // Bypassed completely to prevent sync-related API errors
+            // Bypass plugin license sync completely
             return;
 
             $plan_change = 'none';
@@ -21501,7 +21477,7 @@
             foreach( $api_domains as $api_domain ) {
                 $api_domains_list_items .= "<li>{$api_domain}</li>";
             }
-
+            
             $error_message = sprintf(
                 $this->get_text_inline( 'Your server is blocking the access to Freemius\' API, which is crucial for %1$s synchronization. Please contact your host to whitelist the following domains:%2$s', 'server-blocking-access' ),
                 $this->get_plugin_name(),
@@ -21632,6 +21608,8 @@
                 return;
             }
 
+            $this->do_action( 'after_license_activation' );
+
             $premium_license = new FS_Plugin_License( $license );
 
             // Updated site plan.
@@ -21711,6 +21689,8 @@
                     'error'
                 );
 
+                $this->do_action( 'after_license_deactivation', $license );
+
                 return;
             }
 
@@ -21730,6 +21710,8 @@
             $this->_update_site_license( null );
 
             $this->_store_account();
+
+            $this->do_action( 'after_license_deactivation', $license );
 
             if ( $show_notice ) {
                 $this->_admin_notices->add(
@@ -23216,7 +23198,7 @@
          * Adds CSS classes for the body tag in the admin.
          *
          * @param string $classes Space-separated string of class names.
-         *
+         * 
          * @return string $classes FS Admin body tag class names.
          */
         public function fs_addons_body_class( $classes ) {
@@ -23482,7 +23464,7 @@
                         $params['plugin_public_key'] = $this->get_public_key();
                     }
 
-                    $result = $api->get( 'pricing.json?' . http_build_query( $params ) );
+                    $result = $api->get( $this->add_show_pending( 'pricing.json?' . http_build_query( $params ) ) );
                     break;
                 case 'start_trial':
                     $trial_plan_id = fs_request_get( 'plan_id' );
@@ -23617,11 +23599,10 @@
         function get_api_user_scope( $flush = false ) {
             if ( ! isset( $this->_user_api ) || $flush ) {
                 // Modified
-                // Ensure user object exists to prevent "property on false" errors
+                // Ensure user mock object exists before creating API scope
                 if ( ! is_object( $this->_user ) ) {
                     $this->_ensure_mock_objects();
                 }
-                
                 $this->_user_api = $this->get_api_user_scope_by_user( $this->_user );
             }
 
@@ -23649,22 +23630,6 @@
         }
 
         /**
-         * Safely get the API user scope, returns null if user is not available.
-         * Useful for modified SDKs that simulate registration without actual user data.
-         *
-         * @author Modified for GPL compatibility
-         * @since  2.0.0
-         *
-         * @param bool $flush
-         *
-         * @return \FS_Api|null
-         */
-        function get_api_user_scope_safe( $flush = false ) {
-            $api = $this->get_api_user_scope( $flush );
-            return ( $api instanceof FS_Api ) ? $api : null;
-        }
-
-        /**
          *
          * @author Leo Fajardo (@leorw)
          * @since  2.0.0
@@ -23681,12 +23646,6 @@
             }
 
             $user = $this->get_current_or_network_user();
-
-            // Modified
-            // Ensure user object exists to prevent "property on null" errors
-            if ( ! is_object( $user ) ) {
-                return $this->get_api_user_scope( $flush );
-            }
 
             $this->_user_api = FS_Api::instance(
                 $this->_module_id,
@@ -23792,11 +23751,14 @@
                 // Modified
                 // Ensure plugin object exists to prevent "property on false" errors
                 if ( ! is_object( $this->_plugin ) ) {
-                    // Return mock API object to prevent errors
-                    return (object) array(
-                        'call' => function() { return (object) array( 'success' => true, 'api' => 'bypassed' ); },
-                        'get' => function() { return (object) array( 'success' => true, 'api' => 'bypassed' ); },
-                        'post' => function() { return (object) array( 'success' => true, 'api' => 'bypassed' ); }
+                    return new FS_Api(
+                        $this->_module_id,
+                        'plugin',
+                        1,
+                        'pk_mock_key',
+                        false,
+                        false,
+                        $this->get_sdk_version()
                     );
                 }
 
@@ -24708,23 +24670,39 @@
                     $this->get_premium_slug() :
                     $this->premium_plugin_basename();
 
-                return sprintf(
-                /* translators: %1$s: Product title; %2$s: Plan title */
-                    $this->get_text_inline( ' The paid version of %1$s is already installed. Please activate it to start benefiting the %2$s features. %3$s', 'activate-premium-version' ),
-                    sprintf( '<em>%s</em>', esc_html( $this->get_plugin_title() ) ),
-                    $plan_title,
-                    sprintf(
-                        '<a style="margin-left: 10px;" href="%s"><button class="button button-primary">%s</button></a>',
-                        ( $this->is_theme() ?
-                            wp_nonce_url( 'themes.php?action=activate&amp;stylesheet=' . $premium_theme_slug_or_plugin_basename, 'switch-theme_' . $premium_theme_slug_or_plugin_basename ) :
-                            wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . $premium_theme_slug_or_plugin_basename, 'activate-plugin_' . $premium_theme_slug_or_plugin_basename ) ),
-                        esc_html( sprintf(
-                        /* translators: %s: Plan title */
-                            $this->get_text_inline( 'Activate %s features', 'activate-x-features' ),
-                            $plan_title
-                        ) )
-                    )
-                );
+                if ( is_admin() ) {
+                    return sprintf(
+                        /* translators: %1$s: Product title; %2$s: Plan title */
+                        $this->get_text_inline( ' The paid version of %1$s is already installed. Please activate it to start benefiting from the %2$s features. %3$s', 'activate-premium-version' ),
+                        sprintf( '<em>%s</em>', esc_html( $this->get_plugin_title() ) ),
+                        $plan_title,
+                        sprintf(
+                            '<a style="margin-left: 10px;" href="%s"><button class="button button-primary">%s</button></a>',
+                            ( $this->is_theme() ?
+                                wp_nonce_url( 'themes.php?action=activate&amp;stylesheet=' . $premium_theme_slug_or_plugin_basename, 'switch-theme_' . $premium_theme_slug_or_plugin_basename ) :
+                                wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . $premium_theme_slug_or_plugin_basename, 'activate-plugin_' . $premium_theme_slug_or_plugin_basename ) ),
+                            esc_html( sprintf(
+                            /* translators: %s: Plan title */
+                                $this->get_text_inline( 'Activate %s features', 'activate-x-features' ),
+                                $plan_title
+                            ) )
+                        )
+                    );
+                } else {
+                    return sprintf(
+                        /* translators: %1$s: Product title; %3$s: Plan title */
+                        $this->get_text_inline( ' The paid version of %1$s is already installed. Please navigate to the %2$s to activate it and start benefiting from the %3$s features.', 'activate-premium-version-plugins-page' ),
+                        sprintf( '<em>%s</em>', esc_html( $this->get_plugin_title() ) ),
+                        sprintf(
+                            '<a href="%s">%s</a>',
+                            admin_url( $this->is_theme() ? 'themes.php' : 'plugins.php' ),
+                            ( $this->is_theme() ?
+                                $this->get_text_inline( 'Themes page', 'themes-page' ) :
+                                $this->get_text_inline( 'Plugins page', 'plugins-page' ) )
+                        ),
+                        $plan_title
+                    );
+                }
             } else {
                 // @since 1.2.1.5 The free version is auto deactivated.
                 $deactivation_step = version_compare( $this->version, '1.2.1.5', '<' ) ?

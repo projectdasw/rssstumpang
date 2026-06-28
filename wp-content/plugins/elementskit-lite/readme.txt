@@ -4,7 +4,7 @@ Tags: Elementor addons, mega menu builder,  header footer builder, elementor add
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.9.7
+Stable tag: 3.9.9
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -35,17 +35,17 @@ https://www.youtube.com/watch?v=VhBl3dHT5SY
 
 ## Why Use ElementsKit Elementor Addon
 
-🔥 All time downloads of ElementsKit : **46 million+**
+🔥 All time downloads of ElementsKit : **50 million+**
 
 ⭐ **100+** Free and Premium Elementor Widgets
 
 ⭐ **20+ Exclusive Modules** for advanced design solution
 
-⭐ **45+ Pre-designed** Header & Footer Elementor Templates
+⭐ **100+ Pre-designed** Header & Footer Elementor Templates
 
 ⭐ **98+ Ready Pages** to start Elementor website in no time
 
-⭐ Versatile Elementor template library of **1000+ Pre-made Sections**
+⭐ Versatile Elementor template library of **1250+ Pre-made Sections**
 
 ⭐ No-code Elementor **Custom Widget** Builder
 
@@ -68,7 +68,7 @@ https://www.youtube.com/watch?v=VhBl3dHT5SY
 
 ### Extensive ElementsKit Templates for Elementor
 
-ElementsKit is a popular Elementor addon among millions of users that eliminates the need to design from scratch. It ships with over **1000+** pre-made section blocks and **40+** [ready-made Elementor templates](https://wpmet.com/plugin/elementskit/templates/) for designing a full website, including Elementor header-footer templates & Elementor mega menu templates. Whatever niche or industry, you’re working with, ElementsKit page builder addon layout library includes unique Elementor templates designed with royalty-free images.
+ElementsKit is a popular Elementor addon among millions of users that eliminates the need to design from scratch. It ships with over **1250+** pre-made section blocks and **50+** [ready-made Elementor templates](https://wpmet.com/plugin/elementskit/templates/) for designing a full website, including Elementor header-footer templates & Elementor mega menu templates. Whatever niche or industry, you’re working with, ElementsKit page builder addon layout library includes unique Elementor templates designed with royalty-free images.
 
 ### Build Fast & Stylish Elementor Sites:
 
@@ -353,10 +353,31 @@ ElementsKit is brought to you by Wpmet, a name **trusted by 10,00,000 satisfied 
 Visit  [wpmet](https://wpmet.com/?utm_source=org&utm_medium=readme) for essential WordPress [Tutorials, Tips & Tricks](https://wpmet.com/blog)!
 
 == Changelog ==
+= ElementsKit Elementor Addons Version: 3.9.9 (2026-06-23) =
+* Added: Expire Actions styling options for Countdown Timer finished-state content.
+* Fixed: Menu click issue on mobile devices in the Offcanvas widget.
+* Fixed: Compatibility issue with Ninja Forms integration.
+* Fixed: Translation issue in the user onboarding process.
+* Fixed: Translation issue in the Image Comparison widget.
+* Fixed: Mailchimp settings migration issue during updates process.
+* Fixed: Deactivation feedback modal user type detection issue.
+
+= ElementsKit Elementor Addons Version: 3.9.8 (2026-06-15) =
+* Added: Advanced Table Builder integration to the onboarding process.
+* Added: Contextual Help & Support links to the deactivation feedback modal.
+* Added: Introduced a new filter library to replace Isotope.
+* Added: Automatic Mailchimp data migration during plugin updates.
+* Fixed: Enhanced Mailchimp repeater functionality with additional customization options based on user feedback.
+* Fixed: Untranslated strings in Pro Awareness entries by using escaped translations for safer admin rendering.
+* Improved: Optimized frontend performance by loading widget JavaScript assets only when needed.
+* Improved: JavaScript loading strategy, reducing Total Blocking Time (TBT) by up to 50%.
+* Removed: ~325KB of unused JavaScript to improve overall plugin performance.
+* Removed: Approximately ~46KB of code by replacing the Isotope library.
+
 = ElementsKit Elementor Addons Version: 3.9.7 (2026-06-4) =
-Fixed: Resolved a Broken Access Control vulnerability in the Dynamic Content Editor REST API.
-Fixed: Layout library data can access without authentication
-Fixed: Admin deactivation modal assets loaded only on relevant screens
+* Fixed: Resolved a Broken Access Control vulnerability in the Dynamic Content Editor REST API.
+* Fixed: Layout library data can access without authentication
+* Fixed: Admin deactivation modal assets loaded only on relevant screens
 
 = ElementsKit Elementor Addons Version: 3.9.6 (2026-05-19) =
 * Improved: Deactivation modal UI and unsubscribe logic

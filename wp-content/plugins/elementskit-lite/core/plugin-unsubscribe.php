@@ -272,6 +272,14 @@ class Plugin_Unsubscribe {
 					placeholder="<?php echo $placeholder; ?>"
 					rows="2"
 				></textarea>
+				<?php if ( 'plugin_bug' === $reason['key'] ) : ?>
+				<div class="ekit-help-links">
+					<span class="ekit-help-links-title">💡 <?php esc_html_e( 'Need help before deactivating?', 'elementskit-lite' ); ?></span>
+					<a href="https://wpmet.com/support-ticket-form/" target="_blank" rel="noopener noreferrer">
+						<?php esc_html_e( 'Contact Support Team', 'elementskit-lite' ); ?>
+					</a>
+				</div>
+				<?php endif; ?>
 			<?php endif; ?>
 		</div>
 		<?php
@@ -428,11 +436,26 @@ class Plugin_Unsubscribe {
 	 * @return string One of `'pro_valid'`, `'pro'`, or `'free'`.
 	 */
 	private function get_user_type() {
-		if ( 'pro' !== \ElementsKit_Lite::package_type() ) {
+		// First check whether the Pro plugin is installed at all.
+		// A user without Pro installed is always 'free'.
+		if ( ! $this->is_pro_installed() ) {
 			return 'free';
 		}
 
 		return 'valid' === \ElementsKit_Lite::license_status() ? 'pro_valid' : 'pro';
+	}
+
+	/**
+	 * Check whether the ElementsKit Pro plugin is installed (regardless of active state).
+	 *
+	 * @return bool True if the Pro plugin file exists in the plugins directory.
+	 */
+	protected function is_pro_installed() {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		return array_key_exists( 'elementskit/elementskit.php', get_plugins() );
 	}
 
 	/**

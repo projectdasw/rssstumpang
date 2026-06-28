@@ -25,12 +25,14 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					//'title' => 'widget title',
 					//'live' => 'live demo url'
 					'widget-category' => 'general', // general
+					'hasJS'           => true,
 				),
 				'accordion' => array(
 					'slug'            => 'accordion',
 					'title'           => 'Accordion',
 					'package'         => 'free',
 					'widget-category' => 'general', // general
+					'hasJS'           => true,
 				),
 				'button' => array(
 					'slug'            => 'button',
@@ -49,6 +51,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'title'           => 'Blog Posts',
 					'package'         => 'free',
 					'widget-category' => 'post', // posts
+					'hasJS'           => true,
 				),
 				'icon-box' => array(
 					'slug'            => 'icon-box',
@@ -67,12 +70,14 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'title'           => 'Countdown Timer',
 					'package'         => 'free',
 					'widget-category' => 'marketing', // marketing
+					'hasJS'           => true,
 				),
 				'client-logo' => array(
 					'slug'            => 'client-logo',
 					'title'           => 'Client Logo',
 					'package'         => 'free',
 					'widget-category' => 'marketing', // marketing
+					'hasJS'           => true,
 				),
 				'faq' => array(
 					'slug'            => 'faq',
@@ -85,12 +90,14 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'title'           => 'Funfact',
 					'package'         => 'free',
 					'widget-category' => 'creative', // creative
+					'hasJS'           => true,
 				),
 				'image-comparison' => array(
 					'slug'            => 'image-comparison',
 					'title'           => 'Image Comparison',
 					'package'         => 'free',
 					'widget-category' => 'creative', // creative
+					'hasJS'           => true,
 				),
 				'lottie' => array(
 					'slug'            => 'lottie',
@@ -103,6 +110,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'title'           => 'Testimonial',
 					'package'         => 'free',
 					'widget-category' => 'marketing', // marketing
+					'hasJS'           => true,
 				),
 				'pricing' => array(
 					'slug'            => 'pricing',
@@ -115,6 +123,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'title'           => 'Team',
 					'package'         => 'free',
 					'widget-category' => 'advanced', // advanced
+					'hasJS'           => true,
 				),
 				'social' => array(
 					'slug'            => 'social',
@@ -127,6 +136,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'title'           => 'Progress Bar',
 					'package'         => 'free',
 					'widget-category' => 'creative', // creative
+					'hasJS'           => true,
 				),
 				'category-list' => array(
 					'slug'            => 'category-list',
@@ -157,12 +167,14 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'title'           => 'Post Tab',
 					'package'         => 'free',
 					'widget-category' => 'post', // posts
+					'hasJS'           => true,
 				),
 				'nav-menu' => array(
 					'slug'            => 'nav-menu',
 					'title'           => 'Nav Menu',
 					'package'         => 'free',
 					'widget-category' => 'header-footer', // header footer
+					'hasJS'           => true,
 				),
 				'mail-chimp' => array(
 					'slug'            => 'mail-chimp',
@@ -181,24 +193,28 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'title'           => 'Pie Chart',
 					'package'         => 'free',
 					'widget-category' => 'general', // general
+					'hasJS'           => true,
 				),
 				'header-search' => array(
 					'slug'            => 'header-search',
 					'title'           => 'Header Search',
 					'package'         => 'free',
 					'widget-category' => 'header-footer', // header footer
+					'hasJS'           => true,
 				),
 				'header-offcanvas' => array(
 					'slug'            => 'header-offcanvas',
 					'title'           => 'Header Offcanvas',
 					'package'         => 'free',
 					'widget-category' => 'header-footer', // header footer
+					'hasJS'           => true,
 				),
 				'tab' => array(
 					'slug'            => 'tab',
 					'title'           => 'Tab',
 					'package'         => 'free',
 					'widget-category' => 'general', // General
+					'hasJS'           => true,
 				),
 				'contact-form7' => array(
 					'slug'            => 'contact-form7',
@@ -211,6 +227,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'title'           => 'Video',
 					'package'         => 'free',
 					'widget-category' => 'general', // General
+					'hasJS'           => true,
 				),
 				'business-hours' => array(
 					'slug'            => 'business-hours',
@@ -271,6 +288,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'title'           => 'Back To Top',
 					'package'         => 'free',
 					'widget-category' => 'general', //general
+					'hasJS'           => true,
 				),
 				'advanced-accordion' => array(
 					'slug'            => 'advanced-accordion',
@@ -278,6 +296,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'advanced', // advanced
 					'icon'            => 'ekit ekit-accordion',
+					'hasJS'           => true,
 				),
 				'advanced-tab' => array(
 					'slug'            => 'advanced-tab',
@@ -285,6 +304,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'advanced', // advanced
 					'icon'            => 'ekit ekit-tab',
+					'hasJS'           => true,
 				),
 				'hotspot' => array(
 					'slug'            => 'hotspot',
@@ -292,6 +312,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'creative', // creative
 					'icon'            => 'eicon-image-hotspot',
+					'hasJS'           => true,
 				),
 				'motion-text' => array(
 					'slug'            => 'motion-text',
@@ -299,6 +320,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'creative', // creative
 					'icon'            => 'eicon-animation-text',
+					'hasJS'           => true,
 				),
 				'twitter-feed' => array(
 					'slug'            => 'twitter-feed',
@@ -320,6 +342,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'general', // general
 					'icon'            => 'ekit ekit-image-gallery',
+					'hasJS'           => true,
 				),
 				'chart'                => array(
 					'slug'            => 'chart',
@@ -341,6 +364,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'woocommerce', // woocommerce
 					'icon'            => 'eicon-product-add-to-cart',
+					'hasJS'           => true,
 				),
 				'woo-product-carousel' => array(
 					'slug'            => 'woo-product-carousel',
@@ -348,6 +372,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'woocommerce', // woocommerce
 					'icon'            => 'eicon-carousel',
+					'hasJS'           => true,
 				),
 				'woo-product-list'     => array(
 					'slug'            => 'woo-product-list',
@@ -362,6 +387,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'general', // general
 					'icon'            => 'eicon-table',
+					'hasJS'           => true,
 				),
 				'timeline'             => array(
 					'slug'            => 'timeline',
@@ -369,6 +395,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'creative', // creative
 					'icon'            => 'ekit ekit-horizontal-timeline',
+					'hasJS'           => true,
 				),
 				'creative-button'      => array(
 					'slug'            => 'creative-button',
@@ -376,6 +403,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'creative', // creative
 					'icon'            => 'eicon-button',
+					'hasJS'           => true,
 				),
 				'vertical-menu'        => array(
 					'slug'            => 'vertical-menu',
@@ -383,6 +411,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'header-footer', // header footer
 					'icon'            => 'eicon-nav-menu',
+					'hasJS'           => true,
 				),
 				'advanced-toggle'      => array(
 					'slug'            => 'advanced-toggle',
@@ -390,6 +419,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'advanced', // advanced
 					'icon'            => 'eicon-toggle',
+					'hasJS'           => true,
 				),
 				'video-gallery'        => array(
 					'slug'            => 'video-gallery',
@@ -397,6 +427,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'advanced', // advanced
 					'icon'            => 'eicon-youtube',
+					'hasJS'           => true,
 				),
 				'zoom'                 => array(
 					'slug'            => 'zoom',
@@ -404,6 +435,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'general', // general
 					'icon'            => 'eicon-button',
+					'hasJS'           => true,
 				),
 				'behance-feed'         => array(
 					'slug'            => 'behance-feed',
@@ -432,13 +464,15 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'social-media-feeds', // social media feeds
 					'icon'            => 'eicon-fb-feed',
+					'hasJS'           => true,
 				),
 				'facebook-review' => array(
 					'slug'            => 'facebook-review',
 					'title'           => 'Facebook Review',
 					'package'         => 'pro-disabled',
 					'widget-category' => 'review-testimonials', // review testimonials
-					'icon'            => 'eicon-button'
+					'icon'            => 'eicon-button',
+					'hasJS'           => true,
 				),
 				'yelp' => array(
 					'slug'            => 'yelp',
@@ -446,6 +480,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'review-testimonials', // review testimonials
 					'icon'            => 'eicon-favorite',
+					'hasJS'           => true,
 				),
 				'pinterest-feed' => array(
 					'slug'            => 'pinterest-feed',
@@ -460,6 +495,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'marketing', // marketing
 					'icon'            => 'eicon-button',
+					'hasJS'           => true,
 				),
 				'google-map' => array(
 					'slug'            => 'google-map',
@@ -474,6 +510,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'creative', // creative
 					'icon'            => 'eicon-button',
+					'hasJS'           => true,
 				),
 				'image-swap' => array(
 					'slug'            => 'image-swap',
@@ -481,6 +518,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'creative', // creative
 					'icon'            => 'ekit ekit-image-swap',
+					'hasJS'           => true,
 				),
 				'whatsapp' => array(
 					'slug'            => 'whatsapp',
@@ -488,6 +526,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'general', // general
 					'icon'            => 'ekit ekit-whatsapp',
+					'hasJS'           => true,
 				),
 				'advanced-slider' => array(
 					'slug'            => 'advanced-slider',
@@ -495,6 +534,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'advanced', // advanced
 					'icon'            => 'ekit ekit-advanced-slider',
+					'hasJS'           => true,
 				),
 				'image-hover-effect' => array(
 					'slug'            => 'image-hover-effect',
@@ -509,6 +549,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'creative', // creative
 					'icon'            => 'ekit ekit-fancy-heading',
+					'hasJS'           => true,
 				),
 				'price-menu' => array(
 					'slug'            => 'price-menu',
@@ -516,6 +557,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'marketing', // marketing
 					'icon'            => 'ekit ekit-price-menu',
+					'hasJS'           => true,
 				),
 				'stylish-list' => array(
 					'slug'            => 'stylish-list',
@@ -523,6 +565,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'creative', // creative
 					'icon'            => 'ekit ekit-stylish-list',
+					'hasJS'           => true,
 				),
 				'team-slider' => array(
 					'slug'            => 'team-slider',
@@ -530,6 +573,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'advanced', // advanced
 					'icon'            => 'ekit ekit-team-carousel-slider',
+					'hasJS'           => true,
 				),
 				'audio-player' => array(
 					'slug'            => 'audio-player',
@@ -537,6 +581,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'general', // General
 					'icon'            => 'ekit ekit-audio-player',
+					'hasJS'           => true,
 				),
 				'flip-box' => array(
 					'slug'    => 'flip-box',
@@ -544,6 +589,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package' => 'pro-disabled',
 					'widget-category' => 'creative', // creative
 					'icon'    => 'ekit ekit-flip-box',
+					'hasJS'   => true,
 				),
 				'image-morphing' => array(
 					'slug'            => 'image-morphing',
@@ -551,6 +597,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'creative', // creative
 					'icon'            => 'ekit ekit-image-morphing',
+					'hasJS'           => true,
 				),
 				'content-ticker' => array(
 					'slug'            => 'content-ticker',
@@ -558,6 +605,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'marketing', // marketing
 					'icon'            => 'ekit ekit-content-ticker',
+					'hasJS'           => true,
 				),
 				'coupon-code' => array(
 					'slug'            => 'coupon-code',
@@ -565,6 +613,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'marketing', // marketing
 					'icon'            => 'ekit ekit-coupon-code',
+					'hasJS'           => true,
 				),
 				'comparison-table' => array(
 					'slug'            => 'comparison-table',
@@ -572,6 +621,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'marketing', // marketing
 					'icon'            => 'ekit ekit-flip-box',
+					'hasJS'           => true,
 				),
 				'protected-content' => array(
 					'slug'            => 'protected-content',
@@ -586,6 +636,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'creative', // creative
 					'icon'            => 'ekit ekit-interactive-link',
+					'hasJS'           => true,
 				),
 				'circle-menu' => array(
 					'slug'            => 'circle-menu',
@@ -593,6 +644,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'pro-disabled',
 					'widget-category' => 'general', // general
 					'icon'            => 'ekit ekit-coupon-code',
+					'hasJS'           => true,
 				),
 				'advanced-search' => array(
 					'slug'    => 'advanced-search',
@@ -600,6 +652,7 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package' => 'pro-disabled',
 					'widget-category' => 'header-footer', // header footer
 					'icon'    => 'ekit ekit-search',
+					'hasJS'   => true,
 				),
 				'login-form' => [
 					'slug'    => 'login-form',
@@ -622,6 +675,13 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'widget-category' => 'header-footer', // header footer
 					'icon'    => 'ekit ekit-copyright',
 				],
+				'event-calendar' => array(
+					'slug'            => 'event-calendar',
+					'title'           => 'Event Calendar',
+					'package'         => 'pro-disabled',
+					'widget-category' => 'general', // General
+					'icon'            => 'ekit ekit-event-calendar',
+				),
 				'stacked-cards' => [
 					'slug'    => 'stacked-cards',
 					'title'   => 'Stacked Cards',

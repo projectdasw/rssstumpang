@@ -10,12 +10,12 @@ class Wpr_Particles_Pro {
 		$element->add_control (
 			'which_particle',
 			[
-				'label' => __( 'Select Style', 'plugin-domain' ),
+				'label' => __( 'Select Style', 'wpr-addons' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'wpr_particle_json_custom',
 				'options' => [
-					'wpr_particle_json_custom'  => __( 'Custom', 'plugin-domain' ),
-					'wpr_particle_json' => __( 'Predefined', 'plugin-domain' ),
+					'wpr_particle_json_custom'  => __( 'Custom', 'wpr-addons' ),
+					'wpr_particle_json' => __( 'Predefined', 'wpr-addons' ),
 				],
 				'condition' => [
 					'wpr_enable_particles' => 'yes'
@@ -25,18 +25,20 @@ class Wpr_Particles_Pro {
 	}
 
 	public static function add_control_group_predefined_particles($element) {
+		$particles_presets = self::array_of_particles();
+
 		$element->add_control (
 			'wpr_particle_json',
 			[
-				'label' => __( 'Select Effect', 'plugin-domain' ),
+				'label' => __( 'Select Effect', 'wpr-addons' ),
 				'type' => Controls_Manager::SELECT,
-				'default' => Wpr_Particles_Pro::array_of_particles()['default'],
+				'default' => $particles_presets['default'],
 				'options' => [
-					Wpr_Particles_Pro::array_of_particles()['default']  => esc_html__( 'Default', 'plugin-domain' ),
+					$particles_presets['default']  => esc_html__( 'Default', 'wpr-addons' ),
 
-					Wpr_Particles_Pro::array_of_particles()['snow'] => esc_html__( 'Snow', 'plugin-domain' ),
+					$particles_presets['snow'] => esc_html__( 'Snow', 'wpr-addons' ),
 	
-					Wpr_Particles_Pro::array_of_particles()['nasa'] => esc_html__('Nasa', 'wpr-addons'),
+					$particles_presets['nasa'] => esc_html__('Nasa', 'wpr-addons'),
 				],
 				'condition'   => [
 					'which_particle' => 'wpr_particle_json',
@@ -48,15 +50,15 @@ class Wpr_Particles_Pro {
 		$element->add_control (
 			'particles_shape',
 			[
-				'label' => __( 'Select Shape', 'plugin-domain' ),
+				'label' => __( 'Select Shape', 'wpr-addons' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'circle',
 				'options' => [
-					'circle' => esc_html__( 'Circle', 'plugin-domain' ),
+					'circle' => esc_html__( 'Circle', 'wpr-addons' ),
 
-					'edge' => esc_html__( 'Edge', 'plugin-domain' ),
+					'edge' => esc_html__( 'Edge', 'wpr-addons' ),
 
-					'triangle' => esc_html__( 'Triangle', 'plugin-domain' ),
+					'triangle' => esc_html__( 'Triangle', 'wpr-addons' ),
 
 					'polygon' => esc_html__('Polygon', 'wpr-addons'),
 
@@ -142,5 +144,5 @@ class Wpr_Particles_Pro {
 			'nasa' => '{"particles":{"number":{"value":160,"density":{"enable":true,"value_area":800}},"color":{"value":"#000000"},"shape":{"type":"circle","stroke":{"width":0,"color":"#000000"},"polygon":{"nb_sides":5},"image":{"src":"img/github.svg","width":100,"height":100}},"opacity":{"value":1,"random":true,"anim":{"enable":true,"speed":1,"opacity_min":0,"sync":false}},"size":{"value":3,"random":true,"anim":{"enable":false,"speed":4,"size_min":0.3,"sync":false}},"line_linked":{"enable":false,"distance":150,"color":"#000000","opacity":0.4,"width":1},"move":{"enable":true,"speed":2,"direction":"none","random":true,"straight":false,"out_mode":"out","bounce":false,"attract":{"enable":false,"rotateX":600,"rotateY":600}}},"interactivity":{"detect_on":"window","events":{"onhover":{"enable":true,"mode":"bubble"},"onclick":{"enable":true,"mode":"repulse"},"resize":true},"modes":{"grab":{"distance":400,"line_linked":{"opacity":1}},"bubble":{"distance":250,"size":0,"duration":2,"opacity":0,"speed":3},"repulse":{"distance":400,"duration":0.4},"push":{"particles_nb":4},"remove":{"particles_nb":2}}},"retina_detect":true}',
 		];
 	}
-	
+
 }

@@ -13,6 +13,10 @@ class ElementsKit_Widget_Header_Offcanvas extends Widget_Base
 
     public $base;
 
+	public function get_script_depends() {
+		return ['ekit-header-offcanvas'];
+	}
+
     public function get_name() {
         return Handler::get_name();
     }

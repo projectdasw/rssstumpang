@@ -14,7 +14,10 @@ class ElementsKit_Widget_Team extends Widget_Base {
 
     public function __construct( $data = [], $args = null ) {
 		parent::__construct( $data, $args );
-		$this->add_script_depends('magnific-popup');
+	}
+
+	public function get_script_depends() {
+		return ['ekit-team', 'magnific-popup'];
 	}
 
     public function get_name() {

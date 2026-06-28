@@ -15,6 +15,8 @@
 	 *
 	 * @var string
 	 */
+	// Modified
+	// Override version to 999.99.99 to ensure this SDK always loads first
 	$this_sdk_version = '999.99.99';
 
 	#region SDK Selection Logic --------------------------------------------------------------------
@@ -446,6 +448,7 @@
 	 *      fs_plugin_icon_{plugin_slug}
 	 *      fs_show_trial_{plugin_slug}
 	 *      fs_is_pricing_page_visible_{plugin_slug}
+	 *      fs_checkout/parameters_{plugin_slug}
 	 *
 	 * --------------------------------------------------------
 	 *
@@ -453,6 +456,8 @@
 	 *
 	 *      fs_after_license_loaded_{plugin_slug}
 	 *      fs_after_license_change_{plugin_slug}
+	 *      fs_after_license_activation_{plugin_slug}
+	 *      fs_after_license_deactivation_{plugin_slug}
 	 *      fs_after_plans_sync_{plugin_slug}
 	 *
 	 *      fs_after_account_details_{plugin_slug}
@@ -579,6 +584,85 @@
 
 		// Load SDK files.
 		require_once dirname( __FILE__ ) . '/require.php';
+
+        // Modified
+        // Run-once-per-plugin-install reset of legacy Freemius account data.
+        if ( ! function_exists( 'fs_gpltimes_maybe_reset_accounts_once' ) ) {
+            function fs_gpltimes_maybe_reset_accounts_once() {
+                if ( ! defined( 'WP_FS__GPLTIMES_ENABLE_AUTO_ACCOUNTS_RESET' ) ||
+                     true !== WP_FS__GPLTIMES_ENABLE_AUTO_ACCOUNTS_RESET
+                ) {
+                    return;
+                }
+
+                global $fs_active_plugins;
+
+                $reset_signature_option_name = 'fs_gpltimes_accounts_reset_signature_v1';
+
+                $is_multisite = is_multisite();
+                $stored_signature = $is_multisite ?
+                    (string) get_site_option( $reset_signature_option_name, '' ) :
+                    (string) get_option( $reset_signature_option_name, '' );
+
+                $signature_items = array();
+
+                if ( isset( $fs_active_plugins ) &&
+                     is_object( $fs_active_plugins ) &&
+                     isset( $fs_active_plugins->plugins ) &&
+                     is_array( $fs_active_plugins->plugins )
+                ) {
+                    foreach ( $fs_active_plugins->plugins as $sdk_path => $data ) {
+                        $plugin_path = '';
+                        $type        = '';
+
+                        if ( is_object( $data ) ) {
+                            $plugin_path = isset( $data->plugin_path ) ? (string) $data->plugin_path : '';
+                            $type        = isset( $data->type ) ? (string) $data->type : '';
+                        }
+
+                        $signature_items[] = "{$sdk_path}|{$type}|{$plugin_path}";
+                    }
+                }
+
+                sort( $signature_items );
+
+                $current_signature = md5( implode( '||', $signature_items ) );
+
+                if ( $stored_signature === $current_signature || ! class_exists( 'FS_Options' ) ) {
+                    return;
+                }
+
+                $accounts = FS_Options::instance( WP_FS__ACCOUNTS_OPTION_NAME, true );
+
+                if ( $is_multisite ) {
+                    if ( function_exists( 'get_sites' ) ) {
+                        $site_ids = get_sites( array(
+                            'fields' => 'ids',
+                        ) );
+
+                        foreach ( $site_ids as $blog_id ) {
+                            $blog_id = (int) $blog_id;
+                            $accounts->clear( $blog_id, true );
+
+                            if ( function_exists( 'delete_blog_option' ) ) {
+                                delete_blog_option( $blog_id, 'fs_active_plugins' );
+                            }
+                        }
+                    }
+
+                    $accounts->clear( true, true );
+                    update_site_option( $reset_signature_option_name, $current_signature );
+                } else {
+                    $accounts->clear( null, true );
+                    update_option( $reset_signature_option_name, $current_signature, false );
+                }
+
+                // Force rebuild of SDK references after reset.
+                delete_option( 'fs_active_plugins' );
+            }
+        }
+
+        fs_gpltimes_maybe_reset_accounts_once();
 
 		/**
 		 * Quick shortcut to get Freemius for specified plugin.

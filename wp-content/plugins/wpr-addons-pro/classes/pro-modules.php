@@ -65,6 +65,8 @@ class Pro_Modules {
 				'Password Protected Content Pro' => 'password-protected-content-pro',
 				'Video Playlist Pro' => 'video-playlist-pro',
 				'Unfold Pro' => 'unfold-pro',
+				'Weather Pro' => 'weather-pro',
+				'Google Reviews Pro' => 'google-reviews-pro'
 			];
 
 			if ( wpr_fs()->is_plan( 'expert' ) && defined('WPR_ADDONS_PRO_VERSION') ) {
@@ -83,7 +85,7 @@ class Pro_Modules {
 	*/
 	public static function get_available_modules( $modules ) {
 		// Breadcrumbs Pro, Advanced Filters Pro, Category Grid Pro: option key in free plugin uses slug with -pro (e.g. wpr-element-breadcrumbs-pro)
-		$slug_keep_pro = [ 'Breadcrumbs Pro', 'Advanced Filters Pro', 'Category Grid Pro' ];
+		$slug_keep_pro = [ 'Breadcrumbs Pro', 'Advanced Filters Pro', 'Category Grid Pro', 'Weather Pro', 'Google Reviews Pro' ];
 
 		foreach ( $modules as $title => $slug ) {
 			if ( ! in_array( $title, $slug_keep_pro, true ) ) {

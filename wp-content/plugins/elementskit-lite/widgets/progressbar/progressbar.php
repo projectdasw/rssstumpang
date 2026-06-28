@@ -15,6 +15,10 @@ class ElementsKit_Widget_Progressbar extends Widget_Base {
 		parent::__construct( $data, $args );
 	}
 
+	public function get_script_depends() {
+		return ['ekit-animate-numbers', 'ekit-progressbar'];
+	}
+
     public function get_name() {
         return Handler::get_name();
     }

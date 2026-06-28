@@ -44,6 +44,10 @@ class ElementsKit_Widget_Client_Logo extends Widget_Base {
 		return ['swiper'];
 	}
 
+	public function get_script_depends() {
+		return ['ekit-client-logo'];
+	}
+
     protected function is_dynamic_content(): bool {
         return false;
     }

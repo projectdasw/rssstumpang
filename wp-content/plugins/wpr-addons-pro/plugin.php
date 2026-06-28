@@ -149,6 +149,11 @@ class Plugin {
 			require WPR_ADDONS_PRO_PATH . 'extensions/wpr-parallax-pro.php';
 		}
 
+		// Column Slider
+		if ( 'on' === get_option('wpr-column-slider', 'on') ) {
+			require WPR_ADDONS_PRO_PATH . 'extensions/wpr-column-slider-pro.php';
+		}
+
 		// Display Conditions Pro Sections
 		if ( wpr_fs()->can_use_premium_code() && defined('WPR_ADDONS_PRO_VERSION') ) {
 			require WPR_ADDONS_PRO_PATH . 'includes/display-conditions/loader.php';

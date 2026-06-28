@@ -4,7 +4,7 @@ Tags: elementor, elementor addons, elementor widgets, elementor templates, eleme
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.0
-Stable tag: 6.6.7
+Stable tag: 6.6.9
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -319,7 +319,25 @@ Your existing elements/content will work with premium version. So you won't lose
 
 == Changelog ==
 
-= Free 6.6.7 - 10/06/2026 =
+= 6.6.9 - 24/06/2026 =
+
+- Improved: EA Login/Register Form | Added validation for custom fields to prevent submission when the input is invalid
+- Improved: Added new Gradient Text Color controller
+- Fixed: EA Business Reviews | Reviews and timestamps always displayed in English regardless of the site language
+- Fixed: EA Gravity Forms | reCAPTCHA v3 submissions silently failed as the per-form render event was not dispatched
+- Fixed: EA Filterable Gallery | Video items triggered two lightboxes causing inconsistent popup behavior on mobile
+- Fixed: EA Filterable Gallery | Invalid markup generated for video gallery items in Card layout
+- Fixed: EA Simple Menu | Dropdown toggle not working on iOS mobile devices
+- Fixed: EA Login/Register Form | Submit button width and style controls not working
+- Few minor bug fixes & improvements
+
+= 6.6.8 - 22/06/2026 =
+
+- Fixed: EA Event Calendar | End time displayed incorrectly for The Events Calendar events on non-UTC sites
+- Fixed: EA Advanced Data Table | Resolved "elementor is not defined" error in standalone preview mode
+- Few minor bug fixes & improvements
+
+= 6.6.7 - 10/06/2026 =
 
 - Improved: EA Advanced Data Table | Added option to set default sorting column on initial load
 - Improved: EA Sticky Video | Video now pauses automatically when the modal window is closed

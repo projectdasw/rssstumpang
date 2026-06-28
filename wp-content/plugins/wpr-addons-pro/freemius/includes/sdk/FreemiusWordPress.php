@@ -351,20 +351,21 @@
          * @return array|WP_Error The response array or a WP_Error on failure.
          */
         static function RemoteRequest( $pUrl, $pWPRemoteArgs ) {
-            $response = wp_remote_request( $pUrl, $pWPRemoteArgs );
-
-            if (
-                is_array( $response ) &&
-                (
-                    empty( $response['headers'] ) ||
-                    empty( $response['headers']['x-api-server'] )
-                )
-            ) {
-                // API is considered blocked if the response doesn't include the `x-api-server` header. When there's no error but this header doesn't exist, the response is usually not in the expected form (e.g., cannot be JSON-decoded).
-                $response = new WP_Error( 'api_blocked', htmlentities( $response['body'] ) );
-            }
-
-            return $response;
+            // Modified
+            // Return mock HTTP response to prevent outbound API calls
+            return array(
+                'headers'  => array(
+                    'x-api-server' => 'mock',
+                    'content-type' => 'application/json',
+                ),
+                'body'     => json_encode( array( 'success' => true ) ),
+                'response' => array(
+                    'code'    => 200,
+                    'message' => 'OK',
+                ),
+                'cookies'  => array(),
+                'filename' => null,
+            );
         }
 
 		/**
@@ -476,7 +477,7 @@
 								/**
 								 * error_log('Invalid IPv6 configuration on server, Please disable or get native IPv6 on your server.');
 								 * Hook to an action triggered just before cURL is executed to resolve the IP version to v4.
-								 *
+								 * 
 								 * @phpstan-ignore-next-line
 								 */
 								add_action( 'http_api_curl', 'Freemius_Api_WordPress::CurlResolveToIPv4', 10, 1 );
@@ -547,10 +548,10 @@
 			$pWPRemoteArgs = null
 		) {
 			// Modified
-			// Return success object to bypass all API calls
+			// Bypass all API requests and return success
 			return (object) array(
 				'success' => true,
-				'api' => 'success'
+				'api'     => 'success',
 			);
 		}
 
@@ -596,11 +597,11 @@
 		 */
 		public static function Ping() {
 			// Modified
-			// Return successful ping to simulate API connectivity
+			// Return successful ping response without making API call
 			return (object) array(
-				'api' => 'pong',
-				'timestamp' => gmdate('Y-m-d H:i:s'),
-				'is_active' => true
+				'api'       => 'pong',
+				'timestamp' => gmdate( 'Y-m-d H:i:s' ),
+				'is_active' => true,
 			);
 		}
 

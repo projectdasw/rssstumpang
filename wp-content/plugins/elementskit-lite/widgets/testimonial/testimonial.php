@@ -43,6 +43,10 @@ class ElementsKit_Widget_Testimonial extends Widget_Base {
 		return ['swiper'];
 	}
 
+	public function get_script_depends() {
+		return ['ekit-testimonial'];
+	}
+
     protected function is_dynamic_content(): bool {
         return false;
     }

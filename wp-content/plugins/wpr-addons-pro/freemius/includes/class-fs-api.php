@@ -73,6 +73,12 @@
         private $_url;
 
         /**
+         * Modified
+         * @var string The API scope type (install, plugin, user, etc.)
+         */
+        private $_scope;
+
+        /**
 		 * @param string      $slug
 		 * @param string      $scope      'app', 'developer', 'user' or 'install'.
 		 * @param number      $id         Element's id.
@@ -148,6 +154,7 @@
 			$this->_api = new Freemius_Api_WordPress( $scope, $id, $public_key, $secret_key, $is_sandbox );
 
 			$this->_slug        = $slug;
+			$this->_scope       = $scope; // Modified by GPL Times
 			$this->_sdk_version = $sdk_version;
 			$this->_url         = $url;
 			$this->_logger      = FS_Logger::get_logger( WP_FS__SLUG . '_' . $slug . '_api', WP_FS__DEBUG_SDK, WP_FS__ECHO_DEBUG_SDK );
@@ -195,11 +202,158 @@
 		 */
 		private function _call( $path, $method = 'GET', $params = array(), $in_retry = false ) {
             // Modified
-            // Bypass all API calls and return success object
-            return (object) array(
-                'success' => true,
-                'api' => 'bypassed'
+            // Return context-aware mock responses based on endpoint type and API scope
+            $path_lower = strtolower( $path );
+            $now = gmdate( 'Y-m-d H:i:s' );
+
+            // Helper: build a full mock install/site entity
+            // NOTE: IDs must be strings to match Freemius API response format
+            $mock_install = (object) array(
+                'id'                          => '1',
+                'site_id'                     => '1',
+                'blog_id'                     => '1',
+                'plugin_id'                   => '1',
+                'user_id'                     => '1',
+                'license_id'                  => '1',
+                'plan_id'                     => '1',
+                'trial_plan_id'               => null,
+                'trial_ends'                  => null,
+                'title'                       => function_exists( 'get_bloginfo' ) ? get_bloginfo( 'name' ) : 'WordPress Site',
+                'url'                         => function_exists( 'home_url' ) ? home_url() : 'http://localhost',
+                'version'                     => '1.0.0',
+                'is_premium'                  => true,
+                'is_active'                   => true,
+                'is_uninstalled'              => false,
+                'is_disconnected'             => false,
+                'is_beta'                     => false,
+                'public_key'                  => 'pk_f3b8c2a7e9d1f4a6c3e8b2d5a9f1c4e7',
+                'secret_key'                  => 'sk_2d5a9f1c4e7b3a6c8f2e1d4a7c0e3f6b',
+                'created'                     => $now,
+                'updated'                     => $now,
             );
+
+            // Helper: build a full mock license entity
+            $mock_license = (object) array(
+                'id'                => '1',
+                'plugin_id'         => '1',
+                'plan_id'           => '1',
+                'user_id'           => '1',
+                'secret_key'        => 'sk_e2eb9ef2bc348ed239b4ad59974c6f51',
+                'quota'             => null,
+                'activated'         => 1,
+                'activated_local'   => 0,
+                'expiration'        => null,
+                'is_cancelled'      => false,
+                'is_block_features' => false,
+                'is_whitelabeled'   => false,
+                'is_free_localhost'  => true,
+                'created'           => $now,
+                'updated'           => $now,
+            );
+
+            // Helper: build a full mock user entity
+            $mock_user = (object) array(
+                'id'          => '1',
+                'email'       => 'noreply@gmail.com',
+                'first'       => 'Premium',
+                'last'        => 'User',
+                'is_verified' => true,
+                'public_key'  => 'pk_4a7c9e2f8b3d1a6e5c8f2b9d4a7c0e3f',
+                'secret_key'  => 'sk_8f3d1a6e5c2b9d4a7c0e3f6b8a1d4e7c',
+                'created'     => $now,
+                'updated'     => $now,
+            );
+
+            $plan_name = defined( 'WP_FS__MOCK_PLAN_NAME' ) ? WP_FS__MOCK_PLAN_NAME : 'professional';
+            $plan_title = defined( 'WP_FS__MOCK_PLAN_TITLE' ) ? WP_FS__MOCK_PLAN_TITLE : 'Professional';
+
+            // Installs collection endpoint (for multi-site license activation)
+            if ( false !== strpos( $path_lower, 'installs.json' ) ) {
+                return (object) array(
+                    'installs' => array( $mock_install ),
+                );
+            }
+
+            // Site/install endpoints (explicit path match)
+            if ( false !== strpos( $path_lower, '/install' ) || false !== strpos( $path_lower, '/site' ) ) {
+                return $mock_install;
+            }
+
+            // License endpoints
+            if ( false !== strpos( $path_lower, '/license' ) ) {
+                return $mock_license;
+            }
+
+            // User endpoints
+            if ( false !== strpos( $path_lower, '/user' ) ) {
+                return $mock_user;
+            }
+
+            // Plan endpoints
+            if ( false !== strpos( $path_lower, '/plan' ) ) {
+                return (object) array(
+                    'plans' => array(
+                        (object) array(
+                            'id'                => '1',
+                            'plugin_id'         => '1',
+                            'name'              => $plan_name,
+                            'title'             => $plan_title,
+                            'is_block_features' => false,
+                            'license_type'      => 'paid',
+                            'created'           => $now,
+                            'updated'           => $now,
+                        ),
+                    ),
+                );
+            }
+
+            // Updates/versions endpoint - return no update available
+            if ( false !== strpos( $path_lower, '/updates/' ) || false !== strpos( $path_lower, 'latest.json' ) ) {
+                return (object) array(
+                    'error' => (object) array(
+                        'type'    => 'VersionNotFound',
+                        'message' => 'No update available.',
+                        'code'    => 'version_not_found',
+                        'http'    => 404,
+                    ),
+                );
+            }
+
+            // Ping endpoint
+            if ( false !== strpos( $path_lower, '/ping' ) ) {
+                return (object) array(
+                    'api'       => 'pong',
+                    'timestamp' => $now,
+                    'is_active' => true,
+                );
+            }
+
+            // For root path "/" or paths with query strings only (e.g., "/?show_pending=true")
+            // These are typically site-scope calls (PUT for license activation, GET for site info)
+            // Use the stored scope to determine the correct response type
+            $clean_path = preg_replace( '/\?.*$/', '', $path_lower );
+            $clean_path = rtrim( $clean_path, '/' );
+
+            if ( empty( $clean_path ) || '/' === $clean_path ) {
+                // Root path call - determine response based on API scope
+                if ( isset( $this->_scope ) ) {
+                    switch ( $this->_scope ) {
+                        case 'install':
+                            return $mock_install;
+                        case 'user':
+                            return $mock_user;
+                        case 'plugin':
+                            return $mock_install; // Plugin scope root calls usually expect install data
+                        default:
+                            return $mock_install;
+                    }
+                }
+                // Fallback: return install entity (most common for license activation)
+                return $mock_install;
+            }
+
+            // Default: return a valid entity response with id (prevents var_export errors)
+            return $mock_install;
         }
 
 		/**
@@ -305,29 +459,21 @@
          * @return array|WP_Error The response array or a WP_Error on failure.
          */
         static function remote_request( $url, $remote_args ) {
-            if ( ! class_exists( 'Freemius_Api_WordPress' ) ) {
-                require_once WP_FS__DIR_SDK . '/FreemiusWordPress.php';
-            }
-
-            if ( method_exists( 'Freemius_Api_WordPress', 'RemoteRequest' ) ) {
-                return Freemius_Api_WordPress::RemoteRequest( $url, $remote_args );
-            }
-
-            // The following is for backward compatibility when a modified PHP SDK version is in use and the `Freemius_Api_WordPress:RemoteRequest()` method doesn't exist.
-            $response = wp_remote_request( $url, $remote_args );
-
-            if (
-                is_array( $response ) &&
-                (
-                    empty( $response['headers'] ) ||
-                    empty( $response['headers']['x-api-server'] )
-                )
-            ) {
-                // API is considered blocked if the response doesn't include the `x-api-server` header. When there's no error but this header doesn't exist, the response is usually not in the expected form (e.g., cannot be JSON-decoded).
-                $response = new WP_Error( 'api_blocked', htmlentities( $response['body'] ) );
-            }
-
-            return $response;
+            // Modified
+            // Return mock HTTP response to prevent any outbound API calls
+            return array(
+                'headers'  => array(
+                    'x-api-server' => 'mock',
+                    'content-type' => 'application/json',
+                ),
+                'body'     => json_encode( array( 'success' => true ) ),
+                'response' => array(
+                    'code'    => 200,
+                    'message' => 'OK',
+                ),
+                'cookies'  => array(),
+                'filename' => null,
+            );
         }
 
 		/**

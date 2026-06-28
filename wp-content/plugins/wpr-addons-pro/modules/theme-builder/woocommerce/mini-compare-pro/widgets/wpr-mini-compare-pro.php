@@ -89,6 +89,16 @@ class Wpr_Mini_Compare_Pro extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'compare_icon',
+			[
+				'label' => esc_html__( 'Compare Icon', 'wpr-addons' ),
+				'type' => Controls_Manager::ICONS,
+				'skin' => 'inline',
+				'label_block' => false,
+			]
+		);
+
 		$this->add_responsive_control(
 			'compare_button_alignment',
 			[
@@ -258,6 +268,7 @@ class Wpr_Mini_Compare_Pro extends Widget_Base {
 				'selectors' => [
 					'{{WRAPPER}} .wpr-compare-toggle-btn i' => 'color: {{VALUE}}',
 					'{{WRAPPER}} .wpr-compare-toggle-btn svg' => 'fill: {{VALUE}}',
+					'{{WRAPPER}} .wpr-compare-toggle-btn svg path' => 'fill: {{VALUE}}',
 				]
 			]
 		);
@@ -269,7 +280,8 @@ class Wpr_Mini_Compare_Pro extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .wpr-compare-toggle-btn:hover i' => 'color: {{VALUE}}',
-					'{{WRAPPER}} .wpr-compare-toggle-btn:hover svg' => 'fill: {{VALUE}}'
+					'{{WRAPPER}} .wpr-compare-toggle-btn:hover svg' => 'fill: {{VALUE}}',
+					'{{WRAPPER}} .wpr-compare-toggle-btn:hover svg path' => 'fill: {{VALUE}}'
 				]
 			]
 		);
@@ -1043,7 +1055,16 @@ class Wpr_Mini_Compare_Pro extends Widget_Base {
 					if ( 'yes' == $settings['toggle_text'] ) {
 						echo '<span class="wpr-compare-text">'. esc_html__($settings['view_compare_text']) .'</span>';
 					}
-					echo '<i class="fas fa-exchange-alt" title="'. esc_html__($settings['view_compare_text']) .'">';
+					if ( ! empty( $settings['compare_icon']['value'] ) ) {
+						ob_start();
+						\Elementor\Icons_Manager::render_icon( $settings['compare_icon'], [ 'aria-hidden' => 'true' ] );
+						$compare_icon_html = ob_get_clean();
+					} else {
+						$compare_icon_html = '<i class="fas fa-exchange-alt"></i>';
+					}
+
+					echo '<i class="wpr-compare-icon" title="'. esc_attr($settings['view_compare_text']) .'">';
+						echo $compare_icon_html;
 						echo '<span class="wpr-compare-count">'. $compare_count .'</span>';
 					echo '</i>';
 				echo '</a>';

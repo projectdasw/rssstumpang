@@ -219,6 +219,8 @@ class Admin {
 	}
 
 	public function register_page() {
+				return;
+
 		if ( $this->is_editor_one_active() ) {
 			return;
 		}
@@ -389,7 +391,7 @@ class Admin {
 				<p id="tier-upgrade-promotion" class="<?php echo esc_attr( $this->get_license_box_classes( 'e-row-stretch' ) ); ?>">
 					<span><?php echo esc_html__( 'Get more advanced features', 'elementor-pro' ); ?></span>
 					<a class="button elementor-upgrade-link" target="_blank" href="https://go.elementor.com/go-pro-advanced-license-screen/">
-						<?php echo Pro_Utils::is_sale_time() ? esc_html__( 'Discounted Upgrades', 'elementor-pro' ) : esc_html__( 'Upgrade now', 'elementor-pro' ); ?>
+						<?php echo Pro_Utils::is_sale_time() ? esc_html__( 'Sale! Upgrade Now', 'elementor-pro' ) : esc_html__( 'Upgrade now', 'elementor-pro' ); ?>
 					</a>
 				</p>
 			<?php endif; ?>
@@ -398,6 +400,7 @@ class Admin {
 	}
 
 	private function render_part_license_status_header( $license_data ) {
+		$license_data['success'] = true;
 		$license_errors = [
 			API::STATUS_EXPIRED => esc_html__( 'Expired', 'elementor-pro' ),
 			API::STATUS_SITE_INACTIVE => esc_html__( 'Mismatch', 'elementor-pro' ),

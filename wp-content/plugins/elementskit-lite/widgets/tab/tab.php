@@ -11,6 +11,10 @@ class ElementsKit_Widget_Tab extends Widget_Base {
 
     public $base;
 
+	public function get_script_depends() {
+		return ['ekit-tab'];
+	}
+
     public function get_name() {
         return Handler::get_name();
     }

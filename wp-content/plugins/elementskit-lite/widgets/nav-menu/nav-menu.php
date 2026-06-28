@@ -12,8 +12,11 @@ class ElementsKit_Widget_Nav_Menu extends Widget_Base {
 
     public function __construct( $data = [], $args = null ) {
         parent::__construct( $data, $args );
-        $this->add_script_depends('ekit-nav-menu');
     }
+
+	public function get_script_depends() {
+		return ['ekit-nav-menu'];
+	}
 
     public function get_name() {
         return Handler::get_name();
@@ -264,6 +267,20 @@ class ElementsKit_Widget_Nav_Menu extends Widget_Base {
                 'label_off'     => esc_html__('Text', 'elementskit-lite'),
                 'return_value'  => 'icon',
                 'default'       => 'icon',
+				'description' => esc_html__( 'Select the clickable area for opening submenu items: icon only or the full menu text.', 'elementskit-lite' ),
+            ]
+        );
+
+        $this->add_control(
+            'elementskit_close_menu_on_anchor_click',
+            [
+                'label'     => esc_html__( 'Close Menu on Anchor Click', 'elementskit-lite' ),
+                'type'      => Controls_Manager::SWITCHER,
+                'default'   => 'no',
+                'label_on'  => esc_html__( 'Yes', 'elementskit-lite' ),
+                'label_off' => esc_html__( 'No', 'elementskit-lite' ),
+                'separator' => 'before',
+                'description' => esc_html__( 'When enabled, clicking anchor links (e.g. #section) will automatically close the mobile menu.', 'elementskit-lite' ),
             ]
         );
 
@@ -1669,7 +1686,8 @@ class ElementsKit_Widget_Nav_Menu extends Widget_Base {
 		<nav class="ekit-wid-con <?php echo esc_attr($settings['elementskit_responsive_breakpoint']); ?>"
 			data-hamburger-icon="<?php echo esc_attr($hamburger_icon_value); ?>"
 			data-hamburger-icon-type="<?php echo esc_attr($hamburger_icon_type); ?>"
-			data-responsive-breakpoint="<?php echo esc_attr($responsive_menu_breakpoint); ?>">
+			data-responsive-breakpoint="<?php echo esc_attr($responsive_menu_breakpoint); ?>"
+			data-close-on-anchor="<?php echo esc_attr($settings['elementskit_close_menu_on_anchor_click']); ?>">
 			<?php $this->render_raw(); ?>
         </nav>
 		<?php

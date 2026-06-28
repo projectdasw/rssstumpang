@@ -128,7 +128,7 @@ class API {
 
 	public static function deactivate_license() {
 		$body_args = [
-			'license' => Admin::get_license_key(),
+			'license' => '',
 		];
 
 		$license_data = self::remote_post( 'license/deactivate', $body_args );
@@ -275,7 +275,7 @@ class API {
 				'name' => $updater->plugin_name,
 				'slug' => $updater->plugin_slug,
 				'version' => $updater->plugin_version,
-				'license' => Admin::get_license_key(),
+				'license' => '',
 				'translations' => wp_json_encode( $plugin_translations ),
 				'locales' => wp_json_encode( $locales ),
 				'beta' => 'yes' === get_option( 'elementor_beta', 'no' ),

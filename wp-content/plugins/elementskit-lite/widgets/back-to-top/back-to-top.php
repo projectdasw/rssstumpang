@@ -36,7 +36,7 @@ class ElementsKit_Widget_Back_To_Top extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return ['animate-circle'];
+		return ['ekit-back-to-top', 'animate-circle'];
 	}
 
     protected function is_dynamic_content(): bool {

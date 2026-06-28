@@ -11,6 +11,10 @@ class ElementsKit_Widget_Accordion extends Widget_Base {
 
 	public $base;
 
+	public function get_script_depends() {
+		return ['ekit-accordion'];
+	}
+
 	public function get_name() {
         return Handler::get_name();
     }

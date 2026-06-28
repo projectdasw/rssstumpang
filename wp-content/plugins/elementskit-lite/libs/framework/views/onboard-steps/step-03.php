@@ -14,7 +14,7 @@
 		$metform = $pluginStatus->get_status( 'metform/metform.php' );
 		$emailkit = $pluginStatus->get_status( 'emailkit/EmailKit.php' );
 		$popupkit = $pluginStatus->get_status( 'popup-builder-block/popup-builder-block.php' );
-		$review = $pluginStatus->get_status( 'wp-ultimate-review/wp-ultimate-review.php' );
+		$review = $pluginStatus->get_status( 'table-builder-block/table-builder-block.php' );
 		$social = $pluginStatus->get_status( 'wp-social/wp-social.php' );
 
 		$gutenkit = $pluginStatus->get_status( 'gutenkit-blocks-addon/gutenkit-blocks-addon.php' );
@@ -112,15 +112,15 @@
 			<div class="ekit-onboard-single-plugin <?php echo $review['status'] == 'activated' ? 'activated' : ''; ?>">
 				<label>
 					<div class="ekit-onboard-single-plugin--header">
-						<h3>Review Management</3>
+						<h3>Advanced Table Builder</3>
 					</div>
 					<?php if($review['status'] !== 'activated') : ?>
 						<div class="ekit-onboard-single-plugin--checkbox-wrapper">
-							<input type="checkbox" class="ekit-onboard-single-plugin--input" value="wp-ultimate-review/wp-ultimate-review.php" name="our_plugins[]">
+							<input type="checkbox" class="ekit-onboard-single-plugin--input" value="table-builder-block/table-builder-block.php" name="our_plugins[]">
 						</div>
 					<?php endif; ?>
 					<p class="ekit-onboard-single-plugin--description">
-						<?php echo esc_html__( 'Build credibility for your business with the all-in-one review plugin.', 'elementskit-lite' ); ?>
+						<?php echo esc_html__( 'Build responsive data, pricing & comparison tables with advanced features.', 'elementskit-lite' ); ?>
 					</p>
 				</label>
 			</div>

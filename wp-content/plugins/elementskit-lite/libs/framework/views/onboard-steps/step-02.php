@@ -6,7 +6,7 @@
 		</div>
 		<div class="ekit-onboard-signup">
 			<label for="signup"><i class="icon icon-email"></i></label>
-			<input name="settings[newsletter_email]" id="signup" type="email" placeholder="Enter your email address">
+			<input name="settings[newsletter_email]" id="signup" type="email" placeholder="<?php echo esc_attr__( 'Enter your email address', 'elementskit-lite' ); ?>">
 		</div>
 		<p class="ekit-onboard-signup--helptext"><?php echo esc_html__( 'We never spam.', 'elementskit-lite' ); ?> <span><?php echo esc_html__( 'Promise!', 'elementskit-lite' ); ?></span></p>
 	</div>

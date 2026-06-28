@@ -24,6 +24,53 @@ class Wpr_Woo_Grid_Pro extends \WprAddons\Modules\WooGrid\Widgets\Wpr_Woo_Grid {
 		);
 	}
 
+	public function add_control_featured_video() {
+		$this->add_control(
+			'featured_video_enabled',
+			[
+				'label' => esc_html__( 'Featured Video', 'wpr-addons' ),
+				'type' => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'render_type' => 'template',
+				'description' => esc_html__( 'Displays the product\'s featured video (set from the "Featured Video" meta box on the product edit screen). The video plays by default (muted, so it can autoplay across browsers).', 'wpr-addons' ),
+			]
+		);
+
+		$this->add_control(
+			'featured_video_loop',
+			[
+				'label' => esc_html__( 'Loop', 'wpr-addons' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'return_value' => 'yes',
+				'condition' => [
+					'featured_video_enabled' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'featured_video_fit',
+			[
+				'label' => esc_html__( 'Object Fit', 'wpr-addons' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'cover',
+				'options' => [
+					'cover' => esc_html__( 'Cover', 'wpr-addons' ),
+					'contain' => esc_html__( 'Contain', 'wpr-addons' ),
+					'fill' => esc_html__( 'Fill', 'wpr-addons' ),
+				],
+				'selectors' => [
+					'{{WRAPPER}} .wpr-grid-featured-video video' => 'object-fit: {{VALUE}};',
+				],
+				'condition' => [
+					'featured_video_enabled' => 'yes',
+				],
+				'separator' => 'after',
+			]
+		);
+	}
+
 	public function add_control_open_links_in_new_tab() {
 		$this->add_control(
 			'open_links_in_new_tab',

@@ -17,7 +17,7 @@ class ElementsKit_Widget_Piechart extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return ['easy-pie-chart'];
+		return ['ekit-piechart', 'easy-pie-chart'];
 	}
 
     public function get_name() {

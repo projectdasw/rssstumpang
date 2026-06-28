@@ -120,6 +120,28 @@ class Wpr_Mini_Wishlist_Pro extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'wishlist_enable_shop_link',
+			[
+				'label' => esc_html__( 'Shop Link', 'wpr-addons' ),
+				'type' => Controls_Manager::SWITCHER,
+				'default' => '',
+			]
+		);
+
+		$this->add_control(
+			'wishlist_shop_link_text',
+			[
+				'label' => esc_html__( 'Shop Link Text', 'wpr-addons' ),
+				'type' => Controls_Manager::TEXT,
+				'placeholder' => esc_html__( 'Go to Shop', 'wpr-addons' ),
+				'default' => esc_html__( 'Go to Shop', 'wpr-addons' ),
+				'condition' => [
+					'wishlist_enable_shop_link' => 'yes',
+				],
+			]
+		);
+
 		$this->add_responsive_control(
 			'wishlist_button_alignment',
 			[
@@ -1295,6 +1317,72 @@ class Wpr_Mini_Wishlist_Pro extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
+			'section_style_empty_message',
+			[
+				'label' => esc_html__( 'Empty Message', 'wpr-addons' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'wishlist_style!' => 'none',
+				],
+			]
+		);
+
+		$this->add_control(
+			'wishlist_empty_message_color',
+			[
+				'label' => esc_html__( 'Empty Text Color', 'wpr-addons' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .wpr-wishlist-empty' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'wishlist_empty_shop_link_color',
+			[
+				'label' => esc_html__( 'Shop Link Color', 'wpr-addons' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .wpr-wishlist-empty-shop-link a' => 'color: {{VALUE}};',
+				],
+				'condition' => [
+					'wishlist_enable_shop_link' => 'yes',
+					'wishlist_style!' => 'none',
+				],
+			]
+		);
+
+		$this->add_control(
+			'wishlist_empty_shop_link_hover_color',
+			[
+				'label' => esc_html__( 'Shop Link Hover Color', 'wpr-addons' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .wpr-wishlist-empty-shop-link a:hover' => 'color: {{VALUE}};',
+				],
+				'condition' => [
+					'wishlist_enable_shop_link' => 'yes',
+					'wishlist_style!' => 'none',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'wishlist_empty_shop_link_typography',
+				'selector' => '{{WRAPPER}} .wpr-wishlist-empty-shop-link a',
+				'condition' => [
+					'wishlist_enable_shop_link' => 'yes',
+					'wishlist_style!' => 'none',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
 			'section_style_remove_icon',
 			[
 				'label' => esc_html__( 'Remove Icon', 'wpr-addons' ),
@@ -1816,6 +1904,8 @@ class Wpr_Mini_Wishlist_Pro extends Widget_Base {
 			echo '</div>';
 			
 			if ( 'none' !== $settings['wishlist_style'] ) {
+				$shop_page_url = wc_get_page_permalink( 'shop' );
+				$enable_shop_link = isset( $settings['wishlist_enable_shop_link'] ) && 'yes' === $settings['wishlist_enable_shop_link'] && ! empty( $settings['wishlist_shop_link_text'] ) && ! empty( $shop_page_url );
 
 				echo '<div class="wpr-wishlist">';
 					echo '<div class=wpr-wishlist-content-wrap>';
@@ -1835,7 +1925,10 @@ class Wpr_Mini_Wishlist_Pro extends Widget_Base {
 									$button_hidden_class = '';
 									$wishlist_hidden_class = 'wpr-wishlist-empty-hidden';
 								}
-								echo '<p class="wpr-wishlist-empty '. $wishlist_hidden_class .'">'. esc_html__($settings['wishlist_empty_text']) .'</p>';
+								echo '<p class="wpr-wishlist-empty '. $wishlist_hidden_class .'">'. esc_html( $settings['wishlist_empty_text'] ) .'</p>';
+								if ( $enable_shop_link ) {
+									echo '<p class="wpr-wishlist-empty-shop-link '. $wishlist_hidden_class .'"><a href="' . esc_url( $shop_page_url ) . '">' . esc_html( $settings['wishlist_shop_link_text'] ) . '</a></p>';
+								}
 								foreach ( $wishlist as $product_id ) {
 									$product = wc_get_product( $product_id );
 									if ( !$product ) {

@@ -4,6 +4,7 @@ namespace WprAddonsPro\Modules\TeamMemberPro\Widgets;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Border;
+use WprAddons\Classes\Utilities;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -292,9 +293,12 @@ class Wpr_Team_Member_Pro extends \WprAddons\Modules\TeamMember\Widgets\Wpr_Team
 					<div class="wpr-member-overlay-content">
 						<?php
 							if ( '' !== $settings['member_name'] && 'over' === $settings['member_name_location'] ) {
-								echo '<'. esc_attr( $settings['member_name_tag'] ) .' class="wpr-member-name">';
+								$tags_whitelist = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'span', 'p'];
+								$member_name_tag = Utilities::validate_html_tags_wl( $settings['member_name_tag'], 'h3', $tags_whitelist );
+
+								echo '<'. esc_attr( $member_name_tag ) .' class="wpr-member-name">';
 									echo esc_html( $settings['member_name'] );
-								echo '</'. esc_attr( $settings['member_name_tag'] ) .'>';
+								echo '</'. esc_attr( $member_name_tag ) .'>';
 							}
 						?>
 

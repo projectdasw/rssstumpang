@@ -12,7 +12,7 @@ class ElementsKit_Widget_Blog_Posts extends Widget_Base {
     public $base;
 
 	public function get_script_depends() {
-		$deps = [ 'imagesloaded' ];
+		$deps = [ 'ekit-blog-posts', 'imagesloaded' ];
 
 		if ( Plugin::$instance->editor->is_edit_mode() || Plugin::$instance->preview->is_preview_mode() ) {
 			$deps[] = 'masonry';

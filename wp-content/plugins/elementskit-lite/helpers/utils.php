@@ -245,7 +245,7 @@ class Utils {
 		if ( class_exists( 'Ninja_Forms' ) ) {
 			$contact_forms = Ninja_Forms()->form()->get_forms();
 
-			if ( ! empty( $contact_forms ) && ! is_wp_error( $contact_forms ) ) {
+if ( ! empty( $contact_forms ) && ! is_wp_error( $contact_forms ) ) {
 
 				$options[0] = esc_html__( 'Select Ninja Form', 'elementskit-lite' );
 
@@ -420,10 +420,6 @@ class Utils {
 		}
 
 		return null;
-	}
-
-	public static function remove_special_chars($string) {
-		return preg_replace('/[^A-Za-z0-9 ]/', '', $string);
 	}
 
 	/**

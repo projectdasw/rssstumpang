@@ -144,49 +144,49 @@ class Plugin {
 			->set_page_grid(
 				array(
 					'url'       => 'https://wpmet.com/fb-group',
-					'title'     => 'Join the Community',
+					'title'     => esc_html__( 'Join the Community', 'elementskit-lite' ),
 					'thumbnail' => \ElementsKit_Lite::lib_url() . 'pro-awareness/assets/community.png',
-					'description' => 'Join our Facebook group to get 20% discount coupon on premium products. Follow us to get more exciting offers.'
+					'description' => esc_html__( 'Join our Facebook group to get 20% discount coupon on premium products. Follow us to get more exciting offers.', 'elementskit-lite' )
 				)
 			)
 			->set_page_grid(
 				array(
 					'url'       => 'https://www.youtube.com/playlist?list=PL3t2OjZ6gY8MVnyA4OLB6qXb77-roJOuY',
-					'title'     => 'Video Tutorials',
+					'title'     => esc_html__( 'Video Tutorials', 'elementskit-lite' ),
 					'thumbnail' => \ElementsKit_Lite::lib_url() . 'pro-awareness/assets/videos.png',
-					'description' => 'Learn the step by step process for developing your site easily from video tutorials.'
+					'description' => esc_html__( 'Learn the step by step process for developing your site easily from video tutorials.', 'elementskit-lite' )
 				)
 			)
 			->set_page_grid(
 				array(
 					'url'       => 'https://wpmet.com/plugin/elementskit/roadmaps#ideas',
-					'title'     => 'Request a feature',
+					'title'     => esc_html__( 'Request a feature', 'elementskit-lite' ),
 					'thumbnail' => \ElementsKit_Lite::lib_url() . 'pro-awareness/assets/request.png',
-					'description' => 'Have any special feature in mind? Let us know through the feature request.'
+					'description' => esc_html__( 'Have any special feature in mind? Let us know through the feature request.', 'elementskit-lite' )
 				)
 			)
 			->set_page_grid(
 				array(
 					'url'       => 'https://wpmet.com/doc/elementskit/',
-					'title'     => 'Documentation',
+					'title'     => esc_html__( 'Documentation', 'elementskit-lite' ),
 					'thumbnail' => \ElementsKit_Lite::lib_url() . 'pro-awareness/assets/documentation.png',
-					'description' => 'Detailed documentation to help you understand the functionality of each feature.'
+					'description' => esc_html__( 'Detailed documentation to help you understand the functionality of each feature.', 'elementskit-lite' )
 				)
 			)
 			->set_page_grid(
 				array(
 					'url'       => 'https://wpmet.com/plugin/elementskit/roadmaps/',
-					'title'     => 'Public Roadmap',
+					'title'     => esc_html__( 'Public Roadmap', 'elementskit-lite' ),
 					'thumbnail' => \ElementsKit_Lite::lib_url() . 'pro-awareness/assets/roadmaps.png',
-					'description' => 'Check our upcoming new features, detailed development stories and tasks'
+					'description' => esc_html__( 'Check our upcoming new features, detailed development stories and tasks', 'elementskit-lite' )
 				)
 			)
-			->set_plugin_row_meta( 'Documentation', 'https://wpmet.com/elementskit-docs', array( 'target' => '_blank' ) )
-			->set_plugin_row_meta( 'Facebook Community', 'https://wpmet.com/fb-group', array( 'target' => '_blank' ) )
-			->set_plugin_row_meta( 'Rate the plugin ★★★★★', 'https://wordpress.org/support/plugin/elementskit-lite/reviews/#new-post', array( 'target' => '_blank' ) )
+			->set_plugin_row_meta( esc_html__( 'Documentation', 'elementskit-lite' ), 'https://wpmet.com/elementskit-docs', array( 'target' => '_blank' ) )
+			->set_plugin_row_meta( esc_html__( 'Facebook Community', 'elementskit-lite' ), 'https://wpmet.com/fb-group', array( 'target' => '_blank' ) )
+			->set_plugin_row_meta( esc_html__( 'Rate the plugin ★★★★★', 'elementskit-lite' ), 'https://wordpress.org/support/plugin/elementskit-lite/reviews/#new-post', array( 'target' => '_blank' ) )
 			->set_plugin_action_link( 'Settings', admin_url() . 'admin.php?page=elementskit' )
 			->set_plugin_action_link(
-				( $is_pro_active ? '' : 'Go Premium' ),
+				( $is_pro_active ? '' : esc_html__( 'Go Premium', 'elementskit-lite' ) ),
 				'https://wpmet.com/elementskit-pricing',
 				array(
 					'target' => '_blank',

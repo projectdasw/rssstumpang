@@ -158,7 +158,7 @@
          */
         function is_expired() {
             // Modified
-            // Always return false to simulate non-expired license
+            // License never expires
             return false;
         }
 
@@ -263,7 +263,7 @@
          */
         function is_active() {
             // Modified
-            // Always return true to simulate active license
+            // License always active
             return true;
         }
 
@@ -280,7 +280,7 @@
          */
         function is_features_enabled() {
             // Modified
-            // Always return true to enable premium features
+            // All features always enabled
             return true;
         }
 

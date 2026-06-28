@@ -866,6 +866,26 @@
               <field type="Register Form: Field Placeholder" editor_type="LINE">ekit_register_form_field_placeholder</field>
           </fields-in-item>
       </widget>
+	  <widget name="elementskit-event-calendar">
+			<conditions>
+				<condition key="widgetType">elementskit-event-calendar</condition>
+			</conditions>
+			<fields-in-item items_of="ekit_event_calender_manual_event_lists">
+				<field type="Event Calendar: Title" editor_type="LINE">ekit_event_calender_title</field>
+				<field type="Event Calendar: Description" editor_type="VISUAL">ekit_event_calender_description</field>
+				<field type="Event Calendar: Guest / Speaker" editor_type="LINE">ekit_event_calender_speaker</field>
+				<field type="Event Calendar: Location" editor_type="LINE">ekit_event_calender_location</field>
+				<field type="Event Calendar: Host" editor_type="LINE">ekit_event_calender_host</field>
+				<field type="Event Calendar: Event Link" editor_type="LINK">ekit_event_calender_event_link>url</field>
+				<field type="Event Calendar: Start Date" editor_type="LINK">ekit_event_calender_start_date</field>
+				<field type="Event Calendar: End Date" editor_type="LINK">ekit_event_calender_end_date</field>
+			</fields-in-item>
+			<fields-in-item items_of="ekit_event_calender_manual_time_schedules">
+				<field type="Event Calendar: Schedule Title" editor_type="LINE">ekit_event_calender_schedules_title</field>
+				<field type="Event Calendar: Start Time" editor_type="LINE">ekit_event_calender_start_time</field>
+				<field type="Event Calendar: End Time" editor_type="LINE">ekit_event_calender_end_time</field>
+			</fields-in-item>
+		</widget>
 	  	<widget name="elementskit-stacked-cards">
 			<conditions>
 				<condition key="widgetType">elementskit-stacked-cards</condition>

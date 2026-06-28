@@ -25,7 +25,7 @@ class ElementsKit_Widget_Funfact extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		$deps = [];
+		$deps = ['ekit-animate-numbers', 'ekit-funfact'];
 
 		if ( Plugin::$instance->editor->is_edit_mode() || Plugin::$instance->preview->is_preview_mode() ) {
 			$deps[] = 'odometer';

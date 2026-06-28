@@ -12,12 +12,11 @@ class ElementsKit_Widget_Image_Comparison extends Widget_Base {
     public $base;
     
     public function __construct( $data = [], $args = null ) {
+		parent::__construct( $data, $args );
+	}
 
-        parent::__construct( $data, $args );
-
-		$this->add_script_depends('event.move');
-		$this->add_script_depends('twentytwenty');
-		$this->add_script_depends('imagesloaded');
+	public function get_script_depends() {
+		return ['ekit-image-comparison', 'event.move', 'twentytwenty', 'imagesloaded'];
 	}
 
     public function get_name() {
@@ -648,8 +647,8 @@ class ElementsKit_Widget_Image_Comparison extends Widget_Base {
 			$this->add_render_attribute( 'image_comparison_wrapper', 'class', 'elementskit-image-comparison image-comparison-container');
 		endif;
 
-		$label_after = \ElementsKit_Lite\Utils::remove_special_chars($settings['ekit_img_comparison_label_after']);
-		$label_before = \ElementsKit_Lite\Utils::remove_special_chars($settings['ekit_img_comparison_label_before']);
+		$label_after = sanitize_text_field($settings['ekit_img_comparison_label_after']);
+		$label_before = sanitize_text_field($settings['ekit_img_comparison_label_before']);
 
 		$this->add_render_attribute(
 			'image_comparison_wrapper',

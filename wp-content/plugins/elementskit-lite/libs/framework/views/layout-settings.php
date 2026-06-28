@@ -70,10 +70,10 @@ endforeach;
 									<input checked="" type="checkbox" value="image-accordion" class="ekit-admin-control-input ekit-all-control-input" name="ekit_all_activation_input_widget_<?php echo esc_attr( $section_key ); ?>" id="ekit_all_activation_input_widget_<?php echo esc_attr( $section_key ); ?>">
 									<label class="ekit-admin-control-label" for="ekit_all_activation_input_widget_<?php echo esc_attr( $section_key ); ?>">
 										<span class="ekit-admin-control-label-wrap">
-											<span class="ekit-admin-control-label-disable attr-disable">Disable All</span>
+											<span class="ekit-admin-control-label-disable attr-disable"> <?php esc_html_e( 'Disable All', 'elementskit-lite' ); ?></span>
 											<span class="ekit-admin-control-label-switch" data-active="ON"
 												data-inactive="OFF"></span>
-											<span class="ekit-admin-control-label-enable">Enable All</span>
+											<span class="ekit-admin-control-label-enable"> <?php esc_html_e( 'Enable All', 'elementskit-lite' ); ?></span>
 										</span>
 									</label>                                        
 								</div>

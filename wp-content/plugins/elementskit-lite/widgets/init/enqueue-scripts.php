@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
 class Enqueue_Scripts {
 
 	public function __construct() {
-		add_action( 'elementor/frontend/after_register_scripts', [$this, 'register_scripts'] );
+		add_action( 'elementor/frontend/after_register_scripts', [$this, 'register_scripts'], 9 );
 		add_action( 'elementor/frontend/after_enqueue_scripts', [$this, 'enqueue_scripts'] );
 
 		add_action( 'elementor/frontend/after_register_styles', [$this, 'register_frontend_css'] );
@@ -40,7 +40,7 @@ class Enqueue_Scripts {
 		}
 
 		// register script for gallery, video gallery
-		wp_register_script( 'isotope', \ElementsKit_Lite::widget_url() . 'init/assets/js/isotope.pkgd.min.js', array(), \ElementsKit_Lite::version(), true );
+		wp_register_script('gallery-filter', \ElementsKit_Lite::widget_url() . 'init/assets/js/gallery-filter.js', array('jquery'), \ElementsKit_Lite::version(), true);
 
 		// register script for countdown timer
 		wp_register_script( 'final-countdown', \ElementsKit_Lite::widget_url() . 'init/assets/js/jquery.countdown.min.js', array(), \ElementsKit_Lite::version(), true );
@@ -57,40 +57,39 @@ class Enqueue_Scripts {
 		// register script for mailchimp
 		wp_register_script( 'ekit-mailchimp', \ElementsKit_Lite::widget_url() . 'init/assets/js/mail-chimp.js', array(), \ElementsKit_Lite::version(), true );
 
-		// register script for gallery
-		// wp_register_script( 'tilt', \ElementsKit_Lite::widget_url() . 'init/assets/js/tilt.jquery.min.js', array(), \ElementsKit_Lite::version(), true );
-
-		// register script for pricing table
-		// wp_register_script( 'ekit-google-map', \ElementsKit_Lite::widget_url() . 'init/assets/js/google-map.js', array(), \ElementsKit_Lite::version(), true );
-
 		// register script for pricing table
 		wp_register_script( 'ekit-info-tip', \ElementsKit_Lite::widget_url() . 'init/assets/js/info-tip.js', array(), \ElementsKit_Lite::version(), true );
 
-
-
 		// sosial share
 		wp_register_script( 'goodshare', \ElementsKit_Lite::widget_url() . 'init/assets/js/goodshare.min.js', array( 'jquery' ), \ElementsKit_Lite::version(), true );
-
-		// table
-		wp_register_script( 'datatables', \ElementsKit_Lite::widget_url() . 'init/assets/js/datatables.min.js', array( 'jquery' ), \ElementsKit_Lite::version(), true );
-
-		// Google Map widget scripts
-		$user_data = Attr::instance()->utils->get_option('user_data', []);
-		$gmap_api_key = !empty($user_data['google_map']) ? $user_data['google_map']['api_key'] : '';
-		wp_register_script( 'ekit-google-map-api', 'https://maps.googleapis.com/maps/api/js?key=' . $gmap_api_key . '', array('jquery'), \ElementsKit_Lite::version(), true );
-		wp_register_script( 'ekit-google-gmaps', \ElementsKit_Lite::widget_url() . 'init/assets/js/gmaps.min.js', array('jquery'), \ElementsKit_Lite::version(), true );
 
 		// funfact widget
 		wp_register_script( 'odometer', \ElementsKit_Lite::widget_url() . 'init/assets/js/odometer.min.js', array('jquery'), \ElementsKit_Lite::version(), true );
 
 		// Animate Circle Script
 		wp_register_script( 'animate-circle', \ElementsKit_Lite::widget_url() . 'init/assets/js/animate-circle.min.js', [], \ElementsKit_Lite::version(), true );
+
+		// Register split Elementor widget scripts.
+		wp_register_script( 'ekit-core', \ElementsKit_Lite::widget_url() . 'init/assets/js/widgets/core.js', ['jquery', 'elementor-frontend'], \ElementsKit_Lite::version(), true );
+		wp_register_script( 'ekit-admin-toolbar', \ElementsKit_Lite::widget_url() . 'init/assets/js/widgets/admin-toolbar.js', ['jquery'], \ElementsKit_Lite::version(), true );
+		wp_register_script( 'ekit-animate-numbers', \ElementsKit_Lite::widget_url() . 'init/assets/js/widgets/animate-numbers.js', ['jquery'], \ElementsKit_Lite::version(), true );
+
+		$widget_list = \ElementsKit_Lite\Config\Widget_List::instance()->get_list( 'all' );
+
+		foreach ( $widget_list as $widget_slug => $widget ) {
+			if ( empty( $widget['hasJS'] ) ) {
+				continue;
+			}
+
+			$script_handle = 'ekit-' . $widget_slug;
+			$script_file = $widget_slug . '.js';
+			$deps = [ 'ekit-core' ];
+
+			wp_register_script( $script_handle, \ElementsKit_Lite::widget_url() . 'init/assets/js/widgets/' . $script_file, $deps, \ElementsKit_Lite::version(), true );
+		}
 	}
 
 	public function enqueue_scripts() {
-		// Enqueue Scripts
-		wp_enqueue_script( 'elementskit-elementor', \ElementsKit_Lite::widget_url() . 'init/assets/js/elementor.js', ['jquery', 'elementor-frontend'], \ElementsKit_Lite::version(), true );
-
 		/**
          * Localize frontend configuration for ElementsKit.
          */
@@ -102,7 +101,7 @@ class Enqueue_Scripts {
             ]
         );
 
-        wp_localize_script( 'elementskit-elementor', 'ekit_config', $config );
+		wp_localize_script( 'ekit-core', 'ekit_config', $config );
 
 		// compatibility
 		if($this->is_plugin_active('elementskit/elementskit.php') && version_compare(\Elementskit::version(), '3.2.0', '<=')) {
@@ -127,11 +126,18 @@ class Enqueue_Scripts {
 		// register scripts for lottie
 		wp_register_script( 'lottie', \ElementsKit_Lite::widget_url() . 'lottie/assets/js/lottie.min.js', [], \ElementsKit_Lite::version(), true );
 		wp_register_script( 'lottie-init', \ElementsKit_Lite::widget_url() . 'lottie/assets/js/lottie.init.js', ['lottie', 'elementor-frontend'], \ElementsKit_Lite::version(), true );
+	
+		// Enqueue admin toolbar script for logged-in users
+		if(is_user_logged_in()) {
+			wp_enqueue_script( 'ekit-admin-toolbar' );
+		}
 	}
 
 	public function register_frontend_css() {
 		// odometer styles
 		wp_register_style( 'odometer', \ElementsKit_Lite::widget_url() . 'init/assets/css/odometer-theme-default.css', [], \ElementsKit_Lite::version() );
+		//gallery filter
+		wp_register_style( 'gallery-filter', \ElementsKit_Lite::widget_url() . 'init/assets/css/gallery-filter.css', [], \ElementsKit_Lite::version() );
 	}
 
 	public function enqueue_frontend_css() {

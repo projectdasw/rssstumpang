@@ -47,9 +47,11 @@
 	require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-plugin-plan.php';
 	require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-pricing.php';
 	require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-payment.php';
-	require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-billing.php';
 	require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-plugin-license.php';
 	require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-subscription.php';
+	// Modified
+	// Ensure FS_Billing class is loaded to prevent "Class not found" errors
+	require_once WP_FS__DIR_INCLUDES . '/entities/class-fs-billing.php';
 	require_once WP_FS__DIR_INCLUDES . '/class-fs-api.php';
 	require_once WP_FS__DIR_INCLUDES . '/class-fs-plugin-updater.php';
 	require_once WP_FS__DIR_INCLUDES . '/class-fs-security.php';
@@ -59,4 +61,5 @@
     require_once WP_FS__DIR_INCLUDES . '/class-fs-admin-notices.php';
 	require_once WP_FS__DIR_INCLUDES . '/class-freemius-abstract.php';
 	require_once WP_FS__DIR_INCLUDES . '/sdk/Exceptions/Exception.php';
+	require_once WP_FS__DIR_INCLUDES . '/class-fs-hook-snapshot.php';
 	require_once WP_FS__DIR_INCLUDES . '/class-freemius.php';
