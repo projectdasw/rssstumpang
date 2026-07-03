@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: ElementsKit Lite 3.9.9\n"
+"Project-Id-Version: ElementsKit Lite 3.9.10\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/elementskit-lite\n"
-"POT-Creation-Date: 2026-06-23 06:48:35+00:00\n"
+"POT-Creation-Date: 2026-07-01 09:34:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,22 +13,22 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
 
-#: widgets/blog-posts/blog-posts.php:167
+#: widgets/blog-posts/blog-posts.php:163
 #: widgets/testimonial/testimonial.php:368
 msgid "1"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:168
+#: widgets/blog-posts/blog-posts.php:164
 #: widgets/testimonial/testimonial.php:367
 msgid "2"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:169 widgets/post-grid/post-grid.php:67
+#: widgets/blog-posts/blog-posts.php:165 widgets/post-grid/post-grid.php:67
 #: widgets/post-tab/post-tab.php:72 widgets/testimonial/testimonial.php:366
 msgid "3"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:170
+#: widgets/blog-posts/blog-posts.php:166
 #: widgets/testimonial/testimonial.php:365
 msgid "4"
 msgstr ""
@@ -37,7 +37,7 @@ msgstr ""
 msgid "5"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:171
+#: widgets/blog-posts/blog-posts.php:167
 msgid "6"
 msgstr ""
 
@@ -203,31 +203,31 @@ msgstr ""
 msgid "ElementsKit Header Footer"
 msgstr ""
 
-#: helpers/utils.php:231
+#: helpers/utils.php:232
 msgid "Select Form"
 msgstr ""
 
-#: helpers/utils.php:236
+#: helpers/utils.php:237
 msgid "Create a form first"
 msgstr ""
 
-#: helpers/utils.php:250
+#: helpers/utils.php:251
 msgid "Select Ninja Form"
 msgstr ""
 
-#: helpers/utils.php:257 widgets/fluent-forms/fluent-forms.php:66
+#: helpers/utils.php:258 widgets/fluent-forms/fluent-forms.php:66
 msgid "Create a Form First"
 msgstr ""
 
-#: helpers/utils.php:268 widgets/tablepress/tablepress.php:55
+#: helpers/utils.php:269 widgets/tablepress/tablepress.php:55
 msgid "Select Table"
 msgstr ""
 
-#: helpers/utils.php:275
+#: helpers/utils.php:276
 msgid "(no name)"
 msgstr ""
 
-#: helpers/utils.php:281
+#: helpers/utils.php:282
 msgid "Create a Table First"
 msgstr ""
 
@@ -479,7 +479,15 @@ msgstr ""
 msgid "Table Builder Activated"
 msgstr ""
 
-#: libs/framework/classes/ajax.php:138
+#: libs/framework/classes/ajax.php:133
+msgid "Dynamic CPT Fields Activated"
+msgstr ""
+
+#: libs/framework/classes/ajax.php:134
+msgid "Appointment Booking Activated"
+msgstr ""
+
+#: libs/framework/classes/ajax.php:140
 msgid "Plugin Activated"
 msgstr ""
 
@@ -641,7 +649,7 @@ msgstr ""
 
 #: libs/framework/views/onboard-steps/step-01.php:64
 #: libs/framework/views/onboard-steps/step-02.php:17
-#: libs/framework/views/onboard-steps/step-03.php:169
+#: libs/framework/views/onboard-steps/step-03.php:170
 #: libs/framework/views/onboard-steps/step-04.php:19
 #: libs/framework/views/onboard-steps/step-05.php:89
 msgid "Back"
@@ -687,45 +695,45 @@ msgstr ""
 msgid "A fleet of plugins with all types of features you will need for WordPress."
 msgstr ""
 
-#: libs/framework/views/onboard-steps/step-03.php:38
-msgid "Find top keywords, create winning content & track SEO results with AI."
+#: libs/framework/views/onboard-steps/step-03.php:40
+msgid "Build and manage custom CPT fields for WordPress with AI and zero coding."
 msgstr ""
 
-#: libs/framework/views/onboard-steps/step-03.php:55
+#: libs/framework/views/onboard-steps/step-03.php:57
+msgid "Manage schedules, agents, and payments, all from one dashboard in WordPress."
+msgstr ""
+
+#: libs/framework/views/onboard-steps/step-03.php:74
 msgid "The ultimate solution to build a complete WooCommerce site in Elementor."
 msgstr ""
 
-#: libs/framework/views/onboard-steps/step-03.php:72
+#: libs/framework/views/onboard-steps/step-03.php:91
 msgid "Most flexible form builder for Elementor with a wide range of features."
 msgstr ""
 
-#: libs/framework/views/onboard-steps/step-03.php:89
-msgid "Drag-and-drop email builder for WooCommerce & WordPress."
-msgstr ""
-
-#: libs/framework/views/onboard-steps/step-03.php:106 plugin.php:260
-msgid "Design popups that convert, right in your WordPress dashboard."
-msgstr ""
-
-#: libs/framework/views/onboard-steps/step-03.php:123
-msgid "Build responsive data, pricing & comparison tables with advanced features."
-msgstr ""
-
-#: libs/framework/views/onboard-steps/step-03.php:140
-msgid "WordPress integration with popular social platforms to show social proof."
-msgstr ""
-
-#: libs/framework/views/onboard-steps/step-03.php:159
+#: libs/framework/views/onboard-steps/step-03.php:109
 msgid ""
 "Enhance block capability with page builder features & templates for "
 "Gutenberg."
 msgstr ""
 
-#: libs/framework/views/onboard-steps/step-03.php:172
+#: libs/framework/views/onboard-steps/step-03.php:126 plugin.php:260
+msgid "Design popups that convert, right in your WordPress dashboard."
+msgstr ""
+
+#: libs/framework/views/onboard-steps/step-03.php:143
+msgid "Drag-and-drop email builder for WooCommerce & WordPress."
+msgstr ""
+
+#: libs/framework/views/onboard-steps/step-03.php:160
+msgid "Find top keywords, create winning content & track SEO results with AI."
+msgstr ""
+
+#: libs/framework/views/onboard-steps/step-03.php:173
 msgid "Continue"
 msgstr ""
 
-#: libs/framework/views/onboard-steps/step-03.php:179
+#: libs/framework/views/onboard-steps/step-03.php:180
 msgid "Unlock All & Continue"
 msgstr ""
 
@@ -1044,8 +1052,8 @@ msgid "Facebook Messenger"
 msgstr ""
 
 #: libs/framework/views/settings-sections/usersettings.php:261
-#: widgets/blog-posts/blog-posts.php:1215
-#: widgets/blog-posts/blog-posts.php:1295
+#: widgets/blog-posts/blog-posts.php:1211
+#: widgets/blog-posts/blog-posts.php:1291
 #: widgets/header-info/header-info.php:195 widgets/icon-box/icon-box.php:975
 #: widgets/image-box/image-box.php:444 widgets/image-box/image-box.php:488
 #: widgets/pricing/pricing.php:281 widgets/tab/tab.php:778
@@ -1055,7 +1063,7 @@ msgid "Icon Color"
 msgstr ""
 
 #: libs/framework/views/settings-sections/usersettings.php:273
-#: widgets/accordion/accordion.php:312 widgets/blog-posts/blog-posts.php:1870
+#: widgets/accordion/accordion.php:312 widgets/blog-posts/blog-posts.php:1866
 #: widgets/business-hours/business-hours.php:128
 #: widgets/category-list/category-list.php:112
 #: widgets/countdown-timer/countdown-timer.php:1722
@@ -1327,6 +1335,20 @@ msgstr ""
 msgid "These are absolute FREE to use."
 msgstr ""
 
+#: libs/pro-label/admin-notice.php:20
+msgid "Thank you for using ElementsKit Lite."
+msgstr ""
+
+#: libs/pro-label/admin-notice.php:20
+msgid ""
+"To get more amazing features and the outstanding pro ready-made layouts, "
+"please get the"
+msgstr ""
+
+#: libs/pro-label/admin-notice.php:20
+msgid "Premium Version"
+msgstr ""
+
 #: libs/stories/stories.php:252
 msgid "Wpmet Stories"
 msgstr ""
@@ -1434,7 +1456,7 @@ msgstr ""
 msgid "Not found in Trash"
 msgstr ""
 
-#: modules/dynamic-content/cpt.php:35 widgets/blog-posts/blog-posts.php:983
+#: modules/dynamic-content/cpt.php:35 widgets/blog-posts/blog-posts.php:979
 msgid "Featured Image"
 msgstr ""
 
@@ -1657,7 +1679,7 @@ msgid "Enable this menu for Megamenu content"
 msgstr ""
 
 #: modules/megamenu/views/options-menu-item.php:7
-#: widgets/accordion/accordion.php:99 widgets/blog-posts/blog-posts.php:2191
+#: widgets/accordion/accordion.php:99 widgets/blog-posts/blog-posts.php:2187
 #: widgets/business-hours/business-hours.php:52 widgets/button/button.php:52
 #: widgets/countdown-timer/countdown-timer.php:240
 #: widgets/countdown-timer/countdown-timer.php:1690
@@ -1676,7 +1698,7 @@ msgstr ""
 
 #: modules/megamenu/views/options-menu-item.php:9
 #: widgets/accordion/accordion.php:160 widgets/accordion/accordion.php:726
-#: widgets/back-to-top/back-to-top.php:85 widgets/blog-posts/blog-posts.php:592
+#: widgets/back-to-top/back-to-top.php:85 widgets/blog-posts/blog-posts.php:588
 #: widgets/button/button.php:108 widgets/button/button.php:443
 #: widgets/category-list/category-list.php:99
 #: widgets/category-list/category-list.php:355
@@ -1713,9 +1735,9 @@ msgid "Badge"
 msgstr ""
 
 #: modules/megamenu/views/options-menu-item.php:13
-#: modules/onepage-scroll/extend-controls.php:76 widgets/button/button.php:88
-#: widgets/client-logo/client-logo.php:202 widgets/funfact/funfact.php:276
-#: widgets/icon-box/icon-box.php:340
+#: modules/onepage-scroll/extend-controls.php:76 plugin.php:187
+#: widgets/button/button.php:88 widgets/client-logo/client-logo.php:202
+#: widgets/funfact/funfact.php:276 widgets/icon-box/icon-box.php:340
 #: widgets/image-comparison/image-comparison.php:143
 #: widgets/page-list/page-list.php:246 widgets/post-list/post-list.php:141
 #: widgets/testimonial/testimonial.php:575
@@ -1837,11 +1859,11 @@ msgstr ""
 #: modules/megamenu/views/options-menu-item.php:141
 #: widgets/accordion/accordion.php:79 widgets/accordion/accordion.php:126
 #: widgets/accordion/accordion.php:710 widgets/back-to-top/back-to-top.php:171
-#: widgets/blog-posts/blog-posts.php:88 widgets/blog-posts/blog-posts.php:185
-#: widgets/blog-posts/blog-posts.php:206 widgets/blog-posts/blog-posts.php:228
-#: widgets/blog-posts/blog-posts.php:378 widgets/blog-posts/blog-posts.php:417
-#: widgets/blog-posts/blog-posts.php:431 widgets/blog-posts/blog-posts.php:478
-#: widgets/blog-posts/blog-posts.php:584 widgets/blog-posts/blog-posts.php:2091
+#: widgets/blog-posts/blog-posts.php:84 widgets/blog-posts/blog-posts.php:181
+#: widgets/blog-posts/blog-posts.php:202 widgets/blog-posts/blog-posts.php:224
+#: widgets/blog-posts/blog-posts.php:374 widgets/blog-posts/blog-posts.php:413
+#: widgets/blog-posts/blog-posts.php:427 widgets/blog-posts/blog-posts.php:474
+#: widgets/blog-posts/blog-posts.php:580 widgets/blog-posts/blog-posts.php:2087
 #: widgets/button/button.php:100 widgets/client-logo/client-logo.php:115
 #: widgets/client-logo/client-logo.php:145
 #: widgets/client-logo/client-logo.php:312
@@ -1903,11 +1925,11 @@ msgstr ""
 #: modules/megamenu/views/options-menu-item.php:143
 #: widgets/accordion/accordion.php:80 widgets/accordion/accordion.php:127
 #: widgets/accordion/accordion.php:711 widgets/back-to-top/back-to-top.php:172
-#: widgets/blog-posts/blog-posts.php:89 widgets/blog-posts/blog-posts.php:186
-#: widgets/blog-posts/blog-posts.php:207 widgets/blog-posts/blog-posts.php:229
-#: widgets/blog-posts/blog-posts.php:379 widgets/blog-posts/blog-posts.php:418
-#: widgets/blog-posts/blog-posts.php:432 widgets/blog-posts/blog-posts.php:479
-#: widgets/blog-posts/blog-posts.php:585 widgets/blog-posts/blog-posts.php:2092
+#: widgets/blog-posts/blog-posts.php:85 widgets/blog-posts/blog-posts.php:182
+#: widgets/blog-posts/blog-posts.php:203 widgets/blog-posts/blog-posts.php:225
+#: widgets/blog-posts/blog-posts.php:375 widgets/blog-posts/blog-posts.php:414
+#: widgets/blog-posts/blog-posts.php:428 widgets/blog-posts/blog-posts.php:475
+#: widgets/blog-posts/blog-posts.php:581 widgets/blog-posts/blog-posts.php:2088
 #: widgets/button/button.php:101 widgets/client-logo/client-logo.php:116
 #: widgets/client-logo/client-logo.php:146
 #: widgets/client-logo/client-logo.php:313
@@ -1983,7 +2005,7 @@ msgid "Navigation Style"
 msgstr ""
 
 #: modules/onepage-scroll/extend-controls-pro.php:49
-#: widgets/blog-posts/blog-posts.php:900 widgets/blog-posts/blog-posts.php:2722
+#: widgets/blog-posts/blog-posts.php:896 widgets/blog-posts/blog-posts.php:2718
 #: widgets/button/button.php:318 widgets/funfact/funfact.php:94
 #: widgets/icon-box/icon-box.php:84 widgets/image-box/image-box.php:783
 #: widgets/lottie/lottie.php:240 widgets/nav-menu/nav-menu.php:154
@@ -2074,10 +2096,9 @@ msgid "Navigation Position"
 msgstr ""
 
 #: modules/onepage-scroll/extend-controls-pro.php:112
-#: widgets/back-to-top/back-to-top.php:106
-#: widgets/blog-posts/blog-posts.php:103 widgets/blog-posts/blog-posts.php:755
-#: widgets/blog-posts/blog-posts.php:1445
-#: widgets/blog-posts/blog-posts.php:1799 widgets/funfact/funfact.php:343
+#: widgets/back-to-top/back-to-top.php:106 widgets/blog-posts/blog-posts.php:99
+#: widgets/blog-posts/blog-posts.php:751 widgets/blog-posts/blog-posts.php:1441
+#: widgets/blog-posts/blog-posts.php:1795 widgets/funfact/funfact.php:343
 #: widgets/funfact/funfact.php:1047 widgets/funfact/funfact.php:1098
 #: widgets/header-search/header-search.php:523 widgets/heading/heading.php:374
 #: widgets/icon-box/icon-box.php:382 widgets/icon-box/icon-box.php:735
@@ -2094,7 +2115,7 @@ msgid "Top"
 msgstr ""
 
 #: modules/onepage-scroll/extend-controls-pro.php:116
-#: widgets/blog-posts/blog-posts.php:763 widgets/blog-posts/blog-posts.php:1473
+#: widgets/blog-posts/blog-posts.php:759 widgets/blog-posts/blog-posts.php:1469
 #: widgets/funfact/funfact.php:1106 widgets/header-search/header-search.php:531
 #: widgets/heading/heading.php:377 widgets/icon-box/icon-box.php:743
 #: widgets/image-accordion/image-accordion.php:601
@@ -2112,13 +2133,13 @@ msgstr ""
 
 #: modules/onepage-scroll/extend-controls-pro.php:120
 #: widgets/accordion/accordion.php:171 widgets/back-to-top/back-to-top.php:123
-#: widgets/blog-posts/blog-posts.php:104 widgets/blog-posts/blog-posts.php:145
-#: widgets/blog-posts/blog-posts.php:626 widgets/blog-posts/blog-posts.php:1107
-#: widgets/blog-posts/blog-posts.php:1417
-#: widgets/blog-posts/blog-posts.php:1501
-#: widgets/blog-posts/blog-posts.php:1825
-#: widgets/blog-posts/blog-posts.php:2037
-#: widgets/blog-posts/blog-posts.php:2248 widgets/button/button.php:143
+#: widgets/blog-posts/blog-posts.php:100 widgets/blog-posts/blog-posts.php:141
+#: widgets/blog-posts/blog-posts.php:622 widgets/blog-posts/blog-posts.php:1103
+#: widgets/blog-posts/blog-posts.php:1413
+#: widgets/blog-posts/blog-posts.php:1497
+#: widgets/blog-posts/blog-posts.php:1821
+#: widgets/blog-posts/blog-posts.php:2033
+#: widgets/blog-posts/blog-posts.php:2244 widgets/button/button.php:143
 #: widgets/category-list/category-list.php:176
 #: widgets/contact-form7/contact-form7.php:582
 #: widgets/dual-button/dual-button.php:86
@@ -2163,10 +2184,10 @@ msgstr ""
 
 #: modules/onepage-scroll/extend-controls-pro.php:124
 #: widgets/accordion/accordion.php:170 widgets/back-to-top/back-to-top.php:131
-#: widgets/blog-posts/blog-posts.php:149 widgets/blog-posts/blog-posts.php:634
-#: widgets/blog-posts/blog-posts.php:1115
-#: widgets/blog-posts/blog-posts.php:2045
-#: widgets/blog-posts/blog-posts.php:2256 widgets/button/button.php:151
+#: widgets/blog-posts/blog-posts.php:145 widgets/blog-posts/blog-posts.php:630
+#: widgets/blog-posts/blog-posts.php:1111
+#: widgets/blog-posts/blog-posts.php:2041
+#: widgets/blog-posts/blog-posts.php:2252 widgets/button/button.php:151
 #: widgets/category-list/category-list.php:184
 #: widgets/contact-form7/contact-form7.php:590
 #: widgets/dual-button/dual-button.php:94
@@ -2385,53 +2406,53 @@ msgid ""
 msgstr ""
 
 #: plugin.php:222
-msgid "GetGenie AI"
+msgid "GutenKit"
 msgstr ""
 
 #: plugin.php:225
 msgid ""
-"Your personal AI assistant for content and SEO. Write content that ranks on "
-"Google with NLP keywords and SERP analysis data."
+"Gutenberg blocks, patterns, and templates that extend the page-building "
+"experience using the WordPress block editor."
 msgstr ""
 
 #: plugin.php:229
-msgid "ShopEngine"
+msgid "Dynamic CPT Fields Engine"
 msgstr ""
 
 #: plugin.php:232
 msgid ""
-"Complete WooCommerce solution for Elementor to fully customize any pages "
-"including cart, checkout, shop page, and so on."
+"Build custom post types, fields, taxonomies, and dynamic frontend layouts "
+"for WordPress, with zero coding and full AI-generated schema."
 msgstr ""
 
 #: plugin.php:236
-msgid "MetForm"
+msgid "Rox Appointment Booking"
 msgstr ""
 
 #: plugin.php:239
+msgid ""
+" Manage bookings, agents, payments, and calendars from one dashboard! A "
+"complete appointment and scheduling solution for WordPress."
+msgstr ""
+
+#: plugin.php:243
+msgid "MetForm"
+msgstr ""
+
+#: plugin.php:246
 msgid ""
 "Drag & drop form builder for Elementor to create contact forms, multi-step "
 "forms, and more — smoother, faster, and better!"
 msgstr ""
 
-#: plugin.php:243
-msgid "EmailKit"
-msgstr ""
-
-#: plugin.php:246
-msgid ""
-"Advanced email customizer for WooCommerce and WordPress. Build, customize, "
-"and send emails from WordPress to boost your sales!"
-msgstr ""
-
 #: plugin.php:250
-msgid "GutenKit"
+msgid "ShopEngine"
 msgstr ""
 
 #: plugin.php:253
 msgid ""
-"Gutenberg blocks, patterns, and templates that extend the page-building "
-"experience using the WordPress block editor."
+"Complete WooCommerce solution for Elementor to fully customize any pages "
+"including cart, checkout, shop page, and so on."
 msgstr ""
 
 #: plugin.php:257
@@ -2449,33 +2470,33 @@ msgid ""
 msgstr ""
 
 #: plugin.php:271
-msgid "WP Social"
+msgid "GetGenie AI"
 msgstr ""
 
 #: plugin.php:274
 msgid ""
-"Add social share, login, and engagement counter — unified solution for all "
-"social media with tons of different styles for your website."
+"Your personal AI assistant for content and SEO. Write content that ranks on "
+"Google with NLP keywords and SERP analysis data."
 msgstr ""
 
 #: plugin.php:278
-msgid "WP Ultimate Review"
+msgid "EmailKit"
 msgstr ""
 
 #: plugin.php:281
 msgid ""
-"Collect and showcase reviews on your website to build brand credibility and "
-"social proof with the easiest solution."
+"Advanced email customizer for WooCommerce and WordPress. Build, customize, "
+"and send emails from WordPress to boost your sales!"
 msgstr ""
 
 #: plugin.php:285
-msgid "FundEngine"
+msgid "WP Social"
 msgstr ""
 
 #: plugin.php:288
 msgid ""
-"Create fundraising, crowdfunding, and donation websites with PayPal and "
-"Stripe payment gateway integration."
+"Add social share, login, and engagement counter — unified solution for all "
+"social media with tons of different styles for your website."
 msgstr ""
 
 #: plugin.php:292
@@ -2488,23 +2509,13 @@ msgid ""
 "in a block editor with full customization."
 msgstr ""
 
-#: plugin.php:299
-msgid "Genie Image"
-msgstr ""
-
-#: plugin.php:302
-msgid ""
-"AI-powered text-to-image generator for WordPress with OpenAI’s DALL-E 2 "
-"technology to generate high-quality images in one click."
-msgstr ""
-
 #: widgets/accordion/accordion-handler.php:12
 #: widgets/accordion/accordion.php:55
 msgid "Accordion"
 msgstr ""
 
 #: widgets/accordion/accordion.php:63 widgets/accordion/accordion.php:257
-#: widgets/blog-posts/blog-posts.php:340 widgets/blog-posts/blog-posts.php:1943
+#: widgets/blog-posts/blog-posts.php:336 widgets/blog-posts/blog-posts.php:1939
 #: widgets/countdown-timer/countdown-timer.php:1664 widgets/faq/faq.php:60
 #: widgets/faq/faq.php:124 widgets/fluent-forms/fluent-forms.php:108
 #: widgets/fluent-forms/fluent-forms.php:229 widgets/funfact/funfact.php:938
@@ -2572,7 +2583,7 @@ msgstr ""
 msgid "Accordian FAQ Schema"
 msgstr ""
 
-#: widgets/accordion/accordion.php:166 widgets/blog-posts/blog-posts.php:607
+#: widgets/accordion/accordion.php:166 widgets/blog-posts/blog-posts.php:603
 #: widgets/button/button.php:123 widgets/dual-button/dual-button.php:227
 #: widgets/dual-button/dual-button.php:356 widgets/funfact/funfact.php:339
 #: widgets/icon-box/icon-box.php:285 widgets/icon-box/icon-box.php:378
@@ -2592,7 +2603,7 @@ msgstr ""
 msgid "Show Loop Count"
 msgstr ""
 
-#: widgets/accordion/accordion.php:182 widgets/blog-posts/blog-posts.php:2294
+#: widgets/accordion/accordion.php:182 widgets/blog-posts/blog-posts.php:2290
 #: widgets/client-logo/client-logo.php:440
 #: widgets/contact-form7/contact-form7.php:652
 #: widgets/fluent-forms/fluent-forms.php:142
@@ -2618,7 +2629,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: widgets/accordion/accordion.php:183 widgets/blog-posts/blog-posts.php:2295
+#: widgets/accordion/accordion.php:183 widgets/blog-posts/blog-posts.php:2291
 #: widgets/client-logo/client-logo.php:441
 #: widgets/contact-form7/contact-form7.php:653
 #: widgets/fluent-forms/fluent-forms.php:143
@@ -2668,14 +2679,14 @@ msgstr ""
 #: widgets/accordion/accordion.php:526 widgets/accordion/accordion.php:760
 #: widgets/accordion/accordion.php:848 widgets/back-to-top/back-to-top.php:393
 #: widgets/back-to-top/back-to-top.php:425
-#: widgets/blog-posts/blog-posts.php:1204
-#: widgets/blog-posts/blog-posts.php:1283
-#: widgets/blog-posts/blog-posts.php:1546
-#: widgets/blog-posts/blog-posts.php:1571
-#: widgets/blog-posts/blog-posts.php:1859
-#: widgets/blog-posts/blog-posts.php:1972
-#: widgets/blog-posts/blog-posts.php:2000
-#: widgets/blog-posts/blog-posts.php:2202
+#: widgets/blog-posts/blog-posts.php:1200
+#: widgets/blog-posts/blog-posts.php:1279
+#: widgets/blog-posts/blog-posts.php:1542
+#: widgets/blog-posts/blog-posts.php:1567
+#: widgets/blog-posts/blog-posts.php:1855
+#: widgets/blog-posts/blog-posts.php:1968
+#: widgets/blog-posts/blog-posts.php:1996
+#: widgets/blog-posts/blog-posts.php:2198
 #: widgets/business-hours/business-hours.php:270
 #: widgets/business-hours/business-hours.php:333
 #: widgets/category-list/category-list.php:302
@@ -2784,7 +2795,7 @@ msgstr ""
 
 #: widgets/accordion/accordion.php:289 widgets/accordion/accordion.php:390
 #: widgets/accordion/accordion.php:770 widgets/accordion/accordion.php:858
-#: widgets/blog-posts/blog-posts.php:2214 widgets/heading/heading.php:473
+#: widgets/blog-posts/blog-posts.php:2210 widgets/heading/heading.php:473
 #: widgets/heading/heading.php:655 widgets/post-grid/post-grid.php:201
 #: widgets/post-tab/post-tab.php:469
 msgid "Hover Color"
@@ -2796,9 +2807,9 @@ msgstr ""
 #: widgets/accordion/accordion.php:881 widgets/accordion/accordion.php:894
 #: widgets/back-to-top/back-to-top.php:405
 #: widgets/back-to-top/back-to-top.php:438
-#: widgets/blog-posts/blog-posts.php:697 widgets/blog-posts/blog-posts.php:721
-#: widgets/blog-posts/blog-posts.php:1227
-#: widgets/blog-posts/blog-posts.php:1308
+#: widgets/blog-posts/blog-posts.php:693 widgets/blog-posts/blog-posts.php:717
+#: widgets/blog-posts/blog-posts.php:1223
+#: widgets/blog-posts/blog-posts.php:1304
 #: widgets/business-hours/business-hours.php:229
 #: widgets/business-hours/business-hours.php:289
 #: widgets/business-hours/business-hours.php:352
@@ -2910,11 +2921,11 @@ msgstr ""
 #: widgets/accordion/accordion.php:614 widgets/accordion/accordion.php:634
 #: widgets/accordion/accordion.php:674 widgets/accordion/accordion.php:816
 #: widgets/accordion/accordion.php:904 widgets/back-to-top/back-to-top.php:323
-#: widgets/blog-posts/blog-posts.php:1037
-#: widgets/blog-posts/blog-posts.php:1238
-#: widgets/blog-posts/blog-posts.php:1319
-#: widgets/blog-posts/blog-posts.php:1605
-#: widgets/blog-posts/blog-posts.php:2563
+#: widgets/blog-posts/blog-posts.php:1033
+#: widgets/blog-posts/blog-posts.php:1234
+#: widgets/blog-posts/blog-posts.php:1315
+#: widgets/blog-posts/blog-posts.php:1601
+#: widgets/blog-posts/blog-posts.php:2559
 #: widgets/business-hours/business-hours.php:251 widgets/button/button.php:307
 #: widgets/client-logo/client-logo.php:690
 #: widgets/client-logo/client-logo.php:717
@@ -3005,11 +3016,11 @@ msgstr ""
 #: widgets/accordion/accordion.php:555 widgets/accordion/accordion.php:642
 #: widgets/accordion/accordion.php:682 widgets/accordion/accordion.php:916
 #: widgets/back-to-top/back-to-top.php:335
-#: widgets/blog-posts/blog-posts.php:1246
-#: widgets/blog-posts/blog-posts.php:1327
-#: widgets/blog-posts/blog-posts.php:1615
-#: widgets/blog-posts/blog-posts.php:1901
-#: widgets/blog-posts/blog-posts.php:2802
+#: widgets/blog-posts/blog-posts.php:1242
+#: widgets/blog-posts/blog-posts.php:1323
+#: widgets/blog-posts/blog-posts.php:1611
+#: widgets/blog-posts/blog-posts.php:1897
+#: widgets/blog-posts/blog-posts.php:2798
 #: widgets/business-hours/business-hours.php:238
 #: widgets/business-hours/business-hours.php:298
 #: widgets/business-hours/business-hours.php:361 widgets/button/button.php:366
@@ -3093,8 +3104,8 @@ msgstr ""
 
 #: widgets/accordion/accordion.php:366 widgets/accordion/accordion.php:465
 #: widgets/accordion/accordion.php:656 widgets/accordion/accordion.php:696
-#: widgets/blog-posts/blog-posts.php:889 widgets/blog-posts/blog-posts.php:1259
-#: widgets/blog-posts/blog-posts.php:1340
+#: widgets/blog-posts/blog-posts.php:885 widgets/blog-posts/blog-posts.php:1255
+#: widgets/blog-posts/blog-posts.php:1336
 #: widgets/client-logo/client-logo.php:681
 #: widgets/client-logo/client-logo.php:708
 #: widgets/contact-form7/contact-form7.php:353
@@ -3144,10 +3155,10 @@ msgid "Closed"
 msgstr ""
 
 #: widgets/accordion/accordion.php:484 widgets/accordion/accordion.php:567
-#: widgets/accordion/accordion.php:929 widgets/blog-posts/blog-posts.php:1069
-#: widgets/blog-posts/blog-posts.php:1590
-#: widgets/blog-posts/blog-posts.php:1882
-#: widgets/blog-posts/blog-posts.php:2618
+#: widgets/accordion/accordion.php:929 widgets/blog-posts/blog-posts.php:1065
+#: widgets/blog-posts/blog-posts.php:1586
+#: widgets/blog-posts/blog-posts.php:1878
+#: widgets/blog-posts/blog-posts.php:2614
 #: widgets/business-hours/business-hours.php:215
 #: widgets/business-hours/business-hours.php:310
 #: widgets/business-hours/business-hours.php:373 widgets/button/button.php:216
@@ -3244,9 +3255,9 @@ msgstr ""
 msgid "Margin Bottom"
 msgstr ""
 
-#: widgets/accordion/accordion.php:579 widgets/blog-posts/blog-posts.php:1395
-#: widgets/blog-posts/blog-posts.php:2118
-#: widgets/blog-posts/blog-posts.php:2332
+#: widgets/accordion/accordion.php:579 widgets/blog-posts/blog-posts.php:1391
+#: widgets/blog-posts/blog-posts.php:2114
+#: widgets/blog-posts/blog-posts.php:2328
 #: widgets/category-list/category-list.php:255
 #: widgets/client-logo/client-logo.php:1232
 #: widgets/client-logo/client-logo.php:1319
@@ -3316,11 +3327,11 @@ msgstr ""
 msgid " Slide Open icon"
 msgstr ""
 
-#: widgets/accordion/accordion.php:941 widgets/blog-posts/blog-posts.php:1057
-#: widgets/blog-posts/blog-posts.php:2065
-#: widgets/blog-posts/blog-posts.php:2171
-#: widgets/blog-posts/blog-posts.php:2276
-#: widgets/blog-posts/blog-posts.php:2571
+#: widgets/accordion/accordion.php:941 widgets/blog-posts/blog-posts.php:1053
+#: widgets/blog-posts/blog-posts.php:2061
+#: widgets/blog-posts/blog-posts.php:2167
+#: widgets/blog-posts/blog-posts.php:2272
+#: widgets/blog-posts/blog-posts.php:2567
 #: widgets/business-hours/business-hours.php:202
 #: widgets/client-logo/client-logo.php:480
 #: widgets/client-logo/client-logo.php:643
@@ -3409,9 +3420,9 @@ msgid "Type button label here"
 msgstr ""
 
 #: widgets/back-to-top/back-to-top.php:118
-#: widgets/blog-posts/blog-posts.php:622 widgets/blog-posts/blog-posts.php:1103
-#: widgets/blog-posts/blog-posts.php:2033
-#: widgets/blog-posts/blog-posts.php:2244 widgets/button/button.php:138
+#: widgets/blog-posts/blog-posts.php:618 widgets/blog-posts/blog-posts.php:1099
+#: widgets/blog-posts/blog-posts.php:2029
+#: widgets/blog-posts/blog-posts.php:2240 widgets/button/button.php:138
 #: widgets/category-list/category-list.php:172
 #: widgets/contact-form7/contact-form7.php:578
 #: widgets/dual-button/dual-button.php:82
@@ -3441,9 +3452,9 @@ msgid "Alignment"
 msgstr ""
 
 #: widgets/back-to-top/back-to-top.php:127
-#: widgets/blog-posts/blog-posts.php:630 widgets/blog-posts/blog-posts.php:1111
-#: widgets/blog-posts/blog-posts.php:2041
-#: widgets/blog-posts/blog-posts.php:2252 widgets/button/button.php:147
+#: widgets/blog-posts/blog-posts.php:626 widgets/blog-posts/blog-posts.php:1107
+#: widgets/blog-posts/blog-posts.php:2037
+#: widgets/blog-posts/blog-posts.php:2248 widgets/button/button.php:147
 #: widgets/category-list/category-list.php:180
 #: widgets/contact-form7/contact-form7.php:586
 #: widgets/dual-button/dual-button.php:90
@@ -3502,7 +3513,7 @@ msgid "Button Style"
 msgstr ""
 
 #: widgets/back-to-top/back-to-top.php:215
-#: widgets/blog-posts/blog-posts.php:2651 widgets/button/button.php:229
+#: widgets/blog-posts/blog-posts.php:2647 widgets/button/button.php:229
 #: widgets/contact-form7/contact-form7.php:93
 #: widgets/contact-form7/contact-form7.php:135
 #: widgets/contact-form7/contact-form7.php:474
@@ -3581,12 +3592,12 @@ msgid "Line Background Color"
 msgstr ""
 
 #: widgets/back-to-top/back-to-top.php:386
-#: widgets/blog-posts/blog-posts.php:689 widgets/blog-posts/blog-posts.php:939
-#: widgets/blog-posts/blog-posts.php:1197
-#: widgets/blog-posts/blog-posts.php:1965
-#: widgets/blog-posts/blog-posts.php:2420
-#: widgets/blog-posts/blog-posts.php:2661
-#: widgets/blog-posts/blog-posts.php:2751 widgets/button/button.php:247
+#: widgets/blog-posts/blog-posts.php:685 widgets/blog-posts/blog-posts.php:935
+#: widgets/blog-posts/blog-posts.php:1193
+#: widgets/blog-posts/blog-posts.php:1961
+#: widgets/blog-posts/blog-posts.php:2416
+#: widgets/blog-posts/blog-posts.php:2657
+#: widgets/blog-posts/blog-posts.php:2747 widgets/button/button.php:247
 #: widgets/button/button.php:348 widgets/client-logo/client-logo.php:528
 #: widgets/client-logo/client-logo.php:673
 #: widgets/client-logo/client-logo.php:730
@@ -3644,12 +3655,12 @@ msgid "Normal"
 msgstr ""
 
 #: widgets/back-to-top/back-to-top.php:418
-#: widgets/blog-posts/blog-posts.php:714 widgets/blog-posts/blog-posts.php:959
-#: widgets/blog-posts/blog-posts.php:1276
-#: widgets/blog-posts/blog-posts.php:1993
-#: widgets/blog-posts/blog-posts.php:2439
-#: widgets/blog-posts/blog-posts.php:2689
-#: widgets/blog-posts/blog-posts.php:2777 widgets/button/button.php:276
+#: widgets/blog-posts/blog-posts.php:710 widgets/blog-posts/blog-posts.php:955
+#: widgets/blog-posts/blog-posts.php:1272
+#: widgets/blog-posts/blog-posts.php:1989
+#: widgets/blog-posts/blog-posts.php:2435
+#: widgets/blog-posts/blog-posts.php:2685
+#: widgets/blog-posts/blog-posts.php:2773 widgets/button/button.php:276
 #: widgets/button/button.php:385 widgets/category-list/category-list.php:375
 #: widgets/category-list/category-list.php:428
 #: widgets/client-logo/client-logo.php:549
@@ -3709,7 +3720,7 @@ msgstr ""
 msgid "Blog Posts"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:65
+#: widgets/blog-posts/blog-posts.php:61
 #: widgets/category-list/category-list.php:61
 #: widgets/page-list/page-list.php:253 widgets/post-list/post-list.php:149
 #: widgets/testimonial/testimonial.php:59
@@ -3717,220 +3728,220 @@ msgstr ""
 msgid "Layout"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:72
+#: widgets/blog-posts/blog-posts.php:68
 msgid "Layout Style"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:75 widgets/social/social.php:427
+#: widgets/blog-posts/blog-posts.php:71 widgets/social/social.php:427
 #: widgets/social-share/social-share.php:462 widgets/team/team.php:1591
 msgid "Block"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:76
+#: widgets/blog-posts/blog-posts.php:72
 msgid "Grid With Thumb"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:77
+#: widgets/blog-posts/blog-posts.php:73
 msgid "Grid Without Thumb"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:86 widgets/post-list/post-list.php:201
+#: widgets/blog-posts/blog-posts.php:82 widgets/post-list/post-list.php:201
 msgid "Show Featured Image"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:100
+#: widgets/blog-posts/blog-posts.php:96
 #: widgets/testimonial/testimonial.php:1807
 msgid "Image Position"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:126 widgets/post-list/post-list.php:232
+#: widgets/blog-posts/blog-posts.php:122 widgets/post-list/post-list.php:232
 msgid "Featured Image Size"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:141
+#: widgets/blog-posts/blog-posts.php:137
 msgid "Featured Image Alignment"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:164
+#: widgets/blog-posts/blog-posts.php:160
 msgid "Show Posts Per Row"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:183
+#: widgets/blog-posts/blog-posts.php:179
 msgid "Show Title"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:193
+#: widgets/blog-posts/blog-posts.php:189
 msgid "Crop title by word"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:204
+#: widgets/blog-posts/blog-posts.php:200
 msgid "Show Content"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:214
+#: widgets/blog-posts/blog-posts.php:210
 msgid "Crop content by word"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:226
+#: widgets/blog-posts/blog-posts.php:222
 msgid "Show Read More"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:238
+#: widgets/blog-posts/blog-posts.php:234
 msgid "Enable Masonry"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:269
+#: widgets/blog-posts/blog-posts.php:265
 msgid "Query"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:276
+#: widgets/blog-posts/blog-posts.php:272
 msgid "Posts Count"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:287
+#: widgets/blog-posts/blog-posts.php:283
 msgid "Select posts by:"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:291 widgets/post-list/post-list.php:61
+#: widgets/blog-posts/blog-posts.php:287 widgets/post-list/post-list.php:61
 msgid "Recent Post"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:292 widgets/post-list/post-list.php:63
+#: widgets/blog-posts/blog-posts.php:288 widgets/post-list/post-list.php:63
 msgid "Selected Post"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:293 widgets/post-list/post-list.php:64
+#: widgets/blog-posts/blog-posts.php:289 widgets/post-list/post-list.php:64
 msgid "Category Post"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:302
+#: widgets/blog-posts/blog-posts.php:298
 msgid "Search & Select"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:313 widgets/post-grid/post-grid.php:54
+#: widgets/blog-posts/blog-posts.php:309 widgets/post-grid/post-grid.php:54
 #: widgets/post-list/post-list.php:85 widgets/post-tab/post-tab.php:59
 msgid "Select Categories"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:325
+#: widgets/blog-posts/blog-posts.php:321
 #: widgets/image-comparison/image-comparison.php:149
 msgid "Offset"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:336
+#: widgets/blog-posts/blog-posts.php:332
 msgid "Order by"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:339 widgets/blog-posts/blog-posts.php:459
+#: widgets/blog-posts/blog-posts.php:335 widgets/blog-posts/blog-posts.php:455
 msgid "Date"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:341 widgets/blog-posts/blog-posts.php:458
+#: widgets/blog-posts/blog-posts.php:337 widgets/blog-posts/blog-posts.php:454
 msgid "Author"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:342
+#: widgets/blog-posts/blog-posts.php:338
 msgid "Modified"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:343
+#: widgets/blog-posts/blog-posts.php:339
 msgid "Comments"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:352
+#: widgets/blog-posts/blog-posts.php:348
 msgid "Order"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:355
+#: widgets/blog-posts/blog-posts.php:351
 msgid "ASC"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:356
+#: widgets/blog-posts/blog-posts.php:352
 msgid "DESC"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:368 widgets/blog-posts/blog-posts.php:455
+#: widgets/blog-posts/blog-posts.php:364 widgets/blog-posts/blog-posts.php:451
 msgid "Meta Data"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:376
+#: widgets/blog-posts/blog-posts.php:372
 msgid "Show Floating Date"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:389
+#: widgets/blog-posts/blog-posts.php:385
 #: widgets/countdown-timer/countdown-timer.php:66 widgets/social/social.php:54
 #: widgets/social-share/social-share.php:60 widgets/tab/tab.php:103
 #: widgets/testimonial/testimonial.php:69
 msgid "Choose Style"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:394
+#: widgets/blog-posts/blog-posts.php:390
 msgid "Image style 1"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:400
+#: widgets/blog-posts/blog-posts.php:396
 msgid "Image style 2"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:415
+#: widgets/blog-posts/blog-posts.php:411
 msgid "Show Floating Category"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:429
+#: widgets/blog-posts/blog-posts.php:425
 msgid "Show Meta Data"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:439 widgets/post-list/post-list.php:378
+#: widgets/blog-posts/blog-posts.php:435 widgets/post-list/post-list.php:378
 msgid "Meta Position"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:442 widgets/heading/heading.php:220
+#: widgets/blog-posts/blog-posts.php:438 widgets/heading/heading.php:220
 #: widgets/heading/heading.php:375
 msgid "Before Title"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:443 widgets/heading/heading.php:221
+#: widgets/blog-posts/blog-posts.php:439 widgets/heading/heading.php:221
 #: widgets/heading/heading.php:376
 msgid "After Title"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:444
+#: widgets/blog-posts/blog-posts.php:440
 msgid "After Content"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:460
+#: widgets/blog-posts/blog-posts.php:456
 msgid "Category"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:461
+#: widgets/blog-posts/blog-posts.php:457
 msgid "Comment"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:476
+#: widgets/blog-posts/blog-posts.php:472
 msgid "Show Author Image"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:490
+#: widgets/blog-posts/blog-posts.php:486
 msgid "Author Icon"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:507
+#: widgets/blog-posts/blog-posts.php:503
 msgid "Date Icon"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:523
+#: widgets/blog-posts/blog-posts.php:519
 msgid "Category Icon"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:539
+#: widgets/blog-posts/blog-posts.php:535
 msgid "Comment Icon"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:560
+#: widgets/blog-posts/blog-posts.php:556
 msgid "Read More Button"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:568 widgets/button/button.php:59
+#: widgets/blog-posts/blog-posts.php:564 widgets/button/button.php:59
 #: widgets/contact-form7/contact-form7.php:84
 #: widgets/countdown-timer/countdown-timer.php:416
 #: widgets/countdown-timer/countdown-timer.php:628
@@ -3950,7 +3961,7 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:573 widgets/blog-posts/blog-posts.php:574
+#: widgets/blog-posts/blog-posts.php:569 widgets/blog-posts/blog-posts.php:570
 #: widgets/button/button.php:61 widgets/button/button.php:62
 #: widgets/icon-box/icon-box.php:224 widgets/icon-box/icon-box.php:225
 #: widgets/image-box/image-box.php:315 widgets/image-box/image-box.php:316
@@ -3958,7 +3969,7 @@ msgstr ""
 msgid "Learn more "
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:581 widgets/button/button.php:97
+#: widgets/blog-posts/blog-posts.php:577 widgets/button/button.php:97
 #: widgets/dual-button/dual-button.php:201
 #: widgets/dual-button/dual-button.php:330 widgets/funfact/funfact.php:106
 #: widgets/icon-box/icon-box.php:103 widgets/icon-box/icon-box.php:255
@@ -3967,7 +3978,7 @@ msgstr ""
 msgid "Add icon? "
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:611 widgets/button/button.php:127
+#: widgets/blog-posts/blog-posts.php:607 widgets/button/button.php:127
 #: widgets/button/button.php:573 widgets/dual-button/dual-button.php:231
 #: widgets/dual-button/dual-button.php:360
 #: widgets/header-offcanvas/header-offcanvas.php:129
@@ -3984,7 +3995,7 @@ msgstr ""
 msgid "Before"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:612 widgets/button/button.php:128
+#: widgets/blog-posts/blog-posts.php:608 widgets/button/button.php:128
 #: widgets/button/button.php:574 widgets/dual-button/dual-button.php:232
 #: widgets/dual-button/dual-button.php:361
 #: widgets/header-offcanvas/header-offcanvas.php:130
@@ -4001,75 +4012,75 @@ msgstr ""
 msgid "After"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:648 widgets/button/button.php:169
+#: widgets/blog-posts/blog-posts.php:644 widgets/button/button.php:169
 #: widgets/pricing/pricing.php:475
 msgid "Class"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:653 widgets/button/button.php:174
+#: widgets/blog-posts/blog-posts.php:649 widgets/button/button.php:174
 #: widgets/pricing/pricing.php:480
 msgid "Class Name"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:660 widgets/button/button.php:181
+#: widgets/blog-posts/blog-posts.php:656 widgets/button/button.php:181
 #: widgets/pricing/pricing.php:487
 msgid "id"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:665 widgets/button/button.php:186
+#: widgets/blog-posts/blog-posts.php:661 widgets/button/button.php:186
 #: widgets/pricing/pricing.php:492
 msgid "ID"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:677 widgets/tab/tab.php:499
+#: widgets/blog-posts/blog-posts.php:673 widgets/tab/tab.php:499
 #: widgets/video/video.php:842
 msgid "Wrapper"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:751 widgets/icon-box/icon-box.php:731
+#: widgets/blog-posts/blog-posts.php:747 widgets/icon-box/icon-box.php:731
 #: widgets/page-list/page-list.php:589 widgets/page-list/page-list.php:955
 #: widgets/post-list/post-list.php:774 widgets/testimonial/testimonial.php:950
 msgid "Vertical Alignment"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:759 widgets/funfact/funfact.php:1102
+#: widgets/blog-posts/blog-posts.php:755 widgets/funfact/funfact.php:1102
 #: widgets/header-search/header-search.php:527
 #: widgets/icon-box/icon-box.php:739 widgets/nav-menu/nav-menu.php:1154
 #: widgets/pricing/pricing.php:1507 widgets/pricing/pricing.php:1577
 msgid "Middle"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:780
+#: widgets/blog-posts/blog-posts.php:776
 msgid "Container Border radius"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:792 widgets/team/team.php:1626
+#: widgets/blog-posts/blog-posts.php:788 widgets/team/team.php:1626
 msgid "Container Padding"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:804 widgets/blog-posts/blog-posts.php:1129
+#: widgets/blog-posts/blog-posts.php:800 widgets/blog-posts/blog-posts.php:1125
 #: widgets/faq/faq.php:303
 msgid "Container Margin"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:832 widgets/faq/faq.php:272
+#: widgets/blog-posts/blog-posts.php:828 widgets/faq/faq.php:272
 #: widgets/team/team.php:727
 msgid "Content Padding"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:845 widgets/blog-posts/blog-posts.php:855
+#: widgets/blog-posts/blog-posts.php:841 widgets/blog-posts/blog-posts.php:851
 msgid "Container Border"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:863 widgets/faq/faq.php:252
+#: widgets/blog-posts/blog-posts.php:859 widgets/faq/faq.php:252
 msgid "Content Border"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:995 widgets/blog-posts/blog-posts.php:2501
+#: widgets/blog-posts/blog-posts.php:991 widgets/blog-posts/blog-posts.php:2497
 msgid "Image Width"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1045
+#: widgets/blog-posts/blog-posts.php:1041
 #: widgets/client-logo/client-logo.php:1278
 #: widgets/header-offcanvas/header-offcanvas.php:521
 #: widgets/header-offcanvas/header-offcanvas.php:707
@@ -4082,19 +4093,19 @@ msgstr ""
 msgid "Border radius"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1085 widgets/post-list/post-list.php:1042
+#: widgets/blog-posts/blog-posts.php:1081 widgets/post-list/post-list.php:1042
 msgid "Meta"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1141 widgets/nav-menu/nav-menu.php:685
+#: widgets/blog-posts/blog-posts.php:1137 widgets/nav-menu/nav-menu.php:685
 msgid "Item Margin"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1153
+#: widgets/blog-posts/blog-posts.php:1149
 msgid "Item Padding"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1165
+#: widgets/blog-posts/blog-posts.php:1161
 #: widgets/dual-button/dual-button.php:243
 #: widgets/dual-button/dual-button.php:267
 #: widgets/dual-button/dual-button.php:372
@@ -4107,7 +4118,7 @@ msgstr ""
 msgid "Icon Spacing"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1177
+#: widgets/blog-posts/blog-posts.php:1173
 #: widgets/header-info/header-info.php:207
 #: widgets/header-offcanvas/header-offcanvas.php:432
 #: widgets/header-offcanvas/header-offcanvas.php:652
@@ -4123,12 +4134,12 @@ msgstr ""
 msgid "Icon Size"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1362
+#: widgets/blog-posts/blog-posts.php:1358
 msgid "Floating Date"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1372
-#: widgets/blog-posts/blog-posts.php:2144
+#: widgets/blog-posts/blog-posts.php:1368
+#: widgets/blog-posts/blog-posts.php:2140
 #: widgets/category-list/category-list.php:273
 #: widgets/client-logo/client-logo.php:1255
 #: widgets/client-logo/client-logo.php:1345
@@ -4162,74 +4173,74 @@ msgstr ""
 msgid "Height"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1531
+#: widgets/blog-posts/blog-posts.php:1527
 msgid "Date Typography"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1556
+#: widgets/blog-posts/blog-posts.php:1552
 msgid "Month Typography"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1644
+#: widgets/blog-posts/blog-posts.php:1640
 msgid "Triangle"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1655
+#: widgets/blog-posts/blog-posts.php:1651
 msgid "Triangle Background"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1668
+#: widgets/blog-posts/blog-posts.php:1664
 msgid "Triangle Size"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1696
+#: widgets/blog-posts/blog-posts.php:1692
 msgid "Triangle Position Left"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1724
+#: widgets/blog-posts/blog-posts.php:1720
 msgid "Triangle Position Top"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1753
+#: widgets/blog-posts/blog-posts.php:1749
 msgid "Triangle Direction"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1757
+#: widgets/blog-posts/blog-posts.php:1753
 #: widgets/client-logo/client-logo.php:601 widgets/funfact/funfact.php:411
 #: widgets/funfact/funfact.php:454 widgets/icon-box/icon-box.php:1633
 #: widgets/image-box/image-box.php:719
 msgid "From Left"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1761
+#: widgets/blog-posts/blog-posts.php:1757
 #: widgets/client-logo/client-logo.php:613 widgets/funfact/funfact.php:415
 #: widgets/funfact/funfact.php:458 widgets/icon-box/icon-box.php:1641
 #: widgets/image-box/image-box.php:727
 msgid "From Right"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1789
+#: widgets/blog-posts/blog-posts.php:1785
 msgid "Floating Category"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:1913
+#: widgets/blog-posts/blog-posts.php:1909
 msgid "Space Between Categories"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2049
-#: widgets/blog-posts/blog-posts.php:2260
+#: widgets/blog-posts/blog-posts.php:2045
+#: widgets/blog-posts/blog-posts.php:2256
 msgid "justify"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2089
+#: widgets/blog-posts/blog-posts.php:2085
 #: widgets/client-logo/client-logo.php:438 widgets/heading/heading.php:341
 #: widgets/testimonial/testimonial.php:309
 msgid "Show Separator"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2103
-#: widgets/blog-posts/blog-posts.php:2428
-#: widgets/blog-posts/blog-posts.php:2447
+#: widgets/blog-posts/blog-posts.php:2099
+#: widgets/blog-posts/blog-posts.php:2424
+#: widgets/blog-posts/blog-posts.php:2443
 #: widgets/client-logo/client-logo.php:1490
 #: widgets/client-logo/client-logo.php:1509
 #: widgets/fluent-forms/fluent-forms.php:1274
@@ -4238,42 +4249,42 @@ msgstr ""
 msgid "Separator Color"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2292
+#: widgets/blog-posts/blog-posts.php:2288
 msgid "Show Highlight  Border"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2305
+#: widgets/blog-posts/blog-posts.php:2301
 #: widgets/client-logo/client-logo.php:1384
 msgid "Hight"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2359
+#: widgets/blog-posts/blog-posts.php:2355
 #: widgets/client-logo/client-logo.php:1432
 msgid "Top Bottom Position"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2387
+#: widgets/blog-posts/blog-posts.php:2383
 #: widgets/client-logo/client-logo.php:1456
 msgid "Left Right Position"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2456 widgets/lottie/lottie.php:327
+#: widgets/blog-posts/blog-posts.php:2452 widgets/lottie/lottie.php:327
 msgid "Transition"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2490
+#: widgets/blog-posts/blog-posts.php:2486
 msgid "Author Image"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2528
+#: widgets/blog-posts/blog-posts.php:2524
 msgid "Image Height"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2590 widgets/tablepress/tablepress.php:668
+#: widgets/blog-posts/blog-posts.php:2586 widgets/tablepress/tablepress.php:668
 msgid "Radius"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2609 widgets/button/button-handler.php:11
+#: widgets/blog-posts/blog-posts.php:2605 widgets/button/button-handler.php:11
 #: widgets/button/button.php:197 widgets/contact-form7/contact-form7.php:570
 #: widgets/dual-button/dual-button.php:173
 #: widgets/dual-button/dual-button.php:302
@@ -4287,13 +4298,13 @@ msgstr ""
 msgid "Button"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2630 widgets/icon-box/icon-box.php:1316
+#: widgets/blog-posts/blog-posts.php:2626 widgets/icon-box/icon-box.php:1316
 #: widgets/image-box/image-box.php:512 widgets/image-box/image-box.php:1371
 msgid "Icon Font Size"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:2668
-#: widgets/blog-posts/blog-posts.php:2696 widgets/button/button.php:254
+#: widgets/blog-posts/blog-posts.php:2664
+#: widgets/blog-posts/blog-posts.php:2692 widgets/button/button.php:254
 #: widgets/button/button.php:283 widgets/category-list/category-list.php:416
 #: widgets/fluent-forms/fluent-forms.php:527
 #: widgets/fluent-forms/fluent-forms.php:605
@@ -7222,7 +7233,7 @@ msgstr ""
 msgid "Feature Image"
 msgstr ""
 
-#: widgets/post-list/post-list.php:1451
+#: widgets/post-list/post-list.php:1450
 msgid "Opps, No posts were found."
 msgstr ""
 
@@ -8518,12 +8529,12 @@ msgctxt "Post Type Singular Name"
 msgid "ElementsKit item"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:876
+#: widgets/blog-posts/blog-posts.php:872
 msgctxt "elementskit"
 msgid "Container Background Color"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:897 widgets/blog-posts/blog-posts.php:2719
+#: widgets/blog-posts/blog-posts.php:893 widgets/blog-posts/blog-posts.php:2715
 #: widgets/button/button.php:315 widgets/pricing/pricing.php:663
 #: widgets/pricing/pricing.php:890 widgets/pricing/pricing.php:1675
 #: widgets/pricing/pricing.php:2234 widgets/pricing/pricing.php:2338
@@ -8532,7 +8543,7 @@ msgctxt "Border Control"
 msgid "Border Type"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:901 widgets/blog-posts/blog-posts.php:2723
+#: widgets/blog-posts/blog-posts.php:897 widgets/blog-posts/blog-posts.php:2719
 #: widgets/button/button.php:319 widgets/pricing/pricing.php:667
 #: widgets/pricing/pricing.php:894 widgets/pricing/pricing.php:1679
 #: widgets/pricing/pricing.php:2238 widgets/pricing/pricing.php:2342
@@ -8541,7 +8552,7 @@ msgctxt "Border Control"
 msgid "Solid"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:902 widgets/blog-posts/blog-posts.php:2724
+#: widgets/blog-posts/blog-posts.php:898 widgets/blog-posts/blog-posts.php:2720
 #: widgets/button/button.php:320 widgets/pricing/pricing.php:668
 #: widgets/pricing/pricing.php:895 widgets/pricing/pricing.php:1680
 #: widgets/pricing/pricing.php:2239 widgets/pricing/pricing.php:2343
@@ -8550,7 +8561,7 @@ msgctxt "Border Control"
 msgid "Double"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:903 widgets/blog-posts/blog-posts.php:2725
+#: widgets/blog-posts/blog-posts.php:899 widgets/blog-posts/blog-posts.php:2721
 #: widgets/button/button.php:321 widgets/pricing/pricing.php:669
 #: widgets/pricing/pricing.php:896 widgets/pricing/pricing.php:1681
 #: widgets/pricing/pricing.php:2240 widgets/pricing/pricing.php:2344
@@ -8559,7 +8570,7 @@ msgctxt "Border Control"
 msgid "Dotted"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:904 widgets/blog-posts/blog-posts.php:2726
+#: widgets/blog-posts/blog-posts.php:900 widgets/blog-posts/blog-posts.php:2722
 #: widgets/button/button.php:322 widgets/pricing/pricing.php:670
 #: widgets/pricing/pricing.php:897 widgets/pricing/pricing.php:1682
 #: widgets/pricing/pricing.php:2241 widgets/pricing/pricing.php:2345
@@ -8568,7 +8579,7 @@ msgctxt "Border Control"
 msgid "Dashed"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:905 widgets/blog-posts/blog-posts.php:2727
+#: widgets/blog-posts/blog-posts.php:901 widgets/blog-posts/blog-posts.php:2723
 #: widgets/button/button.php:323 widgets/pricing/pricing.php:671
 #: widgets/pricing/pricing.php:898 widgets/pricing/pricing.php:1683
 #: widgets/pricing/pricing.php:2242 widgets/pricing/pricing.php:2346
@@ -8577,7 +8588,7 @@ msgctxt "Border Control"
 msgid "Groove"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:919 widgets/blog-posts/blog-posts.php:2737
+#: widgets/blog-posts/blog-posts.php:915 widgets/blog-posts/blog-posts.php:2733
 #: widgets/button/button.php:334 widgets/pricing/pricing.php:908
 #: widgets/pricing/pricing.php:1693 widgets/pricing/pricing.php:2253
 #: widgets/pricing/pricing.php:2357 widgets/video/video.php:1415
@@ -8585,9 +8596,9 @@ msgctxt "Border Control"
 msgid "Width"
 msgstr ""
 
-#: widgets/blog-posts/blog-posts.php:946 widgets/blog-posts/blog-posts.php:965
-#: widgets/blog-posts/blog-posts.php:2761
-#: widgets/blog-posts/blog-posts.php:2786 widgets/button/button.php:355
+#: widgets/blog-posts/blog-posts.php:942 widgets/blog-posts/blog-posts.php:961
+#: widgets/blog-posts/blog-posts.php:2757
+#: widgets/blog-posts/blog-posts.php:2782 widgets/button/button.php:355
 #: widgets/button/button.php:391 widgets/pricing/pricing.php:932
 #: widgets/pricing/pricing.php:957 widgets/pricing/pricing.php:1711
 #: widgets/pricing/pricing.php:1730 widgets/video/video.php:1440

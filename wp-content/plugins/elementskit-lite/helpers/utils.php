@@ -214,7 +214,8 @@ class Utils {
 	}
 
 	public static function kspan( $text ) {
-		return str_replace( array( '{', '}' ), array( '<span>', '</span>' ), $text );
+		// Collapse consecutive braces (e.g. "{{ }}") so they produce a single span instead of nested spans.
+		return preg_replace( array( '/\{+/', '/\}+/' ), array( '<span>', '</span>' ), $text );
 	}
 
 	public static function ekit_get__forms( $post_type ) {

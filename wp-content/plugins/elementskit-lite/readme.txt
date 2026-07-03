@@ -4,7 +4,7 @@ Tags: Elementor addons, mega menu builder,  header footer builder, elementor add
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.9.9
+Stable tag: 3.9.10
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -353,6 +353,14 @@ ElementsKit is brought to you by Wpmet, a name **trusted by 10,00,000 satisfied 
 Visit  [wpmet](https://wpmet.com/?utm_source=org&utm_medium=readme) for essential WordPress [Tutorials, Tips & Tricks](https://wpmet.com/blog)!
 
 == Changelog ==
+= ElementsKit Elementor Addons Version: 3.9.10 (2026-07-01) =
+* Fixed: Wpml Compability with Heading and Testinomial widget
+* Fixed: Improved internationalization (i18n) by making the "Settings" admin menu label translatable.
+* Fixed: Improved internationalization (i18n) by making the "Go Pro" admin notice strings translatable.
+* Improved: Removed Bootstrap dependency from widgets and modules, reducing file size by ~20KB.
+* Improved: Gallery Filter JS refactored and CSS vendor prefixes added.
+* Tweaked: Onboard powerup plugins & our plugins lists
+
 = ElementsKit Elementor Addons Version: 3.9.9 (2026-06-23) =
 * Added: Expire Actions styling options for Countdown Timer finished-state content.
 * Fixed: Menu click issue on mobile devices in the Offcanvas widget.

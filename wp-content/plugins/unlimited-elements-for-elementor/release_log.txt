@@ -1,4 +1,15 @@
 
+version 2.0.13:
+
+* Fix: fixed gallery output
+* Fix: fixed small security issue
+
+version 2.0.12:
+
+* Fix: improved api requests. it should not cache the requests if some error response. 
+* Change: increased the limit of get selected terms option to 60 from 10 inside the editor
+* Change: streighten some security related places functions. 
+
 
 version 2.0.11:
 

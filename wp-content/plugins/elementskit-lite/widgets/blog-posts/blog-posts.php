@@ -45,10 +45,6 @@ class ElementsKit_Widget_Blog_Posts extends Widget_Base {
         return 'https://wpmet.com/doc/blog-posts-2/';
     }
 
-    public function format_colname($str) {
-        return str_replace('ekit', 'col', $str);
-    }
-
     protected function is_dynamic_content(): bool {
         return true;
     }
@@ -164,16 +160,16 @@ class ElementsKit_Widget_Blog_Posts extends Widget_Base {
                'label'     => esc_html__( 'Show Posts Per Row', 'elementskit-lite' ),
                'type'      => Controls_Manager::SELECT,
                'options'   => [
-                   'ekit-lg-12 ekit-md-12'   => esc_html__( '1', 'elementskit-lite' ),
-                   'ekit-lg-6 ekit-md-6'     => esc_html__( '2', 'elementskit-lite' ),
-                   'ekit-lg-4 ekit-md-6'     => esc_html__( '3', 'elementskit-lite' ),
-                   'ekit-lg-3 ekit-md-6'     => esc_html__( '4', 'elementskit-lite' ),
-                   'ekit-lg-2 ekit-md-6'     => esc_html__( '6', 'elementskit-lite' ),
+                   'ekit-col-12'   => esc_html__( '1', 'elementskit-lite' ),
+                   'ekit-col-6'     => esc_html__( '2', 'elementskit-lite' ),
+                   'ekit-col-4'     => esc_html__( '3', 'elementskit-lite' ),
+                   'ekit-col-3'     => esc_html__( '4', 'elementskit-lite' ),
+                   'ekit-col-2'     => esc_html__( '6', 'elementskit-lite' ),
                ],
                'condition' => [
                    'ekit_blog_posts_layout_style' => ['elementskit-post-image-card', 'elementskit-post-card'],
                ],
-               'default'   => 'ekit-lg-4 ekit-md-6',
+               'default'   => 'ekit-col-4',
            ]
        );
 
@@ -2864,7 +2860,7 @@ class ElementsKit_Widget_Blog_Posts extends Widget_Base {
             'post_items',
             [
                 'id'    => 'post-items--' . $this->get_id(),
-                'class' => 'row post-items',
+                'class' => 'ekit-row post-items',
             ]
         );
 
@@ -2878,9 +2874,9 @@ class ElementsKit_Widget_Blog_Posts extends Widget_Base {
        ?>
         <div <?php echo $this->get_render_attribute_string('post_items'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped by elementor ?>>
         <?php if ( 'elementskit-blog-block-post' == $ekit_blog_posts_layout_style ) {
-			$ekit_blog_posts_column = 'ekit-md-12';
+			$ekit_blog_posts_column = 'ekit-col-12';
         }
-        $column_size   = 'ekit-md-12';
+        $column_size   = 'ekit-col-12';
         $img_order     = 'order-1';
         $content_order = 'order-2';
 
@@ -2895,7 +2891,7 @@ class ElementsKit_Widget_Blog_Posts extends Widget_Base {
             || 'yes' == $ekit_blog_posts_content
             || 'yes' == $ekit_blog_posts_meta
             || 'yes' == $ekit_blog_posts_author ) ) {
-                $column_size = 'ekit-md-6';
+                $column_size = 'ekit-col-6';
             }
 
 			ob_start(); ?>
@@ -2954,14 +2950,12 @@ class ElementsKit_Widget_Blog_Posts extends Widget_Base {
 				$meta_data_html .= ob_get_clean();
 			endif;
 
-            $column_size = self::format_colname($column_size);
-            $ekit_blog_posts_column = self::format_colname($ekit_blog_posts_column);
             ?>
             <div class="<?php echo esc_attr( $ekit_blog_posts_column ); ?>">
 
                 <?php if ( 'elementskit-blog-block-post' == $ekit_blog_posts_layout_style ): ?>
                     <div class="<?php echo esc_attr( $ekit_blog_posts_layout_style ); ?>">
-                        <div class="row no-gutters">
+                        <div class="ekit-row no-gutters">
                             <?php if ( 'yes' == $ekit_blog_posts_feature_img && has_post_thumbnail() ): ?>
                                 <div class="<?php echo esc_attr( $column_size.' '.$img_order ); ?>">
                                     <a href="<?php the_permalink(); ?>" class="elementskit-entry-thumb">

@@ -9,6 +9,8 @@
 		$plugins      = \ElementsKit_Lite\Libs\Framework\Attr::instance()->utils->get_option( 'settings', array() );
 
 		$elementskit = $pluginStatus->get_status( 'elementskit-lite/elementskit-lite.php' );
+		$dynamic_cpt = $pluginStatus->get_status( 'rox-dynamic-cpt-fields-engine/rox-dynamic-cpt-fields-engine.php' );
+		$appointment_booking = $pluginStatus->get_status( 'rox-appointment-booking/rox-appointment-booking.php' );
 		$getgenie = $pluginStatus->get_status( 'getgenie/getgenie.php' );
 		$shopengine = $pluginStatus->get_status( 'shopengine/shopengine.php' );
 		$metform = $pluginStatus->get_status( 'metform/metform.php' );
@@ -24,18 +26,35 @@
 		$shopengine_pre_check = $woocommerce['status'] == 'activated' ? '' : '';
 		?>
 		<div class="attr-col-lg-3">
-			<div class="ekit-onboard-single-plugin <?php echo $getgenie['status'] == 'activated' ? 'activated' : ''; ?>">
+			<div class="ekit-onboard-single-plugin <?php echo $dynamic_cpt['status'] == 'activated' ? 'activated' : ''; ?>">
 				<label>
 					<div class="ekit-onboard-single-plugin--header">
-						<h3>AI Content & SEO Tool</3>
+						<h3>Dynamic CPT Fields</3>
 					</div>
-					<?php if($getgenie['status'] !== 'activated') : ?>
+					<?php if($dynamic_cpt['status'] !== 'activated') : ?>
 						<div class="ekit-onboard-single-plugin--checkbox-wrapper">
-							<input type="checkbox" class="ekit-onboard-single-plugin--input" value="getgenie/getgenie.php" name="our_plugins[]">
+							<input type="checkbox" class="ekit-onboard-single-plugin--input" value="rox-dynamic-cpt-fields-engine/rox-dynamic-cpt-fields-engine.php" name="our_plugins[]">
 						</div>
 					<?php endif; ?>
 					<p class="ekit-onboard-single-plugin--description">
-						<?php echo esc_html__('Find top keywords, create winning content & track SEO results with AI.', 'elementskit-lite' ); ?>
+						<?php echo esc_html__('Build and manage custom CPT fields for WordPress with AI and zero coding.', 'elementskit-lite' ); ?>
+					</p>
+				</label>
+			</div>
+		</div>
+		<div class="attr-col-lg-3">
+			<div class="ekit-onboard-single-plugin <?php echo $appointment_booking['status'] == 'activated' ? 'activated' : ''; ?>">
+				<label>
+					<div class="ekit-onboard-single-plugin--header">
+						<h3>Appointment Booking</3>
+					</div>
+					<?php if($appointment_booking['status'] !== 'activated') : ?>
+						<div class="ekit-onboard-single-plugin--checkbox-wrapper">
+							<input type="checkbox" class="ekit-onboard-single-plugin--input" value="rox-appointment-booking/rox-appointment-booking.php" name="our_plugins[]">
+						</div>
+					<?php endif; ?>
+					<p class="ekit-onboard-single-plugin--description">
+						<?php echo esc_html__( 'Manage schedules, agents, and payments, all from one dashboard in WordPress.', 'elementskit-lite' ); ?>
 					</p>
 				</label>
 			</div>
@@ -74,19 +93,20 @@
 				</label>
 			</div>
 		</div>
+		<!-- Gutenberg plugins -->
 		<div class="attr-col-lg-3">
-			<div class="ekit-onboard-single-plugin <?php echo $emailkit['status'] == 'activated' ? 'activated' : ''; ?>">
+			<div class="ekit-onboard-single-plugin <?php echo $gutenkit['status'] == 'activated' ? 'activated' : ''; ?>">
 				<label>
 					<div class="ekit-onboard-single-plugin--header">
-						<h3>Email Customizer</3>
+						<h3>Gutenberg Blocks</3>
 					</div>
-					<?php if($emailkit['status'] !== 'activated') : ?>
+					<?php if($gutenkit['status'] !== 'activated') : ?>
 						<div class="ekit-onboard-single-plugin--checkbox-wrapper">
-							<input type="checkbox" class="ekit-onboard-single-plugin--input" value="emailkit/EmailKit.php" name="our_plugins[]">
+							<input type="checkbox" class="ekit-onboard-single-plugin--input" value="gutenkit-blocks-addon/gutenkit-blocks-addon.php" name="our_plugins[]">
 						</div>
 					<?php endif; ?>
 					<p class="ekit-onboard-single-plugin--description">
-						<?php echo esc_html__( 'Drag-and-drop email builder for WooCommerce & WordPress.', 'elementskit-lite' ); ?>
+						<?php echo esc_html__( 'Enhance block capability with page builder features & templates for Gutenberg.', 'elementskit-lite' ); ?>
 					</p>
 				</label>
 			</div>
@@ -109,54 +129,35 @@
 			</div>
 		</div>
 		<div class="attr-col-lg-3">
-			<div class="ekit-onboard-single-plugin <?php echo $review['status'] == 'activated' ? 'activated' : ''; ?>">
+			<div class="ekit-onboard-single-plugin <?php echo $emailkit['status'] == 'activated' ? 'activated' : ''; ?>">
 				<label>
 					<div class="ekit-onboard-single-plugin--header">
-						<h3>Advanced Table Builder</3>
+						<h3>Email Customizer</3>
 					</div>
-					<?php if($review['status'] !== 'activated') : ?>
+					<?php if($emailkit['status'] !== 'activated') : ?>
 						<div class="ekit-onboard-single-plugin--checkbox-wrapper">
-							<input type="checkbox" class="ekit-onboard-single-plugin--input" value="table-builder-block/table-builder-block.php" name="our_plugins[]">
+							<input type="checkbox" class="ekit-onboard-single-plugin--input" value="emailkit/EmailKit.php" name="our_plugins[]">
 						</div>
 					<?php endif; ?>
 					<p class="ekit-onboard-single-plugin--description">
-						<?php echo esc_html__( 'Build responsive data, pricing & comparison tables with advanced features.', 'elementskit-lite' ); ?>
+						<?php echo esc_html__( 'Drag-and-drop email builder for WooCommerce & WordPress.', 'elementskit-lite' ); ?>
 					</p>
 				</label>
 			</div>
 		</div>
 		<div class="attr-col-lg-3">
-			<div class="ekit-onboard-single-plugin <?php echo $social['status'] == 'activated' ? 'activated' : ''; ?>">
+			<div class="ekit-onboard-single-plugin <?php echo $getgenie['status'] == 'activated' ? 'activated' : ''; ?>">
 				<label>
 					<div class="ekit-onboard-single-plugin--header">
-						<h3>Social Integration</3>
+						<h3>AI Content & SEO Tool</3>
 					</div>
-					<?php if($social['status'] !== 'activated') : ?>
+					<?php if($getgenie['status'] !== 'activated') : ?>
 						<div class="ekit-onboard-single-plugin--checkbox-wrapper">
-							<input type="checkbox" class="ekit-onboard-single-plugin--input" value="wp-social/wp-social.php" name="our_plugins[]">
+							<input type="checkbox" class="ekit-onboard-single-plugin--input" value="getgenie/getgenie.php" name="our_plugins[]">
 						</div>
 					<?php endif; ?>
 					<p class="ekit-onboard-single-plugin--description">
-						<?php echo esc_html__( 'WordPress integration with popular social platforms to show social proof.', 'elementskit-lite' ); ?>
-					</p>
-				</label>
-			</div>
-		</div>
-
-		<!-- Gutenberg plugins -->
-		<div class="attr-col-lg-3">
-			<div class="ekit-onboard-single-plugin <?php echo $gutenkit['status'] == 'activated' ? 'activated' : ''; ?>">
-				<label>
-					<div class="ekit-onboard-single-plugin--header">
-						<h3>Gutenberg Blocks</3>
-					</div>
-					<?php if($gutenkit['status'] !== 'activated') : ?>
-						<div class="ekit-onboard-single-plugin--checkbox-wrapper">
-							<input type="checkbox" class="ekit-onboard-single-plugin--input" value="gutenkit-blocks-addon/gutenkit-blocks-addon.php" name="our_plugins[]">
-						</div>
-					<?php endif; ?>
-					<p class="ekit-onboard-single-plugin--description">
-						<?php echo esc_html__( 'Enhance block capability with page builder features & templates for Gutenberg.', 'elementskit-lite' ); ?>
+						<?php echo esc_html__( 'Find top keywords, create winning content & track SEO results with AI.', 'elementskit-lite' ); ?>
 					</p>
 				</label>
 			</div>

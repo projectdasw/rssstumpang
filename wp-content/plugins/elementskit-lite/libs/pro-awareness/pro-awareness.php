@@ -449,7 +449,7 @@ if ( ! class_exists( '\Wpmet\Libs\Pro_Awareness' ) ) :
 						}
 					}
 
-					$links[] = sprintf( '<a href="%s" ' . $attributes . ' > %s </a>', $action_link['link'], esc_html( $action_link['text'] ) );
+					$links[] = sprintf( '<a href="%s" ' . $attributes . ' > %s </a>', esc_url( $action_link['link'] ), esc_html( $action_link['text'] ) );
 				}
 			}
 

@@ -184,7 +184,7 @@ class Plugin {
 			->set_plugin_row_meta( esc_html__( 'Documentation', 'elementskit-lite' ), 'https://wpmet.com/elementskit-docs', array( 'target' => '_blank' ) )
 			->set_plugin_row_meta( esc_html__( 'Facebook Community', 'elementskit-lite' ), 'https://wpmet.com/fb-group', array( 'target' => '_blank' ) )
 			->set_plugin_row_meta( esc_html__( 'Rate the plugin ★★★★★', 'elementskit-lite' ), 'https://wordpress.org/support/plugin/elementskit-lite/reviews/#new-post', array( 'target' => '_blank' ) )
-			->set_plugin_action_link( 'Settings', admin_url() . 'admin.php?page=elementskit' )
+			->set_plugin_action_link( esc_html__( 'Settings', 'elementskit-lite' ), admin_url() . 'admin.php?page=elementskit' )
 			->set_plugin_action_link(
 				( $is_pro_active ? '' : esc_html__( 'Go Premium', 'elementskit-lite' ) ),
 				'https://wpmet.com/elementskit-pricing',
@@ -218,19 +218,26 @@ class Plugin {
 		->set_items_per_row(4) # @items_per_row (optional- default: 6)
 		->set_plugins(
 			[
-				'getgenie/getgenie.php' => [
-					'name' => esc_html__('GetGenie AI', 'elementskit-lite'),
-					'url'  => 'https://wordpress.org/plugins/getgenie/',
-					'icon' => 'https://ps.w.org/getgenie/assets/icon-256x256.gif?rev=2798355',
-					'desc' => esc_html__('Your personal AI assistant for content and SEO. Write content that ranks on Google with NLP keywords and SERP analysis data.', 'elementskit-lite'),
-					'docs' => 'https://getgenie.ai/docs/',
+				'gutenkit-blocks-addon/gutenkit-blocks-addon.php' => [
+					'name' => esc_html__('GutenKit', 'elementskit-lite'),
+					'url'  => 'https://wordpress.org/plugins/gutenkit-blocks-addon/',
+					'icon' => 'https://ps.w.org/gutenkit-blocks-addon/assets/icon-256x256.gif?rev=3044956',
+					'desc' => esc_html__('Gutenberg blocks, patterns, and templates that extend the page-building experience using the WordPress block editor.', 'elementskit-lite'),
+					'docs' => 'https://wpmet.com/docs/gutenkit/',
 				],
-				'shopengine/shopengine.php' => [
-					'name' => esc_html__('ShopEngine', 'elementskit-lite'),
-					'url'  => 'https://wordpress.org/plugins/shopengine/',
-					'icon' => 'https://ps.w.org/shopengine/assets/icon-256x256.gif?rev=2505061',
-					'desc' => esc_html__('Complete WooCommerce solution for Elementor to fully customize any pages including cart, checkout, shop page, and so on.', 'elementskit-lite'),
-					'docs' => 'https://wpmet.com/doc/shopengine/',
+				'rox-dynamic-cpt-fields-engine/rox-dynamic-cpt-fields-engine.php' => [
+					'name' => esc_html__('Dynamic CPT Fields Engine', 'elementskit-lite'),
+					'url'  => 'https://wordpress.org/plugins/rox-dynamic-cpt-fields-engine/',
+					'icon' => 'https://ps.w.org/rox-dynamic-cpt-fields-engine/assets/icon-128x128.jpeg?rev=3538537',
+					'desc' => esc_html__('Build custom post types, fields, taxonomies, and dynamic frontend layouts for WordPress, with zero coding and full AI-generated schema.', 'elementskit-lite'),
+					'docs' => 'https://wpmet.com/doc/rox-dynamic-cpt-fields-engine/',
+				],
+				'rox-appointment-booking/rox-appointment-booking.php' => [
+					'name' => esc_html__('Rox Appointment Booking', 'elementskit-lite'),
+					'url'  => 'https://wordpress.org/plugins/rox-appointment-booking/',
+					'icon' => 'https://ps.w.org/rox-appointment-booking/assets/icon-128x128.png?rev=3575641',
+					'desc' => esc_html__(' Manage bookings, agents, payments, and calendars from one dashboard! A complete appointment and scheduling solution for WordPress.', 'elementskit-lite'),
+					'docs' => 'https://wpmet.com/doc/rox-appointment-booking/',
 				],
 				'metform/metform.php' => [
 					'name' => esc_html__('MetForm', 'elementskit-lite'),
@@ -239,33 +246,40 @@ class Plugin {
 					'desc' => esc_html__('Drag & drop form builder for Elementor to create contact forms, multi-step forms, and more — smoother, faster, and better!', 'elementskit-lite'),
 					'docs' => 'https://wpmet.com/doc/metform/',
 				],
-				'emailkit/EmailKit.php' => [
-					'name' => esc_html__('EmailKit', 'elementskit-lite'),
-					'url'  => 'https://wordpress.org/plugins/genie-image-ai/',
-					'icon' => 'https://ps.w.org/emailkit/assets/icon-256x256.png?rev=3003571',
-					'desc' => esc_html__('Advanced email customizer for WooCommerce and WordPress. Build, customize, and send emails from WordPress to boost your sales!', 'elementskit-lite'),
-					'docs' => 'https://wpmet.com/doc/emailkit/',
-				],
-				'gutenkit-blocks-addon/gutenkit-blocks-addon.php' => [
-					'name' => esc_html__('GutenKit', 'elementskit-lite'),
-					'url'  => 'https://wordpress.org/plugins/gutenkit-blocks-addon/',
-					'icon' => 'https://ps.w.org/gutenkit-blocks-addon/assets/icon-256x256.gif?rev=3044956',
-					'desc' => esc_html__('Gutenberg blocks, patterns, and templates that extend the page-building experience using the WordPress block editor.', 'elementskit-lite'),
-					'docs' => 'https://wpmet.com/docs/gutenkit/',
+				'shopengine/shopengine.php' => [
+					'name' => esc_html__('ShopEngine', 'elementskit-lite'),
+					'url'  => 'https://wordpress.org/plugins/shopengine/',
+					'icon' => 'https://ps.w.org/shopengine/assets/icon-256x256.gif?rev=2505061',
+					'desc' => esc_html__('Complete WooCommerce solution for Elementor to fully customize any pages including cart, checkout, shop page, and so on.', 'elementskit-lite'),
+					'docs' => 'https://wpmet.com/doc/shopengine/',
 				],
 				'popup-builder-block/popup-builder-block.php' => [
 					'name' => esc_html__('PopupKit', 'elementskit-lite'),
 					'url'  => 'https://wordpress.org/plugins/popup-builder-block/',
 					'icon' => 'https://ps.w.org/popup-builder-block/assets/icon-256x256.png?rev=3316844',
 					'desc' => esc_html__('Design popups that convert, right in your WordPress dashboard.', 'elementskit-lite'),
-					'docs' => 'https://wpmet.com/docs/gutenkit/',
+					'docs' => 'https://wpmet.com/docs/popupkit/',
 				],
 				'table-builder-block/table-builder-block.php' => [
 					'name' => esc_html__('TableKit', 'elementskit-lite'),
 					'url'  => 'https://wordpress.org/plugins/table-builder-block/',
 					'icon' => 'https://ps.w.org/table-builder-block/assets/icon-256x256.jpg?rev=3168211',
 					'desc' => esc_html__('Fully Customizable. Multi-Media Integration. Synch Any Data Files. All Within Block Editor.', 'elementskit-lite'),
-					'docs' => 'https://wpmet.com/docs/gutenkit/',
+					'docs' => 'https://wpmet.com/docs/tablekit/',
+				],
+				'getgenie/getgenie.php' => [
+					'name' => esc_html__('GetGenie AI', 'elementskit-lite'),
+					'url'  => 'https://wordpress.org/plugins/getgenie/',
+					'icon' => 'https://ps.w.org/getgenie/assets/icon-256x256.gif?rev=2798355',
+					'desc' => esc_html__('Your personal AI assistant for content and SEO. Write content that ranks on Google with NLP keywords and SERP analysis data.', 'elementskit-lite'),
+					'docs' => 'https://getgenie.ai/docs/',
+				],
+				'emailkit/EmailKit.php' => [
+					'name' => esc_html__('EmailKit', 'elementskit-lite'),
+					'url'  => 'https://wordpress.org/plugins/genie-image-ai/',
+					'icon' => 'https://ps.w.org/emailkit/assets/icon-256x256.png?rev=3003571',
+					'desc' => esc_html__('Advanced email customizer for WooCommerce and WordPress. Build, customize, and send emails from WordPress to boost your sales!', 'elementskit-lite'),
+					'docs' => 'https://wpmet.com/doc/emailkit/',
 				],
 				'wp-social/wp-social.php' => [
 					'name' => esc_html__('WP Social', 'elementskit-lite'),
@@ -274,33 +288,12 @@ class Plugin {
 					'desc' => esc_html__('Add social share, login, and engagement counter — unified solution for all social media with tons of different styles for your website.', 'elementskit-lite'),
 					'docs' => 'https://wpmet.com/doc/wp-social/',
 				],
-				'wp-ultimate-review/wp-ultimate-review.php' => [
-					'name' => esc_html__('WP Ultimate Review', 'elementskit-lite'),
-					'url'  => 'https://wordpress.org/plugins/wp-ultimate-review/',
-					'icon' => 'https://ps.w.org/wp-ultimate-review/assets/icon-256x256.png?rev=2544187',
-					'desc' => esc_html__('Collect and showcase reviews on your website to build brand credibility and social proof with the easiest solution.', 'elementskit-lite'),
-					'docs' => 'https://wpmet.com/doc/wp-ultimate-review/',
-				],
-				'wp-fundraising-donation/wp-fundraising.php' => [
-					'name' => esc_html__('FundEngine', 'elementskit-lite'),
-					'url'  => 'https://wordpress.org/plugins/wp-fundraising-donation/',
-					'icon' => 'https://ps.w.org/wp-fundraising-donation/assets/icon-256x256.png?rev=2544150',
-					'desc' => esc_html__('Create fundraising, crowdfunding, and donation websites with PayPal and Stripe payment gateway integration.', 'elementskit-lite'),
-					'docs' => 'https://wpmet.com/doc/fundengine/',
-				],
 				'blocks-for-shopengine/shopengine-gutenberg-addon.php' => [
 					'name' => esc_html__('Blocks for ShopEngine', 'elementskit-lite'),
 					'url'  => 'https://wordpress.org/plugins/blocks-for-shopengine/',
 					'icon' => 'https://ps.w.org/blocks-for-shopengine/assets/icon-256x256.gif?rev=2702483',
 					'desc' => esc_html__('All in one WooCommerce solution for Gutenberg! Build your WooCommerce pages in a block editor with full customization.', 'elementskit-lite'),
 					'docs' => 'https://wpmet.com/doc/shopengine/shopengine-gutenberg/',
-				],
-				'genie-image-ai/genie-image-ai.php' => [
-					'name' => esc_html__('Genie Image', 'elementskit-lite'),
-					'url'  => 'https://wordpress.org/plugins/genie-image-ai/',
-					'icon' => 'https://ps.w.org/genie-image-ai/assets/icon-256x256.png?rev=2977297',
-					'desc' => esc_html__('AI-powered text-to-image generator for WordPress with OpenAI’s DALL-E 2 technology to generate high-quality images in one click.', 'elementskit-lite'),
-					'docs' => 'https://getgenie.ai/docs/',
 				],
 			]
 		) # @plugins

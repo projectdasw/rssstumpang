@@ -1243,10 +1243,9 @@ class ElementsKit_Widget_Post_List extends Widget_Base {
 		$categories = get_the_category($post->ID);
 		$text = empty($item['text']) ? $post->post_title : $item['text'];
 
-		$grid_d = empty($settings['post_grid']) ? '' : 'col-lg-'.$settings['post_grid'];
-		$grid_t = empty($settings['post_grid_tablet']) ? '' : 'col-md-'.$settings['post_grid_tablet'];
-		$grid_m = empty($settings['post_grid_mobile']) ? '' : 'col-xs-'.$settings['post_grid_mobile'];
-		
+		$grid_d = empty($settings['post_grid']) ? '' : 'ekit-col-'.$settings['post_grid'];
+		$grid_t = empty($settings['post_grid_tablet']) ? '' : 'ekit-col-tablet-'.$settings['post_grid_tablet'];
+		$grid_m = empty($settings['post_grid_mobile']) ? '' : 'ekit-col-mobile-'.$settings['post_grid_mobile'];
 
 		ob_start();
 		$feature_bg_url = get_the_post_thumbnail_url($post, $settings['show_feature_img_size_size']);
