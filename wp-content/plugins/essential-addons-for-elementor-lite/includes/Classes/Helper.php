@@ -266,8 +266,88 @@ class Helper
             $args['meta_query'] = array_filter( apply_filters( 'woocommerce_product_query_meta_query', $args['meta_query'], new \WC_Query() ) );
         }
 
+	    // Polylang: pin the query to the language of the page/document the widget is
+	    // on, instead of the ambient (cookie / last-page-load) current language. In
+	    // the editor the ambient language flips on every page load, which made the
+	    // Post Grid show the wrong language's posts. Skip manual ("by_id") selections
+	    // and post types Polylang isn't translating.
+	    if ( function_exists( 'pll_get_post_language' ) && 'by_id' !== $settings['post_type'] ) {
+		    $eael_is_translated = ! function_exists( 'pll_is_translated_post_type' );
+		    if ( ! $eael_is_translated ) {
+			    foreach ( (array) $args['post_type'] as $eael_pt ) {
+				    if ( 'any' !== $eael_pt && pll_is_translated_post_type( $eael_pt ) ) {
+					    $eael_is_translated = true;
+					    break;
+				    }
+			    }
+		    }
+
+		    if ( $eael_is_translated ) {
+			    $eael_lang = self::eael_get_current_language();
+			    // Allow integrators to override the pinned language.
+			    $eael_lang = apply_filters( 'eael/post_grid/query_lang', $eael_lang, $settings, $args );
+			    if ( ! empty( $eael_lang ) ) {
+				    $args['lang'] = $eael_lang;
+			    }
+		    }
+	    }
+
         return $args;
     }
+
+	/**
+	 * Resolve the Polylang language slug a widget's query/content should be pinned
+	 * to.
+	 *
+	 * The Elementor editor (and admin-ajax) "current language" is ambient global
+	 * state driven by the pll_language cookie, which flips on every page load. That
+	 * made the Post Grid and template widgets follow the last-loaded language rather
+	 * than the language of the page the widget actually lives on. We instead derive
+	 * the language from the current document/page id so it is deterministic.
+	 *
+	 * @param int $post_id Optional page/post id to read the language from.
+	 *
+	 * @return string Language slug, or '' when Polylang is inactive/undeterminable.
+	 */
+	public static function eael_get_current_language( $post_id = 0 ) {
+		if ( ! function_exists( 'pll_get_post_language' ) ) {
+			return '';
+		}
+
+		if ( ! $post_id && class_exists( '\Elementor\Plugin' ) ) {
+			$document = \Elementor\Plugin::$instance->documents->get_current();
+			if ( $document ) {
+				$post_id = $document->get_main_id();
+			}
+		}
+
+		if ( ! $post_id ) {
+			$post_id = get_the_ID();
+		}
+
+		$lang = $post_id ? pll_get_post_language( $post_id ) : '';
+
+		if ( ! $lang && function_exists( 'pll_current_language' ) ) {
+			$lang = pll_current_language();
+		}
+
+		return $lang ? $lang : '';
+	}
+
+	/**
+	 * Build a language-specific cache-key suffix so translated pages that share a
+	 * widget id (e.g. created via Polylang "copy content") don't collide in the
+	 * Post Grid transients.
+	 *
+	 * @param int $post_id Optional page/post id to read the language from.
+	 *
+	 * @return string e.g. "_lang_es", or '' when no language is resolved.
+	 */
+	public static function eael_lang_suffix( $post_id = 0 ) {
+		$lang = self::eael_get_current_language( $post_id );
+
+		return $lang ? '_lang_' . sanitize_key( $lang ) : '';
+	}
 
     /**
      * Go Premium
@@ -2084,5 +2164,87 @@ class Helper
 		$template_id = absint( $template_id );
 
 		return get_post_status( $template_id ) === 'publish' && get_post_type( $template_id ) === 'elementor_library';
+	}
+
+	/**
+	 * Clamp a product-query post_status list to what the current viewer may see.
+	 *
+	 * Non-public statuses (draft/pending/future/private) are only honoured for
+	 * users who can edit others' products (shop managers / admins). Everyone else
+	 * — including logged-out visitors — is forced to 'publish'. This prevents the
+	 * WooCommerce listing widgets (Product Grid / Woo Product List / Carousel)
+	 * from leaking pending/scheduled/draft products through a saved or default
+	 * post_status control value on an anonymous render.
+	 *
+	 * @param mixed  $statuses Requested status(es) — array or single string.
+	 * @param string $context  Reserved for future per-widget filtering.
+	 *
+	 * @return array Sanitized, capability-clamped status list (never empty).
+	 */
+	/**
+	 * Render a saved Elementor template only when it is a *published* elementor_library
+	 * post. Every widget/extension that echoes a settings-selected template id must go
+	 * through here so a draft/private/pending template — or an id injected via Elementor
+	 * copy-paste / JSON import by a low-privilege editor — can never be rendered to
+	 * front-end (including anonymous) visitors.
+	 *
+	 * @param int  $template_id Selected template id.
+	 * @param bool $with_css    Pass-through to Frontend::get_builder_content().
+	 * @param bool $for_display Use get_builder_content_for_display() instead (Offcanvas et al.).
+	 *
+	 * @return string Rendered content, or '' when the id is not a published template.
+	 */
+	public static function eael_render_published_template( $template_id, $with_css = true, $for_display = false ) {
+		if ( ! static::is_elementor_publish_template( $template_id ) ) {
+			return '';
+		}
+
+		if ( $for_display ) {
+			return Plugin::$instance->frontend->get_builder_content_for_display( $template_id );
+		}
+
+		return Plugin::$instance->frontend->get_builder_content( $template_id, $with_css );
+	}
+
+	public static function eael_validate_product_statuses( $statuses, $context = '' ) {
+		$statuses = array_filter( array_map( 'sanitize_key', (array) $statuses ) );
+
+		if ( current_user_can( 'edit_others_products' ) ) {
+			$allowed = [ 'publish', 'draft', 'pending', 'future', 'private' ];
+		} else {
+			$allowed = [ 'publish' ];
+		}
+
+		$statuses = array_values( array_intersect( $statuses, $allowed ) );
+
+		return empty( $statuses ) ? [ 'publish' ] : $statuses;
+	}
+
+	/**
+	 * eael_wpml_translate_media
+	 *
+	 * Resolve an Elementor MEDIA control value (image/video) to its
+	 * WPML-translated attachment so the correct media is shown per language.
+	 * Safe to call when WPML / WPML Media Translation is inactive — the
+	 * `wpml_object_id` filter simply returns the original id unchanged.
+	 *
+	 * @param array $media Elementor MEDIA control value (expects 'id' and 'url').
+	 *
+	 * @return array The media array with translated 'id' and 'url' when available.
+	 */
+	public static function eael_wpml_translate_media( $media ) {
+		if ( ! is_array( $media ) || empty( $media['id'] ) ) {
+			return $media;
+		}
+
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$translated_id = apply_filters( 'wpml_object_id', $media['id'], 'attachment', true );
+
+		if ( $translated_id && (int) $translated_id !== (int) $media['id'] ) {
+			$media['id']  = $translated_id;
+			$media['url'] = wp_get_attachment_url( $translated_id );
+		}
+
+		return $media;
 	}
 }

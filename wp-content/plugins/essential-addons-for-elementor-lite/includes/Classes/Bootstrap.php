@@ -219,9 +219,21 @@ class Bootstrap
         //rank math support
         add_filter('rank_math/researches/toc_plugins', [$this, 'toc_rank_math_support']);
 
-//        if(defined('WPML_TM_VERSION')){
-//	        add_filter( 'elementor/documents/get/post_id',[$this, 'eael_wpml_template_translation']);
-//        }
+        // Translate embedded Elementor templates/documents (saved templates used by
+        // Advanced Tabs, Advanced Accordion, Info Box, etc.) to the current language.
+        // eael_wpml_template_translation() handles both WPML and Polylang. Previously
+        // this was disabled and gated to WPML only, so Polylang sites always rendered
+        // the source-language template.
+        if ( defined( 'WPML_TM_VERSION' ) || defined( 'POLYLANG_VERSION' ) || function_exists( 'pll_get_post_language' ) ) {
+            add_filter( 'elementor/documents/get/post_id', [ $this, 'eael_wpml_template_translation' ] );
+        }
+
+        // Polylang has no Elementor integration, so the template library is not
+        // translatable by default. Opt it in so saved templates can be mapped to the
+        // current language (and managed from Polylang's UI).
+        if ( defined( 'POLYLANG_VERSION' ) || function_exists( 'pll_get_post_language' ) ) {
+            add_filter( 'pll_get_post_types', [ $this, 'eael_pll_translate_elementor_library' ], 10, 2 );
+        }
 
         //templately plugin support
         if( !class_exists('Templately\Plugin') && !get_option('eael_templately_promo_hide') ) {
@@ -357,7 +369,7 @@ class Bootstrap
 						    }
 					    }
 
-                        if ( ! current_user_can( 'install_plugins' ) && isset( $element['widgetType'] ) && $element['widgetType'] === 'eaicon-advanced-data-table' ) {
+                        if ( ! current_user_can( 'install_plugins' ) && isset( $element['widgetType'] ) && $element['widgetType'] === 'eael-advanced-data-table' ) {
 						    if ( ! empty( $element['settings']['ea_adv_data_table_source'] ) ) {
 							    $element['settings']['ea_adv_data_table_source'] = 'static';
 						    }

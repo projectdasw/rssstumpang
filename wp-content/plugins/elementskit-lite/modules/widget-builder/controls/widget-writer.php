@@ -430,6 +430,36 @@ class Widget_Writer {
 		return "\n\t\t" . '$this->end_controls_section();' . PHP_EOL . PHP_EOL;
 	}
 
+	private function is_allowed_render_php_block( $php_block ) {
+		$php_block = trim( $php_block );
+
+		$settings_path = '\$settings\["[A-Za-z0-9_\-]+"\](?:\["[A-Za-z0-9_\-]+"\])?';
+
+		$allowed_patterns = array(
+			'/^<\?php\s+echo\s+isset\(' . $settings_path . '\)\s+\?\s+' . $settings_path . '\s+:\s+"";\s+\?>$/',
+			'/^<\?php\s+echo\s+isset\(' . $settings_path . '\)\s+\?\s+(?:esc_url|esc_attr|wp_kses_post)\(' . $settings_path . '\)\s+:\s+"";\s+\?>$/',
+			'/^<\?php\s+Icons_Manager::render_icon\(\$settings\["[A-Za-z0-9_\-]+"\]\);\s+\?>$/',
+		);
+
+		foreach ( $allowed_patterns as $pattern ) {
+			if ( preg_match( $pattern, $php_block ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private function strip_unsafe_render_php( $markup ) {
+		return preg_replace_callback(
+			'/<\?(?:php|=)?[\s\S]*?\?>/i',
+			function( $matches ) {
+				return $this->is_allowed_render_php_block( $matches[0] ) ? $matches[0] : '';
+			},
+			$markup
+		);
+	}
+
 	/**
 	 * Apply proper security escaping to widget markup
 	 * 
@@ -496,6 +526,7 @@ class Widget_Writer {
 
 		// Apply security escaping
 		$markup = $this->apply_escaping($markup);
+		$markup = $this->strip_unsafe_render_php($markup);
 
 		$ret = "\n\t" . 'protected function render() {' . PHP_EOL;
 

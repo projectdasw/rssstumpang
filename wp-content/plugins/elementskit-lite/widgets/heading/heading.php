@@ -57,7 +57,7 @@ class ElementsKit_Widget_Heading extends Widget_Base {
 		$this->add_control(
 			'ekit_heading_title', [
 				'label'			 => esc_html__( 'Heading Title', 'elementskit-lite' ),
-				'type'			 => Controls_Manager::TEXT,
+				'type'			 => Controls_Manager::TEXTAREA,
 				'dynamic'		 => [
 					'active' => true,
 				],

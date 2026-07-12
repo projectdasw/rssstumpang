@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: ElementsKit Lite 3.9.10\n"
+"Project-Id-Version: ElementsKit Lite 3.10.01\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/elementskit-lite\n"
-"POT-Creation-Date: 2026-07-01 09:34:58+00:00\n"
+"POT-Creation-Date: 2026-07-07 06:33:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1666,7 +1666,7 @@ msgstr ""
 msgid "Template does not have any content"
 msgstr ""
 
-#: modules/megamenu/api.php:25
+#: modules/megamenu/api.php:63
 msgid "Saved"
 msgstr ""
 
@@ -1992,7 +1992,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: modules/megamenu/walker-nav-menu.php:319
+#: modules/megamenu/walker-nav-menu.php:321
 msgid "No content found"
 msgstr ""
 
@@ -2280,16 +2280,16 @@ msgstr ""
 msgid "Enable Section"
 msgstr ""
 
-#: modules/widget-builder/api/common.php:25
-#: modules/widget-builder/api/common.php:84
+#: modules/widget-builder/api/common.php:28
+#: modules/widget-builder/api/common.php:86
 msgid "Not enough permission."
 msgstr ""
 
-#: modules/widget-builder/api/common.php:38
+#: modules/widget-builder/api/common.php:40
 msgid "Invalid data."
 msgstr ""
 
-#: modules/widget-builder/api/common.php:71
+#: modules/widget-builder/api/common.php:73
 msgid "Widget data saved!"
 msgstr ""
 

@@ -538,12 +538,12 @@ msgid "Skip to Editor"
 msgstr "Lewati ke Editor"
 
 #. translators: %s: WordPress version number.
-#: wp-admin/about.php:245
+#: wp-admin/about.php:276
 msgid "WordPress %s Field Guide"
 msgstr "Panduan Lapangan WordPress %s"
 
 #. translators: %s: WordPress version number.
-#: wp-admin/about.php:218
+#: wp-admin/about.php:249
 msgid "WordPress %s Release Notes"
 msgstr "Catatan Rilis WordPress %s"
 
@@ -702,7 +702,7 @@ msgstr "Jika Anda seorang pembuat plugin, Anda bisa mempelajari lebih lanjut ten
 msgid "If you are a plugin author, you can learn more about <a href=\"https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-eraser-to-your-plugin/\">how to add the Personal Data Eraser to a plugin</a>."
 msgstr "Jika Anda pembuat plugin, Anda bisa mempelajari lebih lanjut tentang <a href=\"https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-eraser-to-your-plugin/\">cara menambahkan Penghapus Data Personal ke dalam plugin</a>."
 
-#: wp-admin/about.php:171
+#: wp-admin/about.php:202
 msgid "See everything new"
 msgstr "Lihat semua yang baru"
 
@@ -712,11 +712,11 @@ msgid "https://wordpress.org/download/releases/%s/"
 msgstr "https://wordpress.org/download/releases/%s/"
 
 #. translators: %s: Version number.
-#: wp-admin/about.php:163
+#: wp-admin/about.php:194
 msgid "For a comprehensive overview of all the new features and enhancements in WordPress %s, please visit the feature-showcase website."
 msgstr "Untuk ringkasan komprehensif dari seluruh fitur baru dan peningkatan dalam WordPress %s, silakan kunjungi situs galeri fitur."
 
-#: wp-admin/about.php:157
+#: wp-admin/about.php:188
 msgid "And much more"
 msgstr "Dan lebih banyak lagi"
 
@@ -922,12 +922,12 @@ msgid "When using Bulk Edit, you can change the metadata (categories, author, et
 msgstr "Saat menggunakan Pengeditan Massal, Anda dapat mengubah metadata (kategori, penulis, dll.) untuk semua pos yang dipilih sekaligus. Untuk menghapus pos dari grup, cukup klik tombol %s<span class=\"screen-reader-text\">hapus</span> di samping namanya pada area Edit Massal yang muncul."
 
 #. translators: %s: WordPress version number.
-#: wp-admin/about.php:228
+#: wp-admin/about.php:259
 msgid "Read the WordPress %s Release Notes for information on installation, enhancements, fixed issues, release contributors, learning resources, and the list of file changes."
 msgstr "Baca Catatan Rilis WordPress %s untuk informasi tentang instalasi, peningkatan, kendala yang diperbaiki, kontributor rilis, sumber pembelajaran, dan daftar perubahan berkas."
 
 #. translators: %s: WordPress version number.
-#: wp-admin/about.php:255
+#: wp-admin/about.php:286
 msgid "Explore the WordPress %s Field Guide. Learn about the changes in this release with detailed developer notes to help you build with WordPress."
 msgstr "Jelajahi Panduan Lapangan WordPress %s. Pelajari tentang perubahan dalam rilis ini dengan catatan pengembang terperinci untuk membantu Anda membangun dengan WordPress."
 
@@ -1410,7 +1410,7 @@ msgid "Be the future of WordPress"
 msgstr "Jadilah masa depan WordPress"
 
 #. translators: 1: Learn WordPress link, 2: Workshops link.
-#: wp-admin/about.php:196
+#: wp-admin/about.php:227
 msgid "<a href=\"%1$s\">Learn WordPress</a> is a free resource for new and experienced WordPress users. Learn is stocked with how-to videos on using various features in WordPress, <a href=\"%2$s\">interactive workshops</a> for exploring topics in-depth, and lesson plans for diving deep into specific areas of WordPress."
 msgstr "<a href=\"%1$s\">Belajar WordPress</a> adalah sumber daya gratis untuk pengguna WordPress pemula maupun ahli. Belajar WordPress dilengkapi video-video tentang cara menggunakan berbagai fitur di WordPress, <a href=\"%2$s\">workshop interaktif</a> untuk mempelajari topik-topik lebih mendalam, dan rencana pembelajaran untuk mempelajari topik-topik khusus seputar WordPress lebih jauh lagi."
 
@@ -1556,12 +1556,12 @@ msgid "<a href=\"https://wordpress.org/documentation/article/customizer/\">Docum
 msgstr "<a href=\"https://wordpress.org/documentation/article/customizer/\">Dokumentasi Pengedit Situs</a>"
 
 #. translators: The localized WordPress download URL.
-#: wp-admin/about.php:336
+#: wp-admin/about.php:367
 msgid "https://wordpress.org/download/"
 msgstr "https://id.wordpress.org/download/"
 
 #. translators: %s: The major version of WordPress for this branch.
-#: wp-admin/about.php:333
+#: wp-admin/about.php:364
 msgid "This is the final release of WordPress %s"
 msgstr "Inilah rilis terakhir WordPress %s"
 
@@ -1881,12 +1881,12 @@ msgid "Reach out to WordPress Core developers to ensure you'll never have this p
 msgstr "Hubungi developer WordPress Core untuk memastikan Anda tidak akan pernah mendapati kendala ini lagi."
 
 #. translators: 1: WordPress version number, 2: Link to update WordPress
-#: wp-admin/about.php:330
+#: wp-admin/about.php:361
 msgid "Important! Your version of WordPress (%1$s) will stop receiving security updates in the near future. To keep your site secure, please <a href=\"%2$s\">update to the latest version of WordPress</a>."
 msgstr "Penting! Versi WordPress Anda (%1$s) tidak akan menerima pembaruan keamanan selanjutnya. Agar situs Anda tetap aman, mohon <a href=\"%2$s\">perbarui WordPress Anda ke versi terbaru</a>."
 
 #. translators: 1: WordPress version number, 2: Link to update WordPress
-#: wp-admin/about.php:327
+#: wp-admin/about.php:358
 msgid "Important! Your version of WordPress (%1$s) is no longer supported, you will not receive any security updates for your website. To keep your site secure, please <a href=\"%2$s\">update to the latest version of WordPress</a>."
 msgstr "Penting! Versi WordPress Anda (%1$s) tidak lagi didukung, sehingga situs Anda tidak akan menerima pembaruan sistem keamanan. Untuk membuat situs Anda tetap aman, mohon <a href=\"%2$s\">perbarui WordPress Anda ke versi terbaru</a>."
 
@@ -1896,7 +1896,7 @@ msgid "https://make.wordpress.org/core/wordpress-%s-field-guide/"
 msgstr "https://make.wordpress.org/core/wordpress-%s-field-guide/"
 
 #. translators: %s: Version number.
-#: wp-admin/about.php:187
+#: wp-admin/about.php:218
 msgid "Learn more about WordPress %s"
 msgstr "Pelajari lebih lanjut tentang WordPress %s"
 
@@ -2796,7 +2796,7 @@ msgstr "Tambahkan Kata Sandi Aplikasi"
 msgid "Required to create an Application Password, but not to update the user."
 msgstr "Wajib untuk membuat Kata Sandi Aplikasi, tetapi tidak untuk memperbarui pengguna."
 
-#: wp-admin/about.php:271
+#: wp-admin/about.php:302
 msgid "Go to Updates"
 msgstr "Pergi ke pembaruan"
 
@@ -4698,7 +4698,7 @@ msgstr "https://make.wordpress.org/hosting/handbook/handbook/server-environment/
 msgid "The WordPress Hosting Team maintains a list of those modules, both recommended and required, in <a href=\"%1$s\" %2$s>the team handbook%3$s</a>."
 msgstr "Tim Hosting WordPress memelihara daftar modul-modul tersebut, keduanya direkomendasikan dan diwajibkan, di <a href=\"%1$s\" %2$s>the team handbook %3$s</a>."
 
-#: wp-admin/about.php:140 wp-admin/includes/class-wp-site-health.php:259
+#: wp-admin/about.php:171 wp-admin/includes/class-wp-site-health.php:259
 #: wp-admin/includes/class-wp-site-health.php:737
 #: wp-admin/includes/class-wp-site-health.php:908
 #: wp-admin/includes/class-wp-site-health.php:1147
@@ -5945,7 +5945,7 @@ msgstr "Plugin ini tidak berfungsi dengan versi WordPress dan PHP Anda."
 
 #. translators: %s: WordPress version number.
 #. translators: %s: WordPress version.
-#: wp-admin/about.php:21 wp-admin/includes/update.php:321
+#: wp-admin/about.php:21 wp-admin/about.php:85 wp-admin/includes/update.php:321
 #: wp-admin/index.php:119 wp-admin/install.php:242 wp-admin/update-core.php:94
 #: wp-admin/upgrade.php:96
 msgid "https://wordpress.org/documentation/wordpress-version/version-%s/"
@@ -8218,7 +8218,7 @@ msgid "(Currently set to: %s)"
 msgstr "(Saat ini diletakkan di: %s)"
 
 #. translators: %s: WordPress version number.
-#: wp-admin/about.php:301
+#: wp-admin/about.php:332
 msgid "<strong>Version %s</strong> addressed one security issue."
 msgstr "<strong>Versi %s</strong> mengatasi sebuah masalah keamanan."
 
@@ -8231,15 +8231,15 @@ msgstr "https://gravatar.com/"
 msgid "Profile Picture"
 msgstr "Foto Profil"
 
-#: wp-admin/about.php:298
+#: wp-admin/about.php:329
 msgid "Maintenance and Security Releases"
 msgstr "Rilis Pemeliharaan dan Keamanan"
 
-#: wp-admin/about.php:295
+#: wp-admin/about.php:326
 msgid "Security Releases"
 msgstr "Rilis Keamanan"
 
-#: wp-admin/about.php:292
+#: wp-admin/about.php:323
 msgid "Maintenance Releases"
 msgstr "Rilis Pemeliharaan"
 
@@ -11508,14 +11508,15 @@ msgstr "Masukkan alamat email pengguna yang telah ada di jaringan ini untuk meng
 msgid "Show Toolbar when viewing site"
 msgstr "Tampilkan Baris Perkakas ketika mengunjungi situs"
 
+#. translators: %s: HelpHub URL.
 #. translators: %s: Documentation URL.
-#: wp-admin/about.php:324
+#: wp-admin/about.php:82 wp-admin/about.php:355
 msgid "For more information, see <a href=\"%s\">the release notes</a>."
 msgstr "Untuk informasi lebih lanjut, lihatlah <a href=\"%s\">catatan rilis</a>."
 
 #. translators: 1: WordPress version number, 2: Plural number of bugs. More
 #. than one security issue.
-#: wp-admin/about.php:318
+#: wp-admin/about.php:349
 msgid "<strong>Version %1$s</strong> addressed some security issues and fixed %2$s bug."
 msgid_plural "<strong>Version %1$s</strong> addressed some security issues and fixed %2$s bugs."
 msgstr[0] "<strong>Versi %1$s</strong> memperbaiki beberapa masalah keamanan dan %2$s bug."
@@ -11523,33 +11524,33 @@ msgstr[1] "<strong>Versi %1$s</strong> memperbaiki beberapa masalah keamanan dan
 
 #. translators: 1: WordPress version number, 2: Plural number of bugs. Singular
 #. security issue.
-#: wp-admin/about.php:312
+#: wp-admin/about.php:343
 msgid "<strong>Version %1$s</strong> addressed a security issue and fixed %2$s bug."
 msgid_plural "<strong>Version %1$s</strong> addressed a security issue and fixed %2$s bugs."
 msgstr[0] "<strong>Versi %1$s</strong> telah memperbaiki masalah keamanan dan memperbaiki %2$s bug."
 msgstr[1] "<strong>Versi %1$s</strong> telah memperbaiki masalah keamanan dan memperbaiki %2$s bug."
 
 #. translators: 1: WordPress version number, 2: Plural number of bugs.
-#: wp-admin/about.php:306
+#: wp-admin/about.php:70 wp-admin/about.php:337
 msgid "<strong>Version %1$s</strong> addressed %2$s bug."
 msgid_plural "<strong>Version %1$s</strong> addressed %2$s bugs."
 msgstr[0] "<strong>Versi %1$s</strong> mengatasi %2$s bug."
 msgstr[1] "<strong>Versi %1$s</strong> mengatasi %2$s bug."
 
 #. translators: %s: WordPress version number.
-#: wp-admin/about.php:303
+#: wp-admin/about.php:334
 msgid "<strong>Version %s</strong> addressed some security issues."
 msgstr "<strong>Versi %s</strong> mengatasi sejumlah isu keamanan."
 
-#: wp-admin/about.php:297
+#: wp-admin/about.php:328
 msgid "Maintenance and Security Release"
 msgstr "Rilis Perawatan dan Perbaikan Keamanan"
 
-#: wp-admin/about.php:294
+#: wp-admin/about.php:325
 msgid "Security Release"
 msgstr "Rilis Perbaikan Keamanan"
 
-#: wp-admin/about.php:291
+#: wp-admin/about.php:65 wp-admin/about.php:322
 msgid "Maintenance Release"
 msgstr "Rilis Perawatan"
 
@@ -11822,15 +11823,15 @@ msgstr "<strong>Edit</strong> membawa Anda ke layar pengeditan untuk pos terpili
 msgid "Because this is a multisite installation, you may add accounts that already exist on the Network by specifying a username or email, and defining a role. For more options, such as specifying a password, you have to be a Network Administrator and use the hover link under an existing user&#8217;s name to Edit the user profile under Network Admin > All Users."
 msgstr "Karena ini adalah instalasi multi-situs, Anda dapat menambahkan akun-akun yang telah ada pada Jaringan dengan menyebutkan sebuah nama pengguna atau email, dan mendefinisikan sebuah peran. Untuk pilihan lebih lanjut, seperti menentukan kata sandi, Anda haruslah seorang Administrator Jaringan dan gunakan taut layangan di bawah nama pengguna yang telah ada untuk Menyunting riwayat pengguna tersebut di bawah Admin Jaringan > Semua Pengguna."
 
-#: wp-admin/about.php:65
+#: wp-admin/about.php:96
 msgid "Welcome to WordPress 7.0"
 msgstr "Selamat datang di WordPress 7.0"
 
-#: wp-admin/about.php:278
+#: wp-admin/about.php:309
 msgid "Go to Dashboard &rarr; Home"
 msgstr "Pergi ke Dasbor &rarr; Beranda"
 
-#: wp-admin/about.php:271
+#: wp-admin/about.php:302
 msgid "Go to Dashboard &rarr; Updates"
 msgstr "Pergi ke Dasbor &rarr; Pembaruan"
 
@@ -13521,7 +13522,7 @@ msgstr "Pembaruan WordPress "
 msgid "Edit menu item"
 msgstr "Edit item menu"
 
-#: wp-admin/about.php:278
+#: wp-admin/about.php:309
 msgid "Go to Dashboard"
 msgstr "Kunjungi Dasbor"
 
