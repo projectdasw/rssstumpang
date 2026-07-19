@@ -734,6 +734,45 @@ class ElementsKit_Widget_Blog_Posts extends Widget_Base {
        $this->end_controls_tab();
        $this->end_controls_tabs();
 
+       $this->add_control(
+           'ekit_blog_posts_equal_height',
+           [
+               'label'        => esc_html__( 'Equalize Card Height', 'elementskit-lite' ),
+               'type'         => Controls_Manager::SWITCHER,
+               'label_on'     => esc_html__( 'Yes', 'elementskit-lite' ),
+               'label_off'    => esc_html__( 'No', 'elementskit-lite' ),
+               'return_value' => 'yes',
+               'default'      => '',
+               'separator'    => 'before',
+               'description'  => esc_html__( 'Make all cards equal height and push the Read More button to the bottom.', 'elementskit-lite' ),
+               'selectors'    => [
+                   '{{WRAPPER}} .post-items' => 'display: flex; flex-wrap: wrap;',
+                   '{{WRAPPER}} .post-items > [class*="col-"]' => 'display: flex;',
+                   '{{WRAPPER}} .elementskit-post-image-card, {{WRAPPER}} .elementskit-post-card' => 'display: flex; flex-direction: column; width: 100%;',
+                   '{{WRAPPER}} .elementskit-post-body' => 'display: flex; flex-direction: column; flex: 1 1 auto;',
+                   '{{WRAPPER}} .btn-wraper' => 'margin-top: auto;',
+               ],
+               'conditions'   => [
+                'relation' => 'and',
+                    'terms'    => [
+                        [
+                            'name'     => 'ekit_blog_posts_layout_style',
+                            'operator' => 'in',
+                            'value'    => [
+                                'elementskit-post-image-card',
+                                'elementskit-post-card',
+                            ],
+                        ],
+                        [
+                            'name'     => 'grid_masonry',
+                            'operator' => '!==',
+                            'value'    => 'yes',
+                        ],
+                    ],
+                ],
+           ]
+       );
+
 		$this->add_control(
 			'ekit_blog_posts_hr',
 			[

@@ -1292,6 +1292,7 @@ var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
 var _app = _interopRequireDefault(__webpack_require__(/*! ./app */ "../modules/promotions/assets/js/react/app.js"));
 var _previewIframeListeners = __webpack_require__(/*! elementor-editor-utils/preview-iframe-listeners */ "../assets/dev/js/editor/utils/preview-iframe-listeners.js");
+var _i18n = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 var _client = __webpack_require__(/*! react-dom/client */ "../node_modules/react-dom/client.js");
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0, _defineProperty2.default)(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -1321,17 +1322,18 @@ var AppManager = exports.AppManager = /*#__PURE__*/function () {
     value: function resolveWidgetPromotionData(detail) {
       var _elementor2, _elementor$config$pro, _elementsPromotion$ac, _elementsPromotion$ac2, _elementsPromotion$ti, _elementsPromotion$co;
       var promotions = ((_elementor2 = elementor) === null || _elementor2 === void 0 || (_elementor2 = _elementor2.config) === null || _elementor2 === void 0 ? void 0 : _elementor2.v4Promotions) || {};
-      var normalizedType = detail.widgetType.replace(/[-_]/g, '').toLowerCase();
+      var widgetType = detail.widgetType || '';
+      var normalizedType = widgetType.replace(/[-_]/g, '').toLowerCase();
       var key = Object.keys(promotions).find(function (promotionKey) {
         return promotionKey.replace(/[-_]/g, '').toLowerCase() === normalizedType;
       });
       var promotionData = key ? promotions[key] : null;
       var elementsPromotion = ((_elementor$config$pro = elementor.config.promotion) === null || _elementor$config$pro === void 0 ? void 0 : _elementor$config$pro.elements) || {};
-      var fallbackCtaUrl = detail.ctaUrl || ((_elementsPromotion$ac = elementsPromotion.action_button) === null || _elementsPromotion$ac === void 0 || (_elementsPromotion$ac = _elementsPromotion$ac.url) === null || _elementsPromotion$ac === void 0 ? void 0 : _elementsPromotion$ac.replace('%s', detail.widgetType || '')) || '';
+      var fallbackCtaUrl = detail.ctaUrl || ((_elementsPromotion$ac = elementsPromotion.action_button) === null || _elementsPromotion$ac === void 0 || (_elementsPromotion$ac = _elementsPromotion$ac.url) === null || _elementsPromotion$ac === void 0 ? void 0 : _elementsPromotion$ac.replace('%s', widgetType)) || '';
       var fallbackCtaText = detail.ctaText || ((_elementsPromotion$ac2 = elementsPromotion.action_button) === null || _elementsPromotion$ac2 === void 0 ? void 0 : _elementsPromotion$ac2.text) || '';
       var widgetName = detail.widgetTitle || detail.title || '';
       var hideProTag = detail.hideProTag || false;
-      return promotionData ? _objectSpread(_objectSpread({}, promotionData), {}, {
+      var resolvedPromotionData = promotionData ? _objectSpread(_objectSpread({}, promotionData), {}, {
         ctaUrl: promotionData.ctaUrl || fallbackCtaUrl,
         ctaText: promotionData.ctaText || fallbackCtaText,
         hideProTag: hideProTag
@@ -1342,6 +1344,7 @@ var AppManager = exports.AppManager = /*#__PURE__*/function () {
         ctaText: fallbackCtaText,
         hideProTag: hideProTag
       };
+      return applyProConnectPromotionOverrides(resolvedPromotionData);
     }
   }, {
     key: "mount",
@@ -1398,7 +1401,7 @@ var AppManager = exports.AppManager = /*#__PURE__*/function () {
     value: function attachAtomicFormListeners() {
       var _this3 = this;
       document.addEventListener('atomic-form-promotion:open', function (event) {
-        var promotionData = _this3.getAtomicFormPromotionData();
+        var promotionData = applyProConnectPromotionOverrides(_this3.getAtomicFormPromotionData());
         _this3.mountCard(event.detail.target, 'e-atomic-form-promotion-wrapper', {
           cardType: 'atomicForm',
           promotionData: promotionData,
@@ -1452,6 +1455,15 @@ var AppManager = exports.AppManager = /*#__PURE__*/function () {
     }
   }]);
 }();
+function applyProConnectPromotionOverrides(promotionData) {
+  if (!elementor.helpers.hasProAndNotConnected()) {
+    return promotionData;
+  }
+  return _objectSpread(_objectSpread({}, promotionData), {}, {
+    ctaUrl: elementorProEditorConfig.urls.connect,
+    ctaText: (0, _i18n.__)('Connect & Activate', 'elementor')
+  });
+}
 
 /***/ }),
 
