@@ -55,6 +55,12 @@ class Email_Settings {
 		return $this->email_settings['send-as'] ?? 'html';
 	}
 
+	public function meta_data(): array {
+		$value = $this->email_settings['meta-data'] ?? [];
+
+		return is_array( $value ) ? $value : [];
+	}
+
 	private function normalize_address_list( $value ) {
 		if ( is_array( $value ) ) {
 			$value = array_filter( array_map( 'trim', array_map( 'strval', $value ) ) );

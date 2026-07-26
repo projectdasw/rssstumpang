@@ -149,15 +149,22 @@
 				setSaving(true);
 				$status.removeClass('is-error');
 
+				var data = {
+					action: 'pa_save_ai_abilities',
+					security: settings.nonce,
+					disabled: JSON.stringify(disabledIds)
+				};
+
+				var $option = $section.find('.pa-ai-option-switch input[data-ai-option="third_party_widgets"]');
+				if ($option.length && !$option.prop('disabled')) {
+					data.third_party = $option.prop('checked') ? '1' : '0';
+				}
+
 				$.ajax({
 					url: settings.ajaxurl,
 					type: 'POST',
 					dataType: 'json',
-					data: {
-						action: 'pa_save_ai_abilities',
-						security: settings.nonce,
-						disabled: JSON.stringify(disabledIds)
-					}
+					data: data
 				}).done(function (response) {
 					if (!response.success) {
 						saveFailed(response.data && response.data.message);
@@ -208,6 +215,30 @@
 				queueSave();
 			});
 
+			$section.on('change', '.pa-ai-option-switch input[data-ai-option]', function () {
+				queueSave();
+			});
+
+			$section.on('click', '.pa-ai-accordion-toggle', function () {
+
+				var $btn = $(this),
+					$body = $('#' + $btn.attr('aria-controls')),
+					expanded = 'true' === $btn.attr('aria-expanded');
+
+				if (expanded) {
+					$btn.attr('aria-expanded', 'false');
+					$body.attr('hidden', 'hidden');
+					return;
+				}
+
+				// Accordion: collapse every other item first.
+				$section.find('.pa-ai-accordion-toggle').attr('aria-expanded', 'false');
+				$section.find('.pa-ai-accordion-body').attr('hidden', 'hidden');
+
+				$btn.attr('aria-expanded', 'true');
+				$body.removeAttr('hidden');
+			});
+
 			$section.on('click', '.pa-mcp-ability-cat-toggle', function () {
 
 				var $btn = $(this),
@@ -232,7 +263,7 @@
 		// Handle settings form submission
 		self.handleSettingsSave = function () {
 
-			$("#pa-features .pa-section-info-cta input, #pa-modules .pa-switcher input, #pa-modules .pa-section-info-cta input").on(
+			$("#pa-features .pa-section-info-cta input, #pa-ai-settings .pa-section-info-cta input, #pa-modules .pa-switcher input, #pa-modules .pa-section-info-cta input").on(
 				'change',
 				function () {
 
@@ -243,21 +274,11 @@
 							self.saveElementsSettings('elements', 'default', true);
 						}
 					} else if ('premium-ai-abilities' === $(this).attr('id')) {
-						$('.pa-ai-mcp-notice').toggle($(this).prop('checked'));
+						$('.pa-ai-accordion').prop('hidden', !$(this).prop('checked'));
 						self.saveElementsSettings('elements', 'default');
 					} else {
 						self.saveElementsSettings('elements', 'default');
 					}
-				}
-			)
-
-			// Save the enabled state, then reload into the MCP Configuration tab (only registered server-side once the feature is on).
-			$("#pa-features").on(
-				'click',
-				'.pa-ai-mcp-link',
-				function (e) {
-					e.preventDefault();
-					self.saveElementsSettings('elements', 'default', false, settings.mcpConfigURL);
 				}
 			)
 
@@ -592,9 +613,11 @@
 						slug = hash ? hash[1] : $links.first().attr('href').replace('#tab=', ''),
 						$link = $('#pa-tab-link-' + slug);
 
+					// An unknown slug (e.g. a bookmark of a tab that no longer exists) would
+					// otherwise leave every section hidden, i.e. a blank page.
 					if (!$link.length) {
-						return
-
+						slug = $links.first().attr('href').replace('#tab=', '');
+						$link = $('#pa-tab-link-' + slug);
 					}
 					$links.removeClass('pa-section-active');
 					$link.addClass('pa-section-active');
@@ -618,10 +641,10 @@
 
 		};
 
-		// MCP Configuration tab: copy connection details + switch AI-client panels.
+		// Configure MCP Server: copy connection details + switch AI-client panels.
 		self.initMcpConfig = function () {
 
-			var $section = $('#pa-section-mcp-config');
+			var $section = $('#pa-section-ai-abilities');
 
 			if (!$section.length) {
 				return;
@@ -822,7 +845,9 @@
 			}
 
 			if ('elements' === action) {
-				$form = $('form#pa-settings, form#pa-features, form#pa-wz-settings');
+				// #pa-ai-settings must be in here: the save has full-replace semantics, so a
+				// key missing from the POST is written back as disabled.
+				$form = $('form#pa-settings, form#pa-features, form#pa-wz-settings, form#pa-ai-settings');
 				action = 'pa_save_elements_settings';
 			} else {
 				$form = $('form#pa-ver-control, form#pa-integrations');

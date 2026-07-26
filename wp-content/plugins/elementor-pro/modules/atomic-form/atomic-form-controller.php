@@ -7,6 +7,7 @@ use Elementor\Modules\AtomicWidgets\Elements\Base\Atomic_Widget_Base;
 use Elementor\Utils as ElementorUtils;
 use ElementorPro\Modules\AtomicForm\Actions\Action_Runner;
 use ElementorPro\Modules\AtomicForm\File_Upload\File_Upload_Handler;
+use ElementorPro\Modules\AtomicForm\Module as Atomic_Form_Module;
 use ElementorPro\Modules\AtomicWidgets\Settings_Resolver;
 use ElementorPro\Modules\Forms\Classes\Ajax_Handler;
 use ElementorPro\Plugin;
@@ -18,17 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Atomic_Form_Controller {
 	const NONCE_ACTION = 'elementor_pro_atomic_forms_send_form';
-
-	private const FORM_FIELD_WIDGET_TYPES = [
-		'e-form-input',
-		'e-form-textarea',
-		'e-form-checkbox',
-		'e-form-radio-button',
-		'e-form-select',
-		'e-form-date-picker',
-		'e-form-time-picker',
-		'e-form-file-upload',
-	];
 
 	public static function is_form_submitted(): bool {
 		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce is validated in ajax_send_form.
@@ -340,7 +330,7 @@ class Atomic_Form_Controller {
 
 		$widget_type = $element['widgetType'] ?? '';
 
-		return in_array( $widget_type, self::FORM_FIELD_WIDGET_TYPES, true );
+		return in_array( $widget_type, Atomic_Form_Module::get_form_field_widget_types(), true );
 	}
 
 	private function get_field_cssid( array $element, int $post_id, ?Element_Base $widget_instance ): string {
@@ -351,6 +341,7 @@ class Atomic_Form_Controller {
 				return $cssid;
 			}
 		}
+
 		$resolved = $this->resolve_raw_settings( $element, $post_id );
 		$cssid = $resolved['_cssid'] ?? '';
 

@@ -61,6 +61,9 @@ class UniteCreatorAPIIntegrations{
 	const GOOGLE_REVIEWS_SORT_BY = "google_reviews_sort_by";
 	const GOOGLE_REVIEWS_SERP_CACHE_TIME = "google_reviews_serp_cache_time";
 	const GOOGLE_REVIEWS_SHOW_DEMO_DATA = "google_reviews_show_demo_data";
+	const GOOGLE_REVIEWS_SERP_NUM_REVIEWS = "google_reviews_serp_num_reviews";
+	const GOOGLE_REVIEWS_SERP_DEFAULT_NUM_REQUESTS = 2;
+
 	const GOOGLE_REVIEWS_DEFAULT_CACHE_TIME = 10;
 	const GOOGLE_REVIEWS_CACHE_TIME_DAY = 86400; // 1 day in seconds
 	const GOOGLE_REVIEWS_CACHE_TIME_WEEK = 604800; // 1 week in seconds
@@ -224,6 +227,9 @@ class UniteCreatorAPIIntegrations{
 			case self::TYPE_GOOGLE_REVIEWS:
 				$data = UniteFunctionsUC::getVal($data, "reviews");
 			break;
+			case self::TYPE_YOUTUBE_PLAYLIST:
+				$data = UniteFunctionsUC::getVal($data, "videos");
+			break;
 		}
 
 		return $data;
@@ -250,6 +256,9 @@ class UniteCreatorAPIIntegrations{
 				switch($paramType){
 					case "reviews":
 						$apiType = "google_reviews";
+					break;
+					case "youtube_playlist":
+						$apiType = "youtube_playlist";
 					break;
 				}
 			}
@@ -961,11 +970,14 @@ class UniteCreatorAPIIntegrations{
 		
 		$showDemoData = $this->getParam(self::GOOGLE_REVIEWS_SHOW_DEMO_DATA, false);
 
+		$numRequests = (int)$this->getParam(self::GOOGLE_REVIEWS_SERP_NUM_REVIEWS, self::GOOGLE_REVIEWS_SERP_DEFAULT_NUM_REQUESTS);
+		if($numRequests < 1)
+			$numRequests = self::GOOGLE_REVIEWS_SERP_DEFAULT_NUM_REQUESTS;
 		
 		if($showDemoData == true && GlobalsProviderUC::$isInsideEditor == true){
 			$place = $placesService->getDetailsDemo();
 		}else{
-			$place = $placesService->getDetailsSerp($placeId, $apiKey, $placeParams, $this->googleReviewsShowDebug, $cacheTime);
+			$place = $placesService->getDetailsSerp($placeId, $apiKey, $placeParams, $this->googleReviewsShowDebug, $cacheTime, $numRequests);
 		}
 
 		return($place);
@@ -1049,6 +1061,11 @@ class UniteCreatorAPIIntegrations{
 				
 				if($isSerp == true)
 					$review->setSerpSource();
+
+				// Skip rating-only reviews with no written text
+				$textPlain = trim(strip_tags((string)$review->getText(false)));
+				if($textPlain === "")
+					continue;
 				
 				$arrReview = array(
 					"id" => $review->getId(),
@@ -1153,7 +1170,6 @@ class UniteCreatorAPIIntegrations{
 			
 		}
 		
-		
 		$fields[] = array(
 				"id" => self::GOOGLE_REVIEWS_FIELD_LANG,
 				"type" => UniteCreatorDialogParam::PARAM_TEXTFIELD,
@@ -1176,10 +1192,18 @@ class UniteCreatorAPIIntegrations{
 				),
 				"default" => "qualityScore"
 			);
-			
+
+			$fields[] = array(
+				"id" => self::GOOGLE_REVIEWS_SERP_NUM_REVIEWS,
+				"type" => UniteCreatorDialogParam::PARAM_NUMBER,
+				"text" => __("Number of API Requests", "unlimited-elements-for-elementor"),
+				// translators: %d is a number
+				"desc" => sprintf(__("Not the number of reviews. This is how many Serp API calls to make. The first request returns about 8 reviews; each extra request loads up to 20 more. Default is %d (~28 reviews), maximum is 5. Use the widget Max Reviews Number to limit how many are shown. Reviews without text are skipped. Each request uses Serp API quota.", "unlimited-elements-for-elementor"), self::GOOGLE_REVIEWS_SERP_DEFAULT_NUM_REQUESTS),
+				"default" => self::GOOGLE_REVIEWS_SERP_DEFAULT_NUM_REQUESTS,
+			);
 		}
 		
-		
+
 		//add fields for single mode
 		
 		if($isSingle == true){
@@ -1646,7 +1670,9 @@ class UniteCreatorAPIIntegrations{
 
 		$data = $this->sortData($data, $orderDirection);
 
-		return $data;
+		return array(
+			"videos" => $data,
+		);
 	}
 
 	/**

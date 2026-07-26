@@ -275,7 +275,7 @@ class Admin_Helper {
 			'pa-admin',
 			PREMIUM_ADDONS_URL . 'admin/assets/css/admin.css',
 			array(),
-			PREMIUM_ADDONS_VERSION,
+			time(),
 			'all'
 		);
 
@@ -293,7 +293,7 @@ class Admin_Helper {
 				'pa-admin',
 				PREMIUM_ADDONS_URL . 'admin/assets/js/admin.js',
 				array( 'jquery' ),
-				PREMIUM_ADDONS_VERSION,
+				time(),
 				true
 			);
 
@@ -321,7 +321,6 @@ class Admin_Helper {
 				'settings'               => array(
 					'ajaxurl'           => admin_url( 'admin-ajax.php' ),
 					'nonce'             => wp_create_nonce( 'pa-settings-tab' ),
-					'mcpConfigURL'      => admin_url( 'admin.php?page=' . self::$page_slug . '#tab=mcp-config' ),
 					'unused_nonce'      => wp_create_nonce( 'pa-disable-unused' ),
 					'generate_nonce'    => wp_create_nonce( 'pa-generate-nonce' ),
 					'site_cursor_nonce' => wp_create_nonce( 'pa-site-cursor-nonce' ),
@@ -704,35 +703,25 @@ class Admin_Helper {
 			),
 		);
 
-		// AI Abilities dashboard tabs — only when the feature is enabled. Inserted
-		// right after the Integrations tab so they sit with the other connectivity
-		// settings instead of after System Info / License.
-		if ( ! empty( self::get_enabled_elements()['premium-ai-abilities'] )
-			&& function_exists( 'wp_register_ability' ) ) {
+		// AI Abilities dashboard tab. Always registered — it owns the feature
+		// switcher, so it has to be reachable while the feature is off. Inserted right
+		// after the Features tab so it sits with the other feature settings instead of
+		// after System Info / License.
+		$position = array_search( 'addons', array_keys( self::$tabs ), true ) + 1;
 
-			$position = array_search( 'integrations', array_keys( self::$tabs ), true ) + 1;
-
-			self::$tabs = array_merge(
-				array_slice( self::$tabs, 0, $position, true ),
-				array(
-					'mcp-config'   => array(
-						'id'       => 'mcp-config',
-						'slug'     => $slug . '#tab=mcp-config',
-						'title'    => __( 'MCP Configuration', 'premium-addons-for-elementor' ),
-						'href'     => '#tab=mcp-config',
-						'template' => PREMIUM_ADDONS_PATH . 'admin/includes/templates/mcp-config',
-					),
-					'ai-abilities' => array(
-						'id'       => 'ai-abilities',
-						'slug'     => $slug . '#tab=ai-abilities',
-						'title'    => __( 'AI Abilities', 'premium-addons-for-elementor' ),
-						'href'     => '#tab=ai-abilities',
-						'template' => PREMIUM_ADDONS_PATH . 'admin/includes/templates/ai-abilities',
-					),
+		self::$tabs = array_merge(
+			array_slice( self::$tabs, 0, $position, true ),
+			array(
+				'ai-abilities' => array(
+					'id'       => 'ai-abilities',
+					'slug'     => $slug . '#tab=ai-abilities',
+					'title'    => __( 'AI Abilities & MCP Config', 'premium-addons-for-elementor' ),
+					'href'     => '#tab=ai-abilities',
+					'template' => PREMIUM_ADDONS_PATH . 'admin/includes/templates/ai-abilities',
 				),
-				array_slice( self::$tabs, $position, null, true )
-			);
-		}
+			),
+			array_slice( self::$tabs, $position, null, true )
+		);
 
 		if ( ! Helper_Functions::check_papro_version() ) {
 
@@ -1188,10 +1177,11 @@ class Admin_Helper {
 	/**
 	 * Replace the disabled AI abilities set.
 	 *
-	 * @param array $disabled Full ability names to disable.
+	 * @param array     $disabled    Full ability names to disable.
+	 * @param bool|null $third_party Third-party widgets switch; null preserves the stored value.
 	 * @return array
 	 */
-	public static function save_ai_abilities_settings( array $disabled ) {
+	public static function save_ai_abilities_settings( array $disabled, $third_party = null ) {
 		$abilities_list  = Bootstrap::get_instance()->get_abilities_catalog();
 		$abilities_names = wp_list_pluck( $abilities_list, 'full_name' );
 
@@ -1207,10 +1197,18 @@ class Admin_Helper {
 
 		$clean_disabled = array_values( array_unique( $clean_disabled ) );
 
+		// Preserve the current value on an ability-only save (or a Pro-inactive
+		// save where the locked switch is never posted).
+		if ( null === $third_party ) {
+			$current     = self::get_ai_abilities_settings();
+			$third_party = ! empty( $current['third_party_widgets'] );
+		}
+
 		update_option(
 			'pa_ai_abilities',
 			array(
-				'disabled_abilities' => $clean_disabled,
+				'disabled_abilities'  => $clean_disabled,
+				'third_party_widgets' => (bool) $third_party,
 			)
 		);
 
@@ -1256,7 +1254,9 @@ class Admin_Helper {
 			);
 		}
 
-		$disabled = self::save_ai_abilities_settings( $disabled );
+		$third_party = isset( $_POST['third_party'] ) ? ( '1' === sanitize_text_field( wp_unslash( $_POST['third_party'] ) ) ) : null;
+
+		$disabled = self::save_ai_abilities_settings( $disabled, $third_party );
 
 		wp_send_json_success(
 			array(
@@ -1722,13 +1722,19 @@ class Admin_Helper {
 		}
 
 		$stored_settings = get_option( 'pa_ai_abilities', array( 'disabled_abilities' => array() ) );
+		$stored_settings = is_array( $stored_settings ) ? $stored_settings : array();
 
-		$disabled = is_array( $stored_settings ) && isset( $stored_settings['disabled_abilities'] ) && is_array( $stored_settings['disabled_abilities'] )
+		$disabled = isset( $stored_settings['disabled_abilities'] ) && is_array( $stored_settings['disabled_abilities'] )
 			? array_values( array_filter( $stored_settings['disabled_abilities'], 'is_string' ) )
 			: array();
 
+		// Default-on: a missing key reads as enabled so existing Pro users are unaffected.
+		$third_party_widgets = ! array_key_exists( 'third_party_widgets', $stored_settings )
+			|| ! empty( $stored_settings['third_party_widgets'] );
+
 		self::$ai_abilities_settings = array(
-			'disabled_abilities' => $disabled,
+			'disabled_abilities'  => $disabled,
+			'third_party_widgets' => $third_party_widgets,
 		);
 
 		wp_cache_set( 'pa_ai_abilities', self::$ai_abilities_settings, 'premium_addons' );

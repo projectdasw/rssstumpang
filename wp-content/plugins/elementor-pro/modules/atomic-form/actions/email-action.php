@@ -3,6 +3,7 @@ namespace ElementorPro\Modules\AtomicForm\Actions;
 
 use ElementorPro\Modules\AtomicForm\Actions\Email_Settings;
 use ElementorPro\Modules\AtomicForm\Classes\Composite_Shortcode_Resolver as Shortcode_Resolver;
+use ElementorPro\Modules\AtomicForm\Classes\Metadata_Resolver;
 use ElementorPro\Modules\AtomicForm\File_Upload\File_Upload_Handler;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -40,6 +41,7 @@ class Email_Action extends Action_Base {
 
 		$shortcode_resolver = new Shortcode_Resolver( $form_data, $is_html, $field_metadata, $cssid_map );
 		$message = $shortcode_resolver->resolve( $message );
+		$message = ( new Metadata_Resolver( $email_settings->meta_data(), $context, $is_html ) )->resolve( $message );
 		$reply_to = $shortcode_resolver->resolve( $reply_to );
 
 		$headers = [];

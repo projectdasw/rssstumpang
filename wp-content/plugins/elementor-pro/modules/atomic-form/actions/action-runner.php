@@ -79,9 +79,11 @@ class Action_Runner {
 		$actions_succeeded_count = 0;
 
 		foreach ( $actions as $action_type ) {
+			$normalized_action_type = Action_Type::normalize_email_actions( $action_type );
 
-			if ( ! self::has_action( $action_type ) ) {
+			if ( ! self::has_action( $normalized_action_type ) ) {
 				$error = sprintf(
+					/* translators: %s: Action type. */
 					__( 'Invalid action type: %s', 'elementor-pro' ),
 					$action_type
 				);
@@ -96,11 +98,12 @@ class Action_Runner {
 			}
 
 			try {
-				$action = self::create_action( $action_type );
+				$action = self::create_action( $normalized_action_type );
 
 				if ( ! $action ) {
 					throw new \Exception(
 						sprintf(
+							/* translators: %s: Action type. */
 							__( 'Could not create action: %s', 'elementor-pro' ),
 							$action_type
 						)

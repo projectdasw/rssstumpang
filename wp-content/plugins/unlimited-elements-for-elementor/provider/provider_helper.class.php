@@ -592,6 +592,9 @@ class HelperProviderUC{
 	 */
 	public static function getRepeaterItems_json($arrValues, $name, $showDebugData = false, $showDebugContent = false, $httpContext = null){
 		
+		$showDebugData = ($showDebugData == true && HelperUC::canShowDebugOutput());
+		$showDebugContent = ($showDebugContent == true && HelperUC::canShowDebugOutput());
+		
 		$contentLocation = UniteFunctionsUC::getVal($arrValues, $name."_json_csv_location");
 		
 		if($contentLocation == "url"){
@@ -1278,6 +1281,11 @@ class HelperProviderUC{
 					
 					$params["add_dynamic"] = true;
 					
+					$settingsManager->addTextBox($paramName, $paramDefault, $field["text"], $params);
+				break;
+				case UniteCreatorDialogParam::PARAM_NUMBER:
+					$params["origtype"] = UniteCreatorDialogParam::PARAM_NUMBER;
+					$params["add_dynamic"] = true;
 					$settingsManager->addTextBox($paramName, $paramDefault, $field["text"], $params);
 				break;
 				case UniteCreatorDialogParam::PARAM_DROPDOWN:

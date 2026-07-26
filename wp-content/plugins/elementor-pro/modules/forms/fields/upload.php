@@ -331,7 +331,7 @@ class Upload extends Field_Base {
 		if ( ! empty( $field['max_files'] ) ) {
 			if ( count( $files[ $id ] ) > $field['max_files'] ) {
 				$error_message = sprintf(
-					/* translators: %d: The number of allowed files. */
+					/* translators: %d: Maximum number of allowed files. */
 					_n( 'You can upload only %d file.', 'You can upload up to %d files.', intval( $field['max_files'] ), 'elementor-pro' ),
 					intval( $field['max_files'] )
 				);
