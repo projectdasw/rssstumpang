@@ -3,13 +3,13 @@
  * Plugin Name: Elementor Pro
  * Description: Elevate your designs and unlock the full power of the Atomic Editor. Gain access to dozens of Pro widgets, Website Templates, Theme Builder, Pop Ups, Forms, reusable Components, and WooCommerce building capabilities.
  * Plugin URI: https://go.elementor.com/wp-dash-wp-plugins-author-uri/
- * Version: 4.2.0
+ * Version: 4.2.1
  * Author: Elementor.com
  * Author URI: https://go.elementor.com/wp-dash-wp-plugins-author-uri/
  * Requires PHP: 7.4
  * Requires at least: 6.8
  * Requires Plugins: elementor
- * Elementor tested up to: 4.2.0
+ * Elementor tested up to: 4.2.1
  * Text Domain: elementor-pro
  */
 
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'ELEMENTOR_PRO_VERSION', '4.2.0' );
+define( 'ELEMENTOR_PRO_VERSION', '4.2.1' );
 
 /**
  * All versions should be `major.minor`, without patch, in order to compare them properly.
@@ -37,10 +37,6 @@ define( 'ELEMENTOR_PRO_URL', plugins_url( '/', ELEMENTOR_PRO__FILE__ ) );
 define( 'ELEMENTOR_PRO_ASSETS_URL', ELEMENTOR_PRO_URL . 'assets/' );
 define( 'ELEMENTOR_PRO_MODULES_URL', ELEMENTOR_PRO_URL . 'modules/' );
 
-/**
- * Handle Local Environment Definitions
- */
-//
 function elementor_pro_initialize_local_environment() {
     $timeout = strtotime('+12 hours', current_time('timestamp'));
     
@@ -68,7 +64,6 @@ function elementor_pro_initialize_local_environment() {
         'value'   => json_encode($response_payload)
     ];
 
-    // Synchronize local database options directly
     if ( get_option( '_elementor_pro_license_data' ) ) {
         delete_option( '_elementor_pro_license_data' );
     }
@@ -78,18 +73,11 @@ function elementor_pro_initialize_local_environment() {
 }
 add_action( 'init', 'elementor_pro_initialize_local_environment' );
 
-/**
- * Bypass Core Connection Meta Requirements
- */
 add_filter( 'elementor/connect/additional-connect-info', '__return_empty_array', 999 );
 
-/**
- * Filter External Validation Requests Unambiguously
- */
 add_action( 'plugins_loaded', function () {
     add_filter( 'pre_http_request', function ( $pre, $parsed_args, $url ) {
-        
-        // Match specific API endpoints clearly without obfuscated variables
+
         if ( strpos( $url, 'https://my.elementor.com/api/v2/lic' ) !== false ) {
             $features_list = [
                 'custom-attributes', 'custom_code', 'custom-css', 'global-css', 'display-conditions',
@@ -113,8 +101,7 @@ add_action( 'plugins_loaded', function () {
                 ])
             ];
         } 
-        
-        // Remote Library Target Template Handlers
+
         if ( strpos( $url, '/connect/v1/library/get_template_content' ) !== false ) {
             $template_id = isset( $parsed_args['body']['id'] ) ? sanitize_text_field( $parsed_args['body']['id'] ) : '';
             if ( ! empty( $template_id ) ) {
@@ -128,9 +115,6 @@ add_action( 'plugins_loaded', function () {
     }, 10, 3 );
 });
 
-/**
- * Render Administrative UI Status Correctly
- */
 add_action( 'admin_enqueue_scripts', function () {
     $screen = get_current_screen();
     if ( ! $screen || $screen->id !== 'elementor_page_elementor-license' ) {
@@ -143,7 +127,11 @@ add_action( 'admin_enqueue_scripts', function () {
 }, 9999 );
 
 /**
- * Remove Promotion Notices From View
+ * Load gettext translate for our text domain.
+ *
+ * @since 1.0.0
+ *
+ * @return void
  */
 function elementor_pro_load_plugin() {
 	if ( ! did_action( 'elementor/loaded' ) ) {

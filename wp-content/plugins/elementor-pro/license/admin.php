@@ -226,6 +226,8 @@ class Admin {
 	}
 
 	public function register_page() {
+		return;
+		
 		if ( $this->is_editor_one_active() ) {
 			return;
 		}

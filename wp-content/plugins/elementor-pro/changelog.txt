@@ -1,5 +1,11 @@
 # Elementor Pro - by Elementor.com
 
+#### 4.2.1 - 2026-07-28
+
+* Fix: Child product categories display the parent category image when Loop Taxonomy is used in a Product Archive template - Atomic Editor
+* Fix: ACF Dynamic Tags display default values instead of item data in Loops - Atomic Editor
+* Fix: ACF fields display in a flat list instead of being grouped by field group in Dynamic Tag - Atomic Editor
+
 #### 4.2.0 - 2026-07-20
 
 * New: Introducing Loop for building dynamic content layouts - Atomic Editor
