@@ -106,9 +106,7 @@ class BWGModelSite {
 
   public function get_alb_gals_row( $bwg, $id, $albums_per_page, $sort_by, $order_by, $pagination_type = 0, $from = '' ) {
     $prepareArgs = array();
-    if ( $albums_per_page < 0 ) {
-      $albums_per_page = 0;
-    }
+    $albums_per_page = abs( intval( $albums_per_page ) );
     global $wpdb;
     $sort_by = WDWLibrary::sanitize_album_sort_column( $sort_by, $from );
     $sort_direction = WDWLibrary::sanitize_sort_direction( $order_by );

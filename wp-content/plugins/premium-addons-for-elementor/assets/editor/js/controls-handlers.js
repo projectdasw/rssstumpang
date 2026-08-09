@@ -19,6 +19,11 @@
 						);
 						var icon = widgets[i].querySelector(".icon > i");
 
+						// Elementor 4.0 replaced this dialog with a React card built from `v4Promotions`.
+						if (!dialog || !icon) {
+							break;
+						}
+
 						if (icon.classList.toString().indexOf("pa-pro") >= 0) {
 							var proElement = icon.classList[0].replace("pa-pro-", "");
 
@@ -414,6 +419,26 @@
 
 	elementor.on("navigator:init", onNavigatorInit);
 
+	var shapeSvgsRequest = null;
+
+	// Shared by every shapes picker in the session, so the library is fetched once.
+	function getShapeSvgs() {
+		if (!shapeSvgsRequest) {
+			shapeSvgsRequest = $.ajax({
+				type: "POST",
+				url: PremiumSettings.ajaxurl,
+				data: {
+					action: "pa_get_shape_svgs",
+					nonce: PremiumSettings.nonce,
+				},
+			}).fail(function () {
+				shapeSvgsRequest = null;
+			});
+		}
+
+		return shapeSvgsRequest;
+	}
+
 	var e = elementor.modules.controls.BaseData,
 		imageChoose = e.extend(
 			{
@@ -455,6 +480,30 @@
 					t &&
 						(this.ui.inputs.filter('[value="' + t + '"]').prop("checked", !0),
 						this.ui.inputs.filter('[value="' + t + '"]').addClass("checked"));
+
+					if (this.model.get("lazy_shapes")) {
+						this.renderThumbs();
+					}
+				},
+
+				renderThumbs: function () {
+					var view = this;
+
+					getShapeSvgs().done(function (response) {
+						var shapes = response.data.shapes;
+
+						view.$el.find(".pa-shape-thumb").each(function () {
+							var key = $(this)
+									.closest(".image-choose-label-block")
+									.find('[type="radio"]')
+									.val(),
+								shape = shapes[key];
+
+							if (shape) {
+								$(this).html(shape.imagesmall);
+							}
+						});
+					});
 				},
 				onReady: function () {
 					if ("premium_gdivider_defaults" === this.model.attributes.name) {

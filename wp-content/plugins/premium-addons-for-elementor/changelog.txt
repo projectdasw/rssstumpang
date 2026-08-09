@@ -1,5 +1,26 @@
 == Changelog ==
 
+= 4.11.96 - 7/8/2026 =
+
+- Tweak: Improved assets loading by preventing Premium Addons main CSS file from loading on pages that don't include Premium Addons widgets.
+- Fixed: Page freezing caused by an infinite loop in Premium Pinterest Feed widget carousel.
+
+= 4.11.95 - 5/8/2026 =
+
+- Tweak: Added TikTok social icon in Team Members widget.
+- Tweak: Updated Twitter icon to X in Team Members widget.
+- Tweak: Added responsive Margin option for Description in Team Members widget.
+- Tweak: Code refactored for better performance and loading speed.
+- Fixed: HTML tags in post title rendered as plain text in Blog widget.
+- Fixed: Empty links with no anchor text in post rendering widgets (Blog, AJAX Search, Smart Post Listing).
+- Fixed: Background Image option conflict with ShortPixel Adaptive Images plugin's Generate noscript Tag option in Video Box widget.
+- Fixed: Loader not showing in Mega Menu live content editor.
+
+= 4.11.94 - 3/8/2026 =
+
+- Tweak: Code refactored for better performance and loading speed.
+- Fixed: False security warning reported by security plugins on the AI Abilities dashboard tab.
+
 = 4.11.93 - 31/7/2026 =
 
 - Fixed: PHP error in Woo Products Listing widget after v4.11.92.
@@ -59,7 +80,7 @@
 
 = 4.11.85 - 6/7/2026 =
 
-- New: Added AI Abilities integration using the WordPress Abilities API - requires WordPress v6.9 or higher.
+- New: Added AI Abilities integration using the WordPress Abilities API - requires WordPress v7.0 or higher.
 - Fixed: On Side skin not displayed as column on mobile extra breakpoints in Blog widget.
 
 = 4.11.84 - 29/6/2026 =
