@@ -2,9 +2,9 @@
 Contributors: Roxnor, Ataurr, aion11
 Tags: Elementor addons, mega menu builder,  header footer builder, elementor addon, elementor widgets
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.0.3
 Requires PHP: 7.4
-Stable tag: 3.10.02
+Stable tag: 4.0.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,7 +18,9 @@ The ultimate addons for Elementor, ElementsKit is a nice, comprehensive page bui
 
 This popular Elementor addons expands your capabilities with an easy drag-and-drop interface, featuring a **header-footer builder, mega menu builder**, and **custom widget builder**.
 
-Besides exclusive design elements & templates, ElementsKit offers copy-paste across domains and control content visibility with multiple conditions. It’s a versatile design toolkit packed with advanced widgets for content, forms, posts, charts, WooCommerce, all dedicated to building any Elementor site.
+Besides exclusive design elements & templates, ElementsKit offers copy-paste across domains, conditional content visibility, and advanced widgets for content, forms, posts, charts, parallax and WooCommerce for building Elementor sites.
+
+Now, **[ElementsKit 4.0](https://wpmet.com/elementskit-4-0/?utm_source=org&utm_medium=readme)** loads up to 80% faster, meets WCAG 2.1 AA accessibility standards, and works with Elementor's Angie AI.
 
 
 🏆 Great **Elementor Addon**! Check [**ElementsKit demos**](https://wpmet.com/plugin/elementskit/elements/?utm_source=org&utm_medium=readme) for new website-building possibilities.
@@ -260,6 +262,8 @@ Let's look at advanced Elementor widgets in ElementsKit Pro version:
 
 ✅ [**Footer Copyright**](https://wpmet.com/plugin/elementskit/elementor-copyright/?utm_source=org&utm_medium=readme) – Add or change copyright text anywhere in Elementor.
 
+✅ [**Event Calendar**](https://wpmet.com/plugin/elementskit/event-calendar/?utm_source=org&utm_medium=readme) – Display events beautifully inside Elementor pages'
+
 ## WooCommerce Elementor Addon
 Display and design e-commerce products in a list and intuitive sliders, along with their categories and mini cart option, anywhere you want.
 **<strong></strong><br />🔶  [WooCommerce Product List](%28https://wpmet.com/plugin/elementskit/woo-product-list/?utm_source=org&utm_medium=readme%29) 🔶[WooCommerce Product Carousel](%28https://wpmet.com/plugin/elementskit/woo-product-carousel/?utm_source=org&utm_medium=readme%29) 🔶[WooCommerce Category List](%28https://wpmet.com/plugin/elementskit/woo-category-list/?utm_source=org&utm_medium=readme%29) 🔶[WooCommerce Mini Cart](%28https://wpmet.com/plugin/elementskit/woo-mini-cart/?utm_source=org&utm_medium=readme%29)**
@@ -353,6 +357,37 @@ ElementsKit is brought to you by Wpmet, a name **trusted by 10,00,000 satisfied 
 Visit  [wpmet](https://wpmet.com/?utm_source=org&utm_medium=readme) for essential WordPress [Tutorials, Tips & Tricks](https://wpmet.com/blog)!
 
 == Changelog ==
+= ElementsKit Elementor Addons Version: 4.0.1 (2026-08-12) =
+* Security: Sanitized input handling and improved output escaping.
+* Improved: Localized the Go Premium modal strings.
+* Improved: Updated the ElementsKit 4.0 link in the readme.
+
+= ElementsKit Elementor Addons Version: 4.0.0 (2026-08-10) =
+* Added: Angie AI compatibility through WordPress abilities and REST API integration.
+* Added: Accessibility improvements for All widgets.
+* Added: WPML translation support for the YouTube Feed widget.
+* Added: Equal-height option for the Blog Post widget.
+* Improved: Frontend performance by loading widget CSS and JavaScript assets only when required, reducing frontend CSS by up to 40%.
+* Improved: CSS asset loading strategy, reducing Total Blocking Time (TBT) by up to 60%.
+* Improved: Largest Contentful Paint (LCP) by approximately 16% through optimized CSS loading.
+* Improved: Optimized onboarding flow for plugins installed through Website Powerup.
+* Improved: Added tab-specific banner images to the Layout Manager.
+* Improved: Header and Footer Builder asset loading to prevent unstyled content and layout shifts.
+* Improved: Compatibility with Plugin Check (PCP).
+* Improved: JavaScript internationalization (i18n) support.
+* Improved: Made Header & Footer admin filter labels translatable.
+* Improved: Made the Layout Library "Add ElementsKit Template" tooltip translatable.
+* Improved: Rebuilt UI Slim and removed the Bootstrap v4.0.0 dependency.
+* Improved: Updated multiple third-party libraries to newer versions.
+* Improved: Refactored library loading paths to align with the new asset structure.
+* Fixed: Lottie widget JSON URL and file upload functionality.
+* Fixed: Mega Menu close button not working correctly in the initial state.
+* Fixed: Mailchimp required-field indicator styling.
+* Fixed: Post Grid featured image rendering in Elementor Editor.
+* Removed: Bootstrap v4.0.0 javascript dependency 
+* Removed: Legacy Font Awesome assets, reducing the plugin size by approximately 1.05 MB.
+* Removed: Unused third-party dependencies to reduce plugin size and improve performance.
+
 = ElementsKit Elementor Addons Version: 3.10.02 (2026-07-09) =
 * Improved: Onboarding process
 
@@ -1038,83 +1073,6 @@ Fixed: Image Width when Hovering on Social style for Team Widget.
 Fixed: Duration control for the Progress bar Widget.
 Fixed: Minor design issue for the Clients' Logo Widget.
 
-ElementsKit Elementor Addons Version: 2.2.4 (10-05-2021)
-New: Back To Top Widget.
-New: Hover Trigger on Tab Widget.
-New: Back to Top Widget.
-New: Clear Cache button added for Facebook Feed Settings.
-Tweaked: Dashboard UI Improvement.
-Fixed: Duration control for the Progress bar Widget.
-
-ElementsKit Elementor Addons Version: 2.2.3 (05-05-2021)
-New: Blog Posts Widget Floating Category.
-New: Blog Posts Widget Various Missing Controls.
-New: Client Image Position control for Testimonial Widget.
-New: Background Hover Effect control for Testimonial Widget.
-New: Rating Hover Color control for Testimonial Widget.
-Tweaked: Replaced deprecated Elementor PHP Methods for Widgets.
-Tweaked: Animating Pie Chart when in view.
-Tweaked: Improvements to the Testimonial Widget.
-Fixed: Border and Padding issues fixed on the 'Video' Widget.
-Fixed: TablePress fatal error after deactivation.
-Fixed: Submenu icon render issue.
-Fixed: Minor CSS fixed for Sticky On Scroll Up.
-Fixed: Minor JS error with OnePage Scroll Module.
-
-ElementsKit Elementor Addons Version: 2.2.2 (14-04-2021)
-New: 'Text' option for the 'Header Offcanvas' widget menu.
-New: 'Info Text' tooltip option to 'Pricing Table' Widget.
-New: 'Vertical Alignment' control added for 'Icon Box' Widget.
-Fixed: Compatibility issues with Elementor 3.2.0.
-Fixed: Minutes typography options for the 'Countdown Timer' Widget.
-
-ElementsKit Elementor Addons Version: 2.2.1 (08-03-2021)
-New: Added Responsive Alignment Control for Category List, Page List, and Post List Widgets.
-Fixed: Missing dependency issue with One-Page Scroll Module.
-Fixed: Category Query was empty for Woo Product Carousel Widget.
-
-ElementsKit Elementor Addons Version: 2.2.0 (02-03-2021)
-Improvement: Minor bug fixing and code improvements.
-Improvement: Minor escaping and validation improvements.
-
-ElementsKit Elementor Addons Version: 2.1.7 (25-02-2021)
-New: Featured Image Size control for Post List Widget.
-New: Option to Show/Hide Facebook Messenger Dialog Box.
-Fixed: Widget builder limited widget issue.
-Fixed: Tab Widget arrow not showing when body background was set.
-Fixed: Nav Menu widget showing empty widget on responsive when the toggle button is visible.
-
-ElementsKit Elementor Addons Version: 2.1.6 (07-02-2021)
-Fixed: basic tags support for text shadow option in Heading Widget.
-
-ElementsKit Elementor Addons Version: 2.1.5 (01-02-2021)
-New: CSS Print Method 'Internal Embedding' options support for Header and Footer Builder.
-Tweaked: Coding Standard improvement.
-Fixed: Text Domain correction.
-Fixed: Pot File updated.
-Fixed: TablePress Widget row color ordering consistency in editor and frontend.
-
-ElementsKit Elementor Addons Version: 2.1.4 (27-01-2021)
-Tweaked: Support W3C validation when using Header-Footer Builder.
-Fixed: Slick Library update support for the Latest update.
-Fixed: Mailchimp Widget minor CSS flex issue.
-Fixed: Team Widget popup scroll bar showing inside content.
-
-ElementsKit Elementor Addons Version: 2.1.3 (25-01-2021)
-Fixed: Added support for new Widget Categories hook.
-Fixed: Team Widget modal close button wasn't clickable on some edge cases.
-Fixed: Blog Posts Widgets' default image size changed to provide clear images.
-
-ElementsKit Elementor Addons Version: 2.1.2 (18-01-2021)
-New: Banners consent for showing notices.
-
-ElementsKit Elementor Addons Version: 2.1.1 (10-01-2021)
-New: Quickly turn on or off the Widgets and Modules from Dashboard.
-New: Position option for Header Off-Canvas Widget.
-Fixed: Team Widget minor CSS fix for Position text.
-Fixed: Header Footer builder popup CSS conflict.
-Fixed: Widget Builder control's selector values backward support.
-Fixed: Removed em tag from Testimonial Style 3.
 
 * Initial release
 

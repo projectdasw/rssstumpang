@@ -133,6 +133,8 @@ class Plugin {
 	}
 
 	private function _includes() {
+		require WPR_ADDONS_PRO_PATH . 'admin/support-tools.php';
+
 		// Modules Manager
 		require WPR_ADDONS_PRO_PATH . 'includes/modules-manager.php';
 
@@ -221,12 +223,14 @@ class Plugin {
 
 		// Integrate ACF & Dynamic Tags
 		if ( wpr_fs()->is_plan( 'expert' ) && defined('WPR_ADDONS_PRO_VERSION') ) {
-			add_filter( 'acf/settings/path', [$this, 'acf_settings_path'] );
-			add_filter( 'acf/settings/dir', [$this, 'acf_settings_dir'] );
-			include_once WPR_ADDONS_PRO_PATH . 'plugins/acf/acf.php';
+			if ( wpr_is_bundled_acf_enabled() ) {
+				add_filter( 'acf/settings/path', [$this, 'acf_settings_path'] );
+				add_filter( 'acf/settings/dir', [$this, 'acf_settings_dir'] );
+				include_once WPR_ADDONS_PRO_PATH . 'plugins/acf/acf.php';
 
-			// Enable WordPress Custom Fields
-			add_filter( 'acf/settings/remove_wp_meta_box', '__return_false' );
+				// Enable WordPress Custom Fields
+				add_filter( 'acf/settings/remove_wp_meta_box', '__return_false' );
+			}
 
 			// Dynamic Tags Query
 			add_action( 'elementor/dynamic_tags/before_render', [ $this, 'switch_to_preview_query' ] );

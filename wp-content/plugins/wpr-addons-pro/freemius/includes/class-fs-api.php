@@ -154,7 +154,7 @@
 			$this->_api = new Freemius_Api_WordPress( $scope, $id, $public_key, $secret_key, $is_sandbox );
 
 			$this->_slug        = $slug;
-			$this->_scope       = $scope; // Modified by GPL Times
+			$this->_scope       = $scope;
 			$this->_sdk_version = $sdk_version;
 			$this->_url         = $url;
 			$this->_logger      = FS_Logger::get_logger( WP_FS__SLUG . '_' . $slug . '_api', WP_FS__DEBUG_SDK, WP_FS__ECHO_DEBUG_SDK );

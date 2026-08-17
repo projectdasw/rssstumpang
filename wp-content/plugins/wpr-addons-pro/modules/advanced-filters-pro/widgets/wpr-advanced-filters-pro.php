@@ -4224,35 +4224,15 @@ class Wpr_Advanced_Filters_Pro extends Widget_Base {
 
 	// Recursive function to print categories and their children
 	protected function print_filters($filter_type, $term, $taxonomy, $settings, $count = 0, $level = 0, $repeater_label = '') {
-        if ( 'meta_field'  == $settings['filter_data'] ) {
-            global $wpdb;
+		if ( 'meta_field' !== $settings['filter_data'] && isset( $term->term_id ) ) {
+			$args = [
+				'taxonomy' => $taxonomy,
+				'hide_empty' => $settings['hide_empty'],
+				'parent' => $term->term_id,
+			];
 
-            // GOGA: needs validation
-            $custom_field_key = $settings['cf_for_all_post_types'];
-            
-            // Query to get all values for the specified custom field
-            $query = $wpdb->prepare("
-                SELECT meta_value
-                FROM $wpdb->postmeta
-                WHERE meta_key = %s
-            ", $custom_field_key);
-            
-            // Execute the query
-            $values = $wpdb->get_col($query);
-
-            // Remove duplicates
-            $uniqueValues = array_unique($values);
-        } else {
-			if ( isset($term->term_id) ) {
-				$args = [
-					'taxonomy' => $taxonomy,
-					'hide_empty' => $settings['hide_empty'],
-					'parent' => $term->term_id, // get children of this category
-				];
-		
-				$children = get_terms($args);
-			}
-        }
+			$children = get_terms( $args );
+		}
 
 		$inner_output = '';
 
@@ -4270,6 +4250,10 @@ class Wpr_Advanced_Filters_Pro extends Widget_Base {
 					$get_var = $taxonomy;
 				}
 	
+				if ( 'yes' === ( $settings['handle_empty'] ?? '' ) && 0 === (int) $term->count && 'hide' === ( $settings['empty_actions'] ?? '' ) ) {
+					return '';
+				}
+
 				if ( 'select' === $settings['filter_type'] ) {
 					if ( (1 == $this->dependent_count || !$this->dependent_count) || isset($_GET['wpr_af_'. $get_var]) ) {
 						$option_key = 'wpr_af_option_' . $term->term_id;
@@ -4284,6 +4268,10 @@ class Wpr_Advanced_Filters_Pro extends Widget_Base {
 
 						if ( isset( $_GET['wpr_af_'. $get_var] ) && absint( $_GET['wpr_af_'. $get_var] ) === (int) $term->term_id ) {
 							$this->add_render_attribute($option_key, 'selected');
+						}
+
+						if ( 'yes' === ( $settings['handle_empty'] ?? '' ) && 0 === (int) $term->count && 'disable' === ( $settings['empty_actions'] ?? '' ) ) {
+							$this->add_render_attribute($option_key, 'disabled');
 						}
 
 						$inner_output .= '<option ' . $this->get_render_attribute_string($option_key) . '>' . str_repeat('&nbsp;', $level * 3) . esc_html( $term->name );
@@ -4329,7 +4317,7 @@ class Wpr_Advanced_Filters_Pro extends Widget_Base {
 						]
 					);
 					
-					if ( 0 === $term->count && isset($settings['empty_actions']) && $settings['empty_actions'] == 'disable' ) {
+					if ( 'yes' === ( $settings['handle_empty'] ?? '' ) && 0 === (int) $term->count && 'disable' === ( $settings['empty_actions'] ?? '' ) ) {
 						$this->add_render_attribute($input_key, 'disabled');
 					}
 
@@ -4360,6 +4348,8 @@ class Wpr_Advanced_Filters_Pro extends Widget_Base {
 					$inner_output .= '</label>';
 				}
 			} else if ( !isset($term->slug) ) {
+				global $wpdb;
+
 				if ( is_array($taxonomy) ) {
 					$get_var = $taxonomy[0];
 				} else {
@@ -4367,7 +4357,7 @@ class Wpr_Advanced_Filters_Pro extends Widget_Base {
 				}
 
 				// Get count of posts with this custom meta field value
-				$post_count = $wpdb->get_var($wpdb->prepare("
+				$post_count = (int) $wpdb->get_var($wpdb->prepare("
 					SELECT COUNT(DISTINCT pm.post_id)
 					FROM {$wpdb->postmeta} pm
 					INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
@@ -4376,6 +4366,10 @@ class Wpr_Advanced_Filters_Pro extends Widget_Base {
 					AND p.post_type = %s
 					AND p.post_status = 'publish'
 				", $taxonomy, $term, $settings['filters_query']));
+
+				if ( 'yes' === ( $settings['handle_empty'] ?? '' ) && 0 === $post_count && 'hide' === ( $settings['empty_actions'] ?? '' ) ) {
+					return '';
+				}
 	
 				if ( 'select' === $settings['filter_type'] ) {
 					$get_val_raw = isset( $_GET['wpr_af_'. $get_var] ) ? sanitize_text_field( wp_unslash( $_GET['wpr_af_'. $get_var] ) ) : '';
@@ -4414,6 +4408,10 @@ class Wpr_Advanced_Filters_Pro extends Widget_Base {
 							'value' => $term,
 						]
 					);
+
+					if ( 'yes' === ( $settings['handle_empty'] ?? '' ) && 0 === $post_count && 'disable' === ( $settings['empty_actions'] ?? '' ) ) {
+						$this->add_render_attribute($input_key, 'disabled');
+					}
 
 					$get_val_csv = isset( $_GET['wpr_af_'. $get_var] ) ? sanitize_text_field( wp_unslash( $_GET['wpr_af_'. $get_var] ) ) : '';
 					$get_val_arr = $get_val_csv !== '' ? array_map( 'sanitize_text_field', explode( ',', $get_val_csv ) ) : [];
@@ -4553,16 +4551,51 @@ class Wpr_Advanced_Filters_Pro extends Widget_Base {
 		return false;
 	}
 
+	/**
+	 * Distinct meta values for one key, limited to published posts of a post type.
+	 *
+	 * @param string $meta_key  Meta key.
+	 * @param string $post_type Post type slug (filters_query).
+	 * @param array  $args      Optional. numeric_only (bool).
+	 * @return string[]
+	 */
+	protected function get_distinct_meta_values_by_post_type( $meta_key, $post_type, $args = [] ) {
+		global $wpdb;
+
+		if ( empty( $meta_key ) || empty( $post_type ) ) {
+			return [];
+		}
+
+		$sql = "
+			SELECT DISTINCT pm.meta_value
+			FROM {$wpdb->postmeta} pm
+			INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+			WHERE pm.meta_key = %s
+			AND p.post_type = %s
+			AND p.post_status = 'publish'
+			AND pm.meta_value != ''
+		";
+
+		if ( ! empty( $args['numeric_only'] ) ) {
+			$sql .= " AND pm.meta_value REGEXP '^[0-9]+(\.[0-9]+)?$'";
+		}
+
+		$sql .= ' ORDER BY pm.meta_value ASC';
+
+		return $wpdb->get_col( $wpdb->prepare( $sql, $meta_key, $post_type ) );
+	}
+
 	public function get_all_meta_keys_by_post_type($post_type) {
 		global $wpdb;
 	
 		$meta_keys = $wpdb->get_col(
 			$wpdb->prepare(
-				"SELECT DISTINCT meta_key
-				FROM $wpdb->postmeta
-				INNER JOIN $wpdb->posts ON $wpdb->posts.ID = $wpdb->postmeta.post_id
-				WHERE $wpdb->posts.post_type = %s
-				AND $wpdb->postmeta.meta_key != ''
+				"SELECT DISTINCT pm.meta_key
+				FROM {$wpdb->postmeta} pm
+				INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+				WHERE p.post_type = %s
+				AND p.post_status = 'publish'
+				AND pm.meta_key != ''
 				",
 				$post_type
 			)
@@ -4969,23 +5002,8 @@ class Wpr_Advanced_Filters_Pro extends Widget_Base {
 				// HIERARCHY EXPERIMENT END
 					
 			} else {
-				global $wpdb;
-	
-				// Replace 'your_custom_field_key' with the actual key of your custom field
 				$custom_field_key = $taxonomy;
-				
-				// Query to get all values for the specified custom field
-				$query = $wpdb->prepare("
-					SELECT meta_value
-					FROM $wpdb->postmeta
-					WHERE meta_key = %s
-				", $custom_field_key);
-				
-				// Execute the query
-				$values = $wpdb->get_col($query);
-
-				// Remove duplicates
-				$terms = array_unique($values);
+				$terms = $this->get_distinct_meta_values_by_post_type( $custom_field_key, $settings['filters_query'] );
 				$count = 0;
 			
 				foreach ($terms as $term) {
@@ -5130,18 +5148,14 @@ class Wpr_Advanced_Filters_Pro extends Widget_Base {
 				$custom_field_key = '_price';
 			}
 
-			$query = $wpdb->prepare("
-				SELECT meta_value
-				FROM $wpdb->postmeta
-				WHERE meta_key = %s
-				AND meta_value REGEXP '^[0-9]+(\.[0-9]+)?$'
-			", $custom_field_key);
+			$values = $this->get_distinct_meta_values_by_post_type(
+				$custom_field_key,
+				$settings['filters_query'],
+				[ 'numeric_only' => true ]
+			);
 
-			$values = $wpdb->get_col($query);
-			$uniqueValues = array_unique($values);
-			
 			// Convert to floats for proper numeric comparison
-			$numericValues = array_map('floatval', array_filter($uniqueValues, 'is_numeric'));
+			$numericValues = array_map( 'floatval', array_filter( $values, 'is_numeric' ) );
 
 			$min_value = !empty($numericValues) ? min($numericValues) : 0;
 			$max_value = !empty($numericValues) ? max($numericValues) : 0;
@@ -5516,8 +5530,8 @@ class Wpr_Advanced_Filters_Pro extends Widget_Base {
                 'data-wpr-filter-type' => esc_attr($filter_type),
                 'data-enable-ajax' => esc_attr($settings['enable_ajax']),
 				'data-show-count' => isset($settings['show_count']) ? esc_attr($settings['show_count']) : '',
-				'data-change-counter' => isset($settings['change_counter']) ? esc_attr($settings['change_counter']) : '',
-				'data-empty-action' => isset($settings['empty_actions']) ? esc_attr($settings['empty_actions']) : '',
+				'data-change-counter' => ( 'yes' === ( $settings['enable_dependency'] ?? '' ) && isset( $settings['change_counter'] ) ) ? esc_attr( $settings['change_counter'] ) : '',
+				'data-empty-action' => ( 'yes' === ( $settings['handle_empty'] ?? '' ) && isset( $settings['empty_actions'] ) ) ? esc_attr( $settings['empty_actions'] ) : '',
 				'data-none-label' => isset($settings['select_field_placeholder']) ? esc_attr__( $settings['select_field_placeholder'], 'wpr-addons' ) : '',
 				'data-term-label' => is_array($term_label) ? esc_attr($term_label[0]) : esc_attr($term_label),
             ]

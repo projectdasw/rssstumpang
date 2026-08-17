@@ -1060,13 +1060,11 @@ class Wpr_Mini_Compare_Pro extends Widget_Base {
 						\Elementor\Icons_Manager::render_icon( $settings['compare_icon'], [ 'aria-hidden' => 'true' ] );
 						$compare_icon_html = ob_get_clean();
 					} else {
-						$compare_icon_html = '<i class="fas fa-exchange-alt"></i>';
+						$compare_icon_html = '<i class="fas fa-exchange-alt" title="'. esc_html__($settings['view_compare_text']) .'"></i>';
 					}
 
-					echo '<i class="wpr-compare-icon" title="'. esc_attr($settings['view_compare_text']) .'">';
-						echo $compare_icon_html;
-						echo '<span class="wpr-compare-count">'. $compare_count .'</span>';
-					echo '</i>';
+					echo $compare_icon_html;
+					echo '<span class="wpr-compare-count">'. $compare_count .'</span>';
 				echo '</a>';
 			echo '</div>';
 

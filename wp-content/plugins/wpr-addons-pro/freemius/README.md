@@ -1,8 +1,8 @@
-# Freemius SDK 2.13.0 - Premium License Bypass
+# Freemius SDK 2.13.4 - Premium License Bypass
 
 **Modified**
 
-This is a modified version of the Freemius WordPress SDK (v2.13.0) that bypasses all licensing requirements and enables all premium features automatically. All API calls are intercepted at every layer and prevented, while mock objects simulate a premium license environment.
+This is a modified version of the Freemius WordPress SDK (v2.13.4) that bypasses all licensing requirements and enables all premium features automatically. All API calls are intercepted at every layer and prevented, while mock objects simulate a premium license environment.
 
 ## Important Notice
 
@@ -59,7 +59,7 @@ Use this section to reapply all modifications to a newer version of the Freemius
 
 Find the line:
 ```php
-$this_sdk_version = '2.13.0';
+$this_sdk_version = '2.13.4';
 ```
 Change to:
 ```php
@@ -669,7 +669,7 @@ All network communication is intercepted at **every possible layer**:
 - PHP 7.0+ (including PHP 8.0, 8.1, 8.2, 8.3)
 - All Freemius-powered plugins and themes
 - Single site and multisite installations
-- Based on Freemius SDK version 2.13.0
+- Based on Freemius SDK version 2.13.4
 
 ## Attribution
 

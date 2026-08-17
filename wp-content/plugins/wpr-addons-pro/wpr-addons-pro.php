@@ -5,11 +5,11 @@
  * Description: The only plugin you need for Elementor page builder.
  * Plugin URI: https://wp-royal.com/
  * Author: WP Royal
- * Version: 1.6.03
+ * Version: 1.6.04
  * Update URI: https://api.freemius.com
  * Author URI: https://wp-royal.com/
- * Elementor tested up to: 4.0.8
- * Elementor Pro tested up to: 4.0.8
+ * Elementor tested up to: 4.2.1
+ * Elementor Pro tested up to: 4.2.1
  *
  * Text Domain: wpr-addons
 */

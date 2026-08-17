@@ -122,10 +122,26 @@ class Wpr_Search_Pro extends \WprAddons\Modules\Search\Widgets\Wpr_Search {
 			'enable_meta_query',
 			[
 				'label' => esc_html__( 'Enable Meta Query', 'wpr-addons' ),
-				'description' => esc_html__( 'Include Meta/Custom Fields in Search Results.', 'wpr-addons' ),
+				'description' => esc_html__( 'Include selected Meta/Custom Fields in Search Results.', 'wpr-addons' ),
 				'type' => Controls_Manager::SWITCHER,
 				'condition' => [
 					'ajax_search' => 'yes'
+				],
+			]
+		);
+
+		$this->add_control(
+			'query_meta_keys',
+			[
+				'label' => esc_html__( 'Meta Keys', 'wpr-addons' ),
+				'type' => 'wpr-ajax-select2',
+				'options' => 'ajaxselect2/get_custom_meta_keys',
+				'multiple' => true,
+				'label_block' => true,
+				'description' => esc_html__( 'Select which public custom fields can be searched. Private (_prefixed) keys are not allowed.', 'wpr-addons' ),
+				'condition' => [
+					'ajax_search' => 'yes',
+					'enable_meta_query' => 'yes',
 				],
 			]
 		);
@@ -795,6 +811,7 @@ class Wpr_Search_Pro extends \WprAddons\Modules\Search\Widgets\Wpr_Search {
 				'number-of-results' => isset($settings['number_of_results']) ? $settings['number_of_results'] : -1,
 				'ajax-search' => isset($settings['ajax_search']) ? $settings['ajax_search'] : '',
 				'meta-query' => isset($settings['enable_meta_query']) ? $settings['enable_meta_query'] : '',
+				'meta-keys' => ! empty( $settings['query_meta_keys'] ) ? implode( ',', (array) $settings['query_meta_keys'] ) : '',
 				'show-description' => isset($settings['show_description']) ? $settings['show_description'] : '',
 				'number-of-words' => isset($settings['number_of_words_in_excerpt']) ? $settings['number_of_words_in_excerpt'] : '',
 				'show-ajax-thumbnails' => isset($settings['show_ajax_thumbnails']) ? $settings['show_ajax_thumbnails'] : '',

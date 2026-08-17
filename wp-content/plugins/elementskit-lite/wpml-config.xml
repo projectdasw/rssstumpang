@@ -588,6 +588,21 @@
 				<field type="Pinterest Feed: Board name" editor_type="LINE">pinterest_board_name</field>
 			</fields>
 		</widget>
+		<widget name="elementskit-youtube-feed">
+			<conditions>
+				<condition key="widgetType">elementskit-youtube-feed</condition>
+			</conditions>
+			<fields>
+				<field type="Youtube Feed: Channel Id" editor_type="LINE">ekit_yf_channel_id</field>
+				<field type="Youtube Feed: Playlist ID" editor_type="LINE">ekit_yf_playlist_id</field>
+				<field type="Youtube Feed: Search Value" editor_type="LINE">ekit_yf_video_search</field>
+				<field type="Youtube Feed: See More Text" editor_type="LINE">ekit_yf_video_description_see_more_text</field>
+				<field type="Youtube Feed: Load More Button Text" editor_type="LINE">ekit_yf_load_more_text</field>
+			</fields>
+			<fields-in-item items_of="ekit_yf_statistics">
+				<field type="Youtube Feed: Statistics Label" editor_type="LINE">ekit_yf_statistics_label</field>
+			</fields-in-item>
+		</widget>
 		<widget name="elementskit-popup-modal">
 			<conditions>
 				<condition key="widgetType">elementskit-popup-modal</condition>

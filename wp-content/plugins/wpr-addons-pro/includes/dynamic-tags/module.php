@@ -13,6 +13,10 @@ class Wpr_Dynamic_Tags_Module extends DynamicTags\Module {
 	public static function get_control_options( $types ) {
 		$groups = [];
 
+		if ( ! function_exists( 'acf_get_field_groups' ) ) {
+			return $groups;
+		}
+
 		// Get all ACF field groups
 		$field_groups = acf_get_field_groups();
 
@@ -50,6 +54,10 @@ class Wpr_Dynamic_Tags_Module extends DynamicTags\Module {
 	}
 
 	public static function get_field_data( Base_Tag $tag ) {
+		if ( ! function_exists( 'get_field_object' ) ) {
+			return [];
+		}
+
 		$acf_field = $tag->get_settings( 'wpr_acf_field' );
 		$acf_field_object = get_field_object($acf_field, get_queried_object_id());
 
@@ -68,6 +76,9 @@ class Wpr_Dynamic_Tags_Module extends DynamicTags\Module {
 			],
 			'wpr_addons_current_date_time' => [
 				'title' => esc_html__( 'Current Date Time', 'wpr-addons' ) . $suffix,
+			],
+			'wpr_addons_current_user' => [
+				'title' => esc_html__( 'Current User', 'wpr-addons' ) . $suffix,
 			],
 			'wpr_addons_featured_image' => [
 				'title' => esc_html__( 'Featured Image', 'wpr-addons' ) . $suffix,
@@ -89,6 +100,7 @@ class Wpr_Dynamic_Tags_Module extends DynamicTags\Module {
 			// Rest
 			'Wpr_Custom_Field',
 			'Wpr_Current_Date_Time',
+			'Wpr_Current_User',
 			'Wpr_Featured_Image'
 		];
 	}
