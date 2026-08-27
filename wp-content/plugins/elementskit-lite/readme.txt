@@ -2,9 +2,9 @@
 Contributors: Roxnor, Ataurr, aion11
 Tags: Elementor addons, mega menu builder,  header footer builder, elementor addon, elementor widgets
 Requires at least: 6.0
-Tested up to: 7.0.3
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.0.1
+Stable tag: 4.0.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -357,6 +357,12 @@ ElementsKit is brought to you by Wpmet, a name **trusted by 10,00,000 satisfied 
 Visit  [wpmet](https://wpmet.com/?utm_source=org&utm_medium=readme) for essential WordPress [Tutorials, Tips & Tricks](https://wpmet.com/blog)!
 
 == Changelog ==
+= ElementsKit Elementor Addons Version: 4.0.2 (2026-08-24) =
+* Added: Introduced an HTML tag option for the member name in the Team widget.
+* Fixed: Resolved an issue where Mailchimp Widget API requests were not processed correctly.
+* Fixed: Resolved an issue with conditional option selection in the Header Footer module.
+* Fixed: Resolved an issue where hash-based  URLs were not handled correctly.
+
 = ElementsKit Elementor Addons Version: 4.0.1 (2026-08-12) =
 * Security: Sanitized input handling and improved output escaping.
 * Improved: Localized the Go Premium modal strings.

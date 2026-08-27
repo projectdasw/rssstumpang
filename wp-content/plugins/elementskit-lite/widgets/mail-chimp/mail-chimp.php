@@ -2,6 +2,7 @@
 namespace Elementor;
 
 use \Elementor\ElementsKit_Widget_Mail_Chimp_Handler as Handler;
+use \ElementsKit_Lite\Widgets\Mail_Chimp\Mail_Chimp_Api;
 use \ElementsKit_Lite\Modules\Controls\Controls_Manager as ElementsKit_Controls_Manager;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -52,32 +53,32 @@ class ElementsKit_Widget_Mail_Chimp extends Widget_Base {
 		$options = ['' => 'Select List'];
 		$dataApi = Handler::get_data();
 		$token = isset($dataApi['token']) ? $dataApi['token'] : '';
+		$lists = Mail_Chimp_Api::get_lists($token, $this->is_editor_request());
 
-		$server = explode('-', $token);
-
-		if (!isset($server[1])) {
-			return $options;
-		}
-
-		$url = 'https://' . $server[1] . '.api.mailchimp.com/3.0/lists';
-
-		$response = wp_remote_get($url, [
-			'headers' => [
-				'Authorization' => 'apikey ' . $token,
-				'Content-Type' => 'application/json; charset=utf-8',
-			],
-		]);
-
-		if (is_array($response) && !is_wp_error($response)) {
-			$body = (array) json_decode($response['body']);
-			$listed = isset($body['lists']) ? $body['lists'] : [];
-			if (is_array($listed) && sizeof($listed) > 0) {
-				foreach ($listed as $v) {
-					$options[$v->id] = $v->name;
-				}
+		if (is_array($lists)) {
+			foreach ($lists as $id => $name) {
+				$options[$id] = $name;
 			}
 		}
+
 		return $options;
+	}
+
+	/**
+	 * Whether the current request is one that actually renders the Elementor controls panel.
+	 */
+	private function is_editor_request() {
+		if (is_admin()) {
+			return true;
+		}
+
+		if (!class_exists('\Elementor\Plugin')) {
+			return false;
+		}
+
+		$elementor = \Elementor\Plugin::$instance;
+
+		return ($elementor->editor->is_edit_mode() || $elementor->preview->is_preview_mode());
 	}
 
     protected function register_controls() {

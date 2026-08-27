@@ -27,8 +27,8 @@
 							<label class="attr-input-label"><?php esc_html_e( 'Conditions:', 'elementskit-lite' ); ?></label>
 							<select name="condition_a" class="ekit-template-modalinput-condition_a attr-form-control">
 								<option value="entire_site"><?php esc_html_e( 'Entire Site', 'elementskit-lite' ); ?></option>
-								<option value="singular"><?php esc_html_e( 'Singular (Only Pro)', 'elementskit-lite' ); ?></option>
-								<option value="archive"><?php esc_html_e( 'Archive (Only Pro)', 'elementskit-lite' ); ?></option>
+								<option value="singular" disabled><?php esc_html_e( 'Singular (Only Pro)', 'elementskit-lite' ); ?></option>
+								<option value="archive" disabled><?php esc_html_e( 'Archive (Only Pro)', 'elementskit-lite' ); ?></option>
 							</select>
 						</div>
 						<br>
