@@ -941,6 +941,16 @@ The choice depends on your design preferences. If you want complete control, go 
 
 == Changelog ==
 
+
+
+=  2.0.18 - 2026-09-03 =
+
+Plugin Changes:
+
+* Fix: fixed 2 small security issue  
+* Fix: fixed avoid duplicates with filters on synced grids
+
+
 = 2.0.17 - 2026-08-23 =
 
 Plugin Changes:

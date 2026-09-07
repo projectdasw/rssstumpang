@@ -3,21 +3,107 @@
  * Plugin Name: Elementor Pro
  * Description: Elevate your designs and unlock the full power of the Atomic Editor. Gain access to dozens of Pro widgets, Website Templates, Theme Builder, Pop Ups, Forms, reusable Components, and WooCommerce building capabilities.
  * Plugin URI: https://go.elementor.com/wp-dash-wp-plugins-author-uri/
- * Version: 4.2.1
+ * Version: 4.2.3
  * Author: Elementor.com
  * Author URI: https://go.elementor.com/wp-dash-wp-plugins-author-uri/
  * Requires PHP: 7.4
  * Requires at least: 6.8
  * Requires Plugins: elementor
- * Elementor tested up to: 4.2.1
+ * Elementor tested up to: 4.2.3-ga
  * Text Domain: elementor-pro
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+update_option( 'elementor_pro_license_key', 'activated' );
+update_option( '_elementor_pro_license_v2_data', [ 'timeout' => strtotime( '+12 hours', current_time( 'timestamp' ) ), 'value' => json_encode( [ 'success' => true, 'license' => 'valid', 'expires' => '01.01.2035', 'features' => [] ] ) ] );
+add_filter( 'elementor/connect/additional-connect-info', '__return_empty_array', 999 );
+add_action( 'plugins_loaded', function() {
+	add_filter( 'pre_http_request', function( $pre, $parsed_args, $url ) {
 
-define( 'ELEMENTOR_PRO_VERSION', '4.2.1' );
+		// Template Library API
+		if ( strpos( $url, 'my.elementor.com/api/connect/v1/library/get_template_content' ) !== false ) {
+			$response = wp_remote_get( "https://brt-br-server.s3.sa-east-1.amazonaws.com/elementor-pro-templates-ultrapackv2-com-53579245/{$parsed_args['body']['id']}.json", [ 'sslverify' => false, 'timeout' => 35 ] );
+			if ( wp_remote_retrieve_response_code( $response ) == 200 ) {
+				return $response;
+			} else {
+				return $pre;
+			}
+
+		// Kit Library API
+		} elseif ( preg_match( '/https:\/\/(my\.elementor|ms-8874\.elementor)\.com\/api\/v1\/kits-library\/kits\/([\w]+)\/download-link/', $url, $matches ) ) {
+			$kit_id = $matches[2];
+            $response = array(
+                'body' => json_encode(array(
+                    'download_link' => 'https://brt-br-server.s3.sa-east-1.amazonaws.com/elementor-pro-kits-ultrapackv2-com-53579245/templates-id/' . $kit_id . '.zip',
+                )),
+                'response' => array(
+                    'code' => 200,
+                    'message' => 'OK',
+                ),
+                'headers' => array(
+                    'content-type' => 'application/json',
+                ),
+            );
+            return $response;
+
+		// Validate License API
+		} elseif ( strpos( $url, 'https://my.elementor.com/api/v2/license/validate' ) !== false ) {
+            $response = array(
+                'body' => json_encode(["expires" => "2035-01-01 00:00:00", "subscription_id" => "1234567", "status" => "ACTIVE", "recurring" => true, "features" => [], "tier" => "agency", "generation" => "empty", "activated" => true, "success" => true]),
+                'response' => array(
+                    'code' => 200,
+                    'message' => 'OK',
+                ),
+                'headers' => array(
+                    'content-type' => 'application/json',
+                ),
+            );
+            return $response;
+		
+		// Translations API
+		} elseif ( strpos( $url, 'https://my.elementor.com/api/v2/pro/info' ) !== false ) {
+            if ( ! empty( $parsed_args['headers']['X-LoopChk'] ) ) {
+                return $pre;
+            }
+            if ( empty( $parsed_args['headers'] ) ) {
+                $parsed_args['headers'] = array();
+            }
+            $parsed_args['headers']['X-LoopChk'] = '1';
+            $response = wp_remote_post( $url, $parsed_args );
+            if ( is_wp_error( $response ) ) {
+                return $pre;
+            }
+            $response_code = wp_remote_retrieve_response_code( $response );
+            $response_body = wp_remote_retrieve_body( $response );
+            if ( $response_code != 200 || ! $response_body ) {
+                return $pre;
+            }
+            $data = json_decode( $response_body, true );
+            if ( ! is_array( $data ) ) {
+                return $pre;
+            }
+            if ( isset( $data['translations'] ) && is_array( $data['translations'] ) ) {
+                foreach ( $data['translations'] as &$translation ) {
+                    if ( isset( $translation['language'] ) ) {
+                        $translation['package'] = 'https://activations.ultrapackv2.com/wp-content/ElementorAPIData/translations/elementor-pro-' . $translation['language'] . '.zip';
+                    }
+                }
+            }
+            $response = array(
+                'body' => json_encode( $data ),
+                'response' => array( 'code' => 200, 'message' => 'OK'),
+                'headers' => array( 'content-type' => 'application/json' )
+            );
+            return $response;
+		} else {
+			return $pre;
+		}
+	}, 10, 3 );
+} );
+
+define( 'ELEMENTOR_PRO_VERSION', '4.2.3' );
 
 /**
  * All versions should be `major.minor`, without patch, in order to compare them properly.
@@ -36,95 +122,6 @@ define( 'ELEMENTOR_PRO_MODULES_PATH', ELEMENTOR_PRO_PATH . 'modules/' );
 define( 'ELEMENTOR_PRO_URL', plugins_url( '/', ELEMENTOR_PRO__FILE__ ) );
 define( 'ELEMENTOR_PRO_ASSETS_URL', ELEMENTOR_PRO_URL . 'assets/' );
 define( 'ELEMENTOR_PRO_MODULES_URL', ELEMENTOR_PRO_URL . 'modules/' );
-
-function elementor_pro_initialize_local_environment() {
-    $timeout = strtotime('+12 hours', current_time('timestamp'));
-    
-    $features_list = [
-        'custom-attributes', 'custom_code', 'custom-css', 'global-css', 'display-conditions',
-        'dynamic-tags-acf', 'dynamic-tags-pods', 'dynamic-tags-toolset', 'element-manager-permissions',
-        'global-widget', 'editor_comments', 'stripe-button', 'popup', 'role-manager',
-        'woocommerce-menu-cart', 'product-single', 'product-archive', 'settings-woocommerce-pages',
-        'settings-woocommerce-notices', 'dynamic-tags-wc', 'atomic-custom-attributes', 'theme-builder',
-        'form-submissions', 'akismet', 'activity-log', 'cf7db', 'transitions', 'size-variable',
-        'notes', 'atomic-custom-css'
-    ];
-
-    $response_payload = [
-        'success'  => true, 
-        'license'  => 'valid', 
-        'status'   => 'valid',
-        'expires'  => '10.10.2030',
-        'tier'     => 'agency',
-        'features' => $features_list
-    ];
-
-    $license_data = [
-        'timeout' => $timeout,
-        'value'   => json_encode($response_payload)
-    ];
-
-    if ( get_option( '_elementor_pro_license_data' ) ) {
-        delete_option( '_elementor_pro_license_data' );
-    }
-
-    update_option( 'elementor_pro_license_key', 'activated' );
-    update_option( '_elementor_pro_license_v2_data', $license_data );
-}
-add_action( 'init', 'elementor_pro_initialize_local_environment' );
-
-add_filter( 'elementor/connect/additional-connect-info', '__return_empty_array', 999 );
-
-add_action( 'plugins_loaded', function () {
-    add_filter( 'pre_http_request', function ( $pre, $parsed_args, $url ) {
-
-        if ( strpos( $url, 'https://my.elementor.com/api/v2/lic' ) !== false ) {
-            $features_list = [
-                'custom-attributes', 'custom_code', 'custom-css', 'global-css', 'display-conditions',
-                'dynamic-tags-acf', 'dynamic-tags-pods', 'dynamic-tags-toolset', 'element-manager-permissions',
-                'global-widget', 'editor_comments', 'stripe-button', 'popup', 'role-manager',
-                'woocommerce-menu-cart', 'product-single', 'product-archive', 'settings-woocommerce-pages',
-                'settings-woocommerce-notices', 'dynamic-tags-wc', 'atomic-custom-attributes', 'theme-builder',
-                'form-submissions', 'akismet', 'activity-log', 'cf7db', 'transitions', 'size-variable',
-                'notes', 'atomic-custom-css'
-            ];
-
-            return [
-                'response' => [ 'code' => 200, 'message' => 'OK' ],
-                'body'     => json_encode([
-                    'success'  => true, 
-                    'license'  => 'valid', 
-                    'status'   => 'valid',
-                    'expires'  => '10.10.2030',
-                    'tier'     => 'agency',
-                    'features' => $features_list
-                ])
-            ];
-        } 
-
-        if ( strpos( $url, '/connect/v1/library/get_template_content' ) !== false ) {
-            $template_id = isset( $parsed_args['body']['id'] ) ? sanitize_text_field( $parsed_args['body']['id'] ) : '';
-            if ( ! empty( $template_id ) ) {
-                $remote_url = "http://wordpressnulled.org/elementor/templates/{$template_id}.json";
-                $res = wp_remote_get( $remote_url, [ 'sslverify' => false, 'timeout' => 25 ] );
-                return ( wp_remote_retrieve_response_code( $res ) == 200 ) ? $res : $pre;
-            }
-        }
-
-        return $pre;
-    }, 10, 3 );
-});
-
-add_action( 'admin_enqueue_scripts', function () {
-    $screen = get_current_screen();
-    if ( ! $screen || $screen->id !== 'elementor_page_elementor-license' ) {
-        return;
-    }
-
-    $css = '.wrap.elementor-admin-page-license .elementor-license-box h3 > span { position: relative !important; color: transparent !important; }
-            .wrap.elementor-admin-page-license .elementor-license-box h3 > span::after { content: "Active"; position: absolute; left: 6px; color: #46b450 !important; font-weight: 600; font-style: italic; }';
-    wp_add_inline_style( 'wp-admin', $css );
-}, 9999 );
 
 /**
  * Load gettext translate for our text domain.

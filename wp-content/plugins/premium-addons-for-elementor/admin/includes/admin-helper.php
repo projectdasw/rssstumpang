@@ -119,15 +119,15 @@ class Admin_Helper {
 		add_action( 'wp_ajax_pa_disable_elementor_mc_template', array( $this, 'pa_disable_elementor_mc_template' ) );
 		add_action( 'wp_ajax_pa_save_additional_settings', array( $this, 'pa_save_additional_settings' ) );
 		add_action( 'wp_ajax_pa_save_ai_abilities', array( $this, 'pa_save_ai_abilities' ) );
+		add_action( 'wp_ajax_pa_mcp_news_seen', array( $this, 'pa_mcp_news_seen' ) );
 		add_action( 'wp_ajax_pa_enable_oauth_connect', array( $this, 'pa_enable_oauth_connect' ) );
 		add_action( 'wp_ajax_pa_disable_oauth_connect', array( $this, 'pa_disable_oauth_connect' ) );
+		add_action( 'wp_ajax_pa_extend_oauth_window', array( $this, 'pa_extend_oauth_window' ) );
 		add_action( 'wp_ajax_pa_scan_widgets_usage', array( $this, 'pa_scan_widgets_usage' ) );
 		add_action( 'wp_ajax_pa_disable_unused_widgets', array( $this, 'pa_disable_unused_widgets' ) );
 		add_action( 'wp_ajax_pa_get_menu_item_settings', array( $this, 'pa_get_menu_item_settings' ) );
 		add_action( 'wp_ajax_pa_save_menu_item_settings', array( $this, 'pa_save_menu_item_settings' ) );
 		add_action( 'wp_ajax_pa_save_mega_item_content', array( $this, 'pa_save_mega_item_content' ) );
-		add_action( 'wp_ajax_pa_check_unused_widgets', array( $this, 'pa_check_unused_widgets' ) );
-		add_action( 'wp_ajax_pa_hide_unused_widgets_dialog', array( $this, 'pa_hide_unused_widgets_dialog' ) );
 
 		// Used to empty dynamic assets dir on plugin update to make sure new assets are generated.
 		add_action( 'upgrader_process_complete', array( $this, 'pa_handle_upgrade' ), 10, 2 );
@@ -793,13 +793,22 @@ class Admin_Helper {
 			100
 		);
 
-		foreach ( self::$tabs as $tab ) {
+		foreach ( self::$tabs as $key => $tab ) {
+
+			$menu_title = $tab['title'];
+
+			// Unread MCP news dot. Computed from the cached feed only — the menu
+			// renders on every admin page, so it must never trigger a remote fetch.
+			// Inline-styled because admin.css loads only on PA screens.
+			if ( 'ai-abilities' === $key && MCP_News::has_unread() ) {
+				$menu_title .= '<span class="pa-mcp-news-dot" style="display:inline-block;width:8px;height:8px;margin-inline-start:6px;vertical-align:middle;border-radius:50%;background:#d63638;"></span>';
+			}
 
 			call_user_func(
 				'add_submenu_page',
 				self::$page_slug,
 				$tab['title'],
-				$tab['title'],
+				$menu_title,
 				'manage_options',
 				$tab['slug'],
 				'__return_null'
@@ -1308,6 +1317,31 @@ class Admin_Helper {
 	}
 
 	/**
+	 * Mark the MCP news feed as seen. Fired when the AI Abilities tab is opened,
+	 * so the submenu dot clears on the next admin page load.
+	 *
+	 * @since 4.11.102
+	 * @return void
+	 */
+	public function pa_mcp_news_seen() {
+
+		check_ajax_referer( 'pa-settings-tab', 'security' );
+
+		if ( ! self::check_user_can( 'manage_options' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You are not allowed to do this action.', 'premium-addons-for-elementor' ),
+				),
+				403
+			);
+		}
+
+		MCP_News::mark_seen();
+
+		wp_send_json_success();
+	}
+
+	/**
 	 * Enable the OAuth connect method: install the tables, set the flag, and
 	 * verify anonymous REST is actually reachable.
 	 *
@@ -1356,6 +1390,15 @@ class Admin_Helper {
 		}
 		update_option( OAuth\Bootstrap::OPTION_ENABLED, true );
 
+		// Open the client-registration window now. The dashboard render that
+		// normally opens it ran before the opt-in flag existed, and
+		// Bootstrap::is_registered() was already memoized as false on init in
+		// this request, so open_registration_window() would return early —
+		// the option is written directly instead. Without this the first
+		// connect attempt after enabling fails at registration until the
+		// dashboard is reloaded.
+		update_option( OAuth\Bootstrap::DCR_WINDOW, time() + OAuth\Bootstrap::DCR_WINDOW_TTL, true );
+
 		if ( ! wp_next_scheduled( OAuth\Bootstrap::CRON_HOOK ) ) {
 			wp_schedule_event( time(), 'daily', OAuth\Bootstrap::CRON_HOOK );
 		}
@@ -1369,6 +1412,32 @@ class Admin_Helper {
 				'message' => __( 'OAuth connection enabled. Connect your AI client with the configuration below.', 'premium-addons-for-elementor' ),
 			)
 		);
+	}
+
+	/**
+	 * Re-open the client-registration window. Fired when an administrator
+	 * copies a connection detail from the OAuth branch, so the 30 minutes count
+	 * from the moment the endpoint was grabbed rather than from the page load
+	 * that may have happened long before. No-op while OAuth is off.
+	 *
+	 * @since 4.11.101
+	 * @return void
+	 */
+	public function pa_extend_oauth_window() {
+
+		check_ajax_referer( 'pa-settings-tab', 'security' );
+
+		if ( ! self::check_user_can( 'manage_options' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You are not allowed to do this action.', 'premium-addons-for-elementor' ),
+				)
+			);
+		}
+
+		OAuth\Bootstrap::open_registration_window();
+
+		wp_send_json_success();
 	}
 
 	/**
@@ -1895,55 +1964,6 @@ class Admin_Helper {
 				'response' => 200,
 			)
 		);
-	}
-
-	public function pa_check_unused_widgets() {
-
-		check_ajax_referer( 'pa-disable-unused', 'security' );
-
-		$did_check = get_option( 'pa_unused_widget_dialog' );
-
-		if ( ! $did_check ) {
-
-			update_option( 'pa_unused_widget_dialog', true );
-
-			// Get days between now and install time.
-			$install_time = get_option( 'pa_install_time' );
-
-			// If install time is not set, set it now and exit.
-			if ( ! $install_time ) {
-				$current_time = gmdate( 'j F, Y', time() );
-				update_option( 'pa_install_time', $current_time );
-				wp_send_json_error( 'Installation time set.' );
-			}
-
-			// Convert to days.
-			$days_diff = ( time() - strtotime( $install_time ) ) / DAY_IN_SECONDS;
-
-			// If 7 days have passed since installation, proceed.
-			if ( $days_diff >= 7 ) {
-				wp_send_json_success();
-			} else {
-				wp_send_json_error( 'Not enough days since installation.' );
-			}
-		}
-
-		wp_send_json_error( 'Already checked, or canceled' );
-	}
-
-	/**
-	 * Hide Unused Widgets Dialog.
-	 *
-	 * @access public
-	 * @since 4.5.8
-	 */
-	public function pa_hide_unused_widgets_dialog() {
-
-		check_ajax_referer( 'pa-disable-unused', 'security' );
-
-		update_option( 'pa_unused_widget_dialog', true );
-
-		wp_send_json_success( 'Option updated.' );
 	}
 
 	/**

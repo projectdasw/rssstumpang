@@ -2,9 +2,9 @@
 Contributors: wpdevteam, Codetic, re_enter_rupok, Asif2BD, priyomukul, rudlinkon, jakariaistauk, himadree
 Tags: elementor, elementor addons, elementor widgets, elementor templates, elementor woocommerce
 Requires at least: 5.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 6.7.3
+Stable tag: 6.8.3
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -26,6 +26,9 @@ No extra resources or messy code to slow down your website. Optimized for super 
 
 ### Elements Control option
 Enable and disable individual elements adding to make your page load faster and smoother. You can deactivate unnecessary widgets to keep the site light.
+
+### Angie AI Integration
+Build faster with Elementor's agentic AI — prompt Angie to create, customize, and fine-tune your Essential Addons widgets right inside the editor.
 
 
 ### 6,500+ Ready WordPress Templates & Blocks through **Templately**
@@ -112,6 +115,7 @@ We have designed more than 65+ useful widgets to enhance your Elementor Page Bui
 55. [Woo Add to Cart](https://essential-addons.com/woo-add-to-cart/)- Make shopping easier with an ‘Add to Cart’ button
 56. [Breadcrumbs](https://essential-addons.com/breadcrumbs/)- Improve navigation with breadcrumbs for easy exploration
 57. [Code Snippet](https://essential-addons.com/code-snippet)- Display beautifully formatted code on your Elementor website
+58. [Mega Menu](https://essential-addons.com/mega-menu/)- Build rich, multi-column navigation menus visually
 
 Extensions (Free):
 
@@ -127,6 +131,7 @@ Extensions (Free):
 8. [Liquid Glass Effects](https://essential-addons.com/liquid-glass-effects/) - Give your website a sleek, futuristic feel with stunning glass effects
 9. [Image Masking with Morphing](https://essential-addons.com/image-masking-with-morphing/) -  Create seamless transformations and interactive visual effects with smooth masking & morphing
 10. [Vertical Text Orientation](https://essential-addons.com/vertical-text-orientation/) - Bring style to pages with modern, eye-catching vertical text
+11. [Header & Footer Builder](https://essential-addons.com/header-footer-builder/) - Build custom Elementor headers and footers from presets
 
 ### More elements (50+) on [Premium Version](https://wpdeveloper.com/in/upgrade-essential-addons-elementor)
 
@@ -191,48 +196,16 @@ More features and improvements are coming on regular updates. Want to unlock the
 
 ### Elementor WooCommerce Widgets From Essential Addons
 
-With Essential Addons, we bring you seamless compatibility with WooCommerce, enhancing your ability to showcase products, categories, and filters with ease. There are 11+ beautiful **WooCommerce widgets** for your every need:
+With Essential Addons, you get seamless WooCommerce compatibility to showcase products, categories, and filters with ease. There are 11+ beautiful **WooCommerce widgets** for your every need:
 
-[EA Woo Product Carousel](https://essential-addons.com/docs/woo-product-carousel/): Display your store’s products interactively with this WooCommerce widget and implement various styling options and ready-made layouts to create an interactive product showcase on your WordPress website.
-
-[EA Woo Product Gallery](https://essential-addons.com/docs/woo-product-gallery/): Captivate visitors and drive immediate purchases on your WooCommerce store using the Product Gallery element from Essential Addons. Explore incredible ready layouts, abundant customization choices, and more.
-
-[EA Woo Product Price](https://essential-addons.com/docs/ea-woo-product-price/): Highlight the price of your WooCommerce product Price and style it using custom colors and typography.
-
-[EA Woo Product Rating](https://essential-addons.com/docs/ea-woo-product-rating/): Display WooCommerce product rating to help customers make informed purchasing decisions and increase credibility.
-
-[EA Woo Product Images](https://essential-addons.com/docs/ea-woo-product-images/): Showcase eye-catching WooCommerce product images with advanced customization and effects.
-
-[EA Woo Add to Cart](https://essential-addons.com/docs/ea-woo-add-to-cart/): Simplify the shopping experience by displaying an easy-to-access ‘Add to Cart’ button for all your WooCommerce products.
-
-[EA Woo Product Slider (PRO)](https://essential-addons.com/docs/woo-product-slider/): Present your WooCommerce products in a stunning slider format with this advanced Elementor addon.
-
-[EA Woo Product Collection (PRO)](https://essential-addons.com/docs/ea-woo-product-collections/): Exhibit your WooCommerce product collections on any section of your Elementor website to showcase items based on categories, tags, or attributes, and add engaging hover effects.
-
-https://youtu.be/4jKW2e2QY-g
-
-[EA Woo Product List](https://essential-addons.com/docs/ea-woo-product-list/): Easily add all your WooCommerce products in a listicle format on any Elementor page or post on your website and customize with unique layouts to attract customers instantly.
-
-
-[EA Woo Product Grid](https://essential-addons.com/docs/woocommerce-product-grid/): Display your products in visually appealing grid-layouts on any website section and allow customers to view them based on category, tags, or attributes.
-
-[EA Woo Product Compare](https://essential-addons.com/docs/woo-product-compare/): Easily compare your preferred WooCommerce products anywhere on the page with this free Elementor addon. Benefit from numerous pre-designed theme layouts and much more.
-
-
-[EA Woo Cross Sells:](https://essential-addons.com/docs/ea-woo-cross-sells/): Effortlessly show related items to your customers with this premium Elementor widget, aiding them in discovering complementary products and enriching their overall shopping experience.
-
-https://youtu.be/EQu8e1MwuKI
-
-
-[EA Woo Cart](https://essential-addons.com/docs/woocommerce-cart/): Elevate customers’ purchasing experience on your WooCommerce store by effortlessly designing an appealing Cart Page with Essential Addons using no coding.
-
-[EA Woo Checkout](https://essential-addons.com/docs/woo-checkout/): Craft visually appealing Checkout pages for your WooCommerce store to customize and style the widget effortlessly to ensure increased sales.
-
-[EA Woo Account Dashboard (PRO)](https://essential-addons.com/docs/ea-woo-account-dashboard/): Create a user-friendly and visually appealing dashboard for your WooCommerce store, consolidating all vital tabs into one convenient location.
-
-https://youtu.be/CEUqgOS4CN0
-
-[EA Woo Thank You (PRO)](https://essential-addons.com/docs/ea-woo-thank-you/):Resonate with customers and ensure a positive post-purchase experience with this advanced Elementor WooCommerce widget from Essential Addons. It lets you create tailor-made thank-you messages with limitless personalization.
+- [Woo Product Carousel](https://essential-addons.com/docs/woo-product-carousel/) – interactive product showcase
+- [Woo Product Gallery](https://essential-addons.com/docs/woo-product-gallery/) – filterable product gallery
+- [Woo Product Grid](https://essential-addons.com/docs/woocommerce-product-grid/) – products in grid layouts
+- [Woo Product List](https://essential-addons.com/docs/ea-woo-product-list/) – products in a listicle format
+- [Woo Product Compare](https://essential-addons.com/docs/woo-product-compare/) – compare products anywhere
+- Single-product elements: [Price](https://essential-addons.com/docs/ea-woo-product-price/), [Rating](https://essential-addons.com/docs/ea-woo-product-rating/), [Images](https://essential-addons.com/docs/ea-woo-product-images/) & [Add to Cart](https://essential-addons.com/docs/ea-woo-add-to-cart/)
+- [Woo Cart](https://essential-addons.com/docs/woocommerce-cart/) & [Woo Checkout](https://essential-addons.com/docs/woo-checkout/) – design Cart & Checkout pages with no coding
+- **Pro:** [Product Slider](https://essential-addons.com/docs/woo-product-slider/), [Product Collections](https://essential-addons.com/docs/ea-woo-product-collections/), [Cross-Sells](https://essential-addons.com/docs/ea-woo-cross-sells/), [Account Dashboard](https://essential-addons.com/docs/ea-woo-account-dashboard/) & [Thank You](https://essential-addons.com/docs/ea-woo-thank-you/)
 
 
 ### 🏆  FEATURED BY 100+ RENOWNED PUBLICATIONS
@@ -364,6 +337,30 @@ Nothing is sent unless you explicitly opt in. If you do opt in, we send: your si
 
 
 == Changelog ==
+
+= 6.8.3 - 01/09/2026 =
+
+- Fixed: A fatal error that could break the site or the Elementor editor when Essential Addons Pro was active alongside the latest Lite update
+- Few minor bug fixes & improvements
+
+= 6.8.2 - 31/08/2026 =
+
+- Added: Angie AI Integration | Elementor's agentic AI can now discover Essential Addons widgets and their control schemas, so you can prompt Angie to build and customize EA widgets right inside the editor
+- Few minor bug fixes & improvements
+
+= 6.8.1 - 28/08/2026 =
+
+- Fixed: EA Gravity Forms | Submit and Next/Previous button styles stopped applying after the Gravity Forms 3.0 update
+- Improved: EA Login/Register Form | Strengthened nonce and CAPTCHA validation on login, registration and password reset - thanks to `Gaurav Popalghat` for the security research
+- Improved: EA Login/Register Form | Hardened Custom Profile Field handling during registration - thanks to `Jakub Herman` for the security research
+- Improved: EA Advanced Tabs | Strengthened URL fragment handling
+- Few minor bug fixes & improvements
+
+= 6.8.0 - 27/08/2026 =
+
+- Added: EA Theme Builder to create custom headers and footers, with 6 ready-to-use presets
+- Added: EA Mega Menu | Creating flexible and engaging mega menu layouts
+- Few minor bug fixes & improvements
 
 = 6.7.3 - 09/08/2026 =
 
